@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Kidney Monitor 2</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+</resources>
