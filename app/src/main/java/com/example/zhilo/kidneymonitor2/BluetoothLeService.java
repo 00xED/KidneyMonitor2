@@ -32,7 +32,7 @@ public class BluetoothLeService extends Service {
     private BluetoothGatt mBluetoothGatt;
     static int mConnectionState = Constants.STATE_DISCONNECTED;
 
-    private static byte[] incomingBuffer = new byte[128];
+    private static byte[] incomingBuffer = new byte[32];
     private static int incomingBufferInd = 0;
 
     // Implements callback methods for GATT events that the app cares about.  For example,
@@ -142,18 +142,20 @@ public class BluetoothLeService extends Service {
             incomingBufferInd++;
         }
 
-        if ((arrayIndexOf(incomingBuffer, (byte) 0x55) != -1) &&
-                (arrayIndexOf(incomingBuffer, (byte) 0xAA) != -1)) {
-            int start = arrayIndexOf(incomingBuffer, (byte) 0x55);
-            int end = arrayIndexOf(incomingBuffer, (byte) 0xAA) + 1;
-            pack = Arrays.copyOfRange(incomingBuffer, start, end);
-            incomingBufferInd -= pack.length;
-            byte[] b = Arrays.copyOfRange(incomingBuffer, end, incomingBuffer.length);
-            Arrays.fill(incomingBuffer, (byte) 0x00);
-            for (int i = 0; i < b.length; i++) {
-                incomingBuffer[i] = b[i];
+        if (arrayIndexOf(incomingBuffer, (byte) 0xAA) != -1)
+            if((arrayIndexOf(incomingBuffer, (byte) 0x55) != -1)){
+                int start = arrayIndexOf(incomingBuffer, (byte) 0x55);
+                int end = arrayIndexOf(incomingBuffer, (byte) 0xAA) + 1;
+                pack = Arrays.copyOfRange(incomingBuffer, start, end);
+                incomingBufferInd -= pack.length;
+                byte[] b = Arrays.copyOfRange(incomingBuffer, end, incomingBuffer.length);
+                Arrays.fill(incomingBuffer, (byte) 0x00);
+                for (int i = 0; i < b.length; i++) {
+                    incomingBuffer[i] = b[i];
+                }
             }
-        }
+            else
+                Arrays.fill(incomingBuffer, (byte) 0x00);
         return pack;
     }
 

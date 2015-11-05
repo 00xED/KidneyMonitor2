@@ -112,121 +112,6 @@ public class ConnectionService extends Service {
         startForeground(Constants.FOREGROUND_SERVICE_ID, notif);
     }
 
-    // Code to manage Service lifecycle.
-    private final ServiceConnection BLEServiceConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder service) {
-            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
-            if (!mBluetoothLeService.initialize())
-                lw.appendLog(TAG, "Unable to initialize Bluetooth");
-            else
-                lw.appendLog(TAG, "Bluetooth initialized");
-            // Automatically connects to the device upon successful start-up initialization.
-            String address = sPref.getString(Constants.SETTINGS_ADDRESS, "00:00:00:00:00:00");
-            if (!"00:00:00:00:00:00".equals(address)) {
-                mBluetoothLeService.connect(address);
-                lw.appendLog(TAG, "Trying to connect to " + address);
-            }
-
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-            mBluetoothLeService = null;
-        }
-    };
-
-    private final BroadcastReceiver brBLEUpdateReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
-            if (Constants.ACTION_GATT_CONNECTED.equals(action)) {
-                BLEConnected = true;
-                lw.appendLog(TAG, "BLE connected");
-            } else if (Constants.ACTION_GATT_DISCONNECTED.equals(action)) {
-                BLEConnected = false;
-                lw.appendLog(TAG, "BLE disconnected");
-            } else if (Constants.ACTION_DATA_AVAILABLE.equals(action)) {
-                if (intent.hasExtra(Constants.EXTRA_DATA)) {
-                    byte[] pack = intent.getByteArrayExtra(Constants.EXTRA_DATA);
-                    lw.appendLog(TAG, bytesToHex(pack));
-                }
-            }
-        }
-    };
-
-    /**
-     * Converts byte array to hex string
-     *
-     * @param bytes Non-null byte array
-     * @return Hex string
-     */
-    private static String bytesToHex(byte[] bytes) {
-        final char[] hexArray = "0123456789ABCDEF".toCharArray();
-        char[] hexChars = new char[bytes.length * 2];
-        for (int j = 0; j < bytes.length; j++) {
-            int v = bytes[j] & 0xFF;
-            hexChars[j * 2] = hexArray[v >>> 4];
-            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-        }
-        return new String(hexChars);
-    }
-
-    /**
-     * Handle messages received from main screen activity: setting status and pause/resume,
-     * do pairing  with saved address
-     */
-    BroadcastReceiver brCommandReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            final String task = intent.getStringExtra(Constants.CONNECTIONSERVICE_TASK);
-            final String arg = intent.getStringExtra(Constants.CONNECTIONSERVICE_ARG);
-            // switch tasks for setting main screen values
-            if (Constants.CONNECTIONSERVICE_ACTION_START_BLE_SERVICE.equals(task)) {
-                Intent gattServiceIntent = new Intent(getApplicationContext(), BluetoothLeService.class);
-                getApplicationContext().bindService(gattServiceIntent, BLEServiceConnection, BIND_AUTO_CREATE);
-            } else if (Constants.CONNECTIONSERVICE_ACTION_STOP_BLE_SERVICE.equals(task)) {
-                unbindService(BLEServiceConnection);
-                mBluetoothLeService = null;
-            } else {
-
-            }
-        }
-    };
-
-    private static IntentFilter makeGattUpdateIntentFilter() {
-        final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Constants.ACTION_GATT_CONNECTED);
-        intentFilter.addAction(Constants.ACTION_GATT_DISCONNECTED);
-        intentFilter.addAction(Constants.ACTION_GATT_SERVICES_DISCOVERED);
-        intentFilter.addAction(Constants.ACTION_DATA_AVAILABLE);
-        return intentFilter;
-    }
-
-    Runnable AutoconnectTask = new Runnable() {
-        @Override
-        public void run() {
-            if (!BLEConnected && sPref.getBoolean(Constants.SETTINGS_AUTOCONNECT, false) &&
-                    ConnectTryCount <= 10) {//if waiting for connection - try to connect to saved device
-                String address = sPref.getString(Constants.SETTINGS_ADDRESS, "00:00:00:00:00:00");
-                if (!"00:00:00:00:00:00".equals(address)) {
-                    Intent intentValues = new Intent(Constants.CONNECTIONSERVICE_ACTION);
-                    intentValues.putExtra(Constants.CONNECTIONSERVICE_TASK, Constants.CONNECTIONSERVICE_ACTION_START_BLE_SERVICE);
-                    sendBroadcast(intentValues);
-                    ConnectTryCount++;
-                }
-            }
-            if (ConnectTryCount > 10 && ConnectTryCount < 20) {
-                SharedPreferences.Editor ed = sPref.edit(); //Setting for preference editing
-                ed.putBoolean(Constants.SETTINGS_AUTOCONNECT, false);
-                ed.apply();
-                sendNotification("autoconnect_failed");
-                ConnectTryCount = 20;
-            }
-            AutoconnectHandler.postDelayed(AutoconnectTask, 5000);//refresh after one second
-        }
-    };
-
     /**
      * Send notification to user through notification bar
      *
@@ -271,4 +156,125 @@ public class ConnectionService extends Service {
         NOTIFY_ID++;
         notificationManager.cancel(NOTIFY_ID--);
     }
+
+    /**
+     * Converts byte array to hex string
+     *
+     * @param bytes Non-null byte array
+     * @return Hex string
+     */
+    private static String bytesToHex(byte[] bytes) {
+        final char[] hexArray = "0123456789ABCDEF".toCharArray();
+        char[] hexChars = new char[bytes.length * 2];
+        for (int j = 0; j < bytes.length; j++) {
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = hexArray[v >>> 4];
+            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+        }
+        return new String(hexChars);
+    }
+
+    /**
+     * Handle messages received from main screen activity: setting status and pause/resume,
+     * do pairing  with saved address
+     */
+    BroadcastReceiver brCommandReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            final String task = intent.getStringExtra(Constants.CONNECTIONSERVICE_TASK);
+            final String arg = intent.getStringExtra(Constants.CONNECTIONSERVICE_ARG);
+            // switch tasks for setting main screen values
+            if (Constants.CONNECTIONSERVICE_ACTION_START_BLE_SERVICE.equals(task)) {
+                Intent gattServiceIntent = new Intent(getApplicationContext(), BluetoothLeService.class);
+                getApplicationContext().bindService(gattServiceIntent, BLEServiceConnection, BIND_AUTO_CREATE);
+            } else if (Constants.CONNECTIONSERVICE_ACTION_STOP_BLE_SERVICE.equals(task)) {
+                //unbindService(BLEServiceConnection);
+                getApplicationContext().unbindService(BLEServiceConnection);
+                mBluetoothLeService = null;
+            } else {
+
+            }
+        }
+    };
+
+    // Code to manage Service lifecycle.
+    private final ServiceConnection BLEServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder service) {
+            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
+            if (!mBluetoothLeService.initialize())
+                lw.appendLog(TAG, "Unable to initialize Bluetooth");
+            else
+                lw.appendLog(TAG, "Bluetooth initialized");
+            // Automatically connects to the device upon successful start-up initialization.
+            String address = sPref.getString(Constants.SETTINGS_ADDRESS, "00:00:00:00:00:00");
+            if (!"00:00:00:00:00:00".equals(address)) {
+                mBluetoothLeService.connect(address);
+                lw.appendLog(TAG, "Trying to connect to " + address);
+            }
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mBluetoothLeService = null;
+        }
+    };
+
+    private final BroadcastReceiver brBLEUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            if (Constants.ACTION_GATT_CONNECTED.equals(action)) {
+                BLEConnected = true;
+                ConnectTryCount = 0;
+                lw.appendLog(TAG, "BLE connected");
+            } else if (Constants.ACTION_GATT_DISCONNECTED.equals(action)) {
+                BLEConnected = false;
+                Intent intentValues = new Intent(Constants.CONNECTIONSERVICE_ACTION);
+                intentValues.putExtra(Constants.CONNECTIONSERVICE_TASK, Constants.CONNECTIONSERVICE_ACTION_STOP_BLE_SERVICE);
+                sendBroadcast(intentValues);
+                lw.appendLog(TAG, "BLE disconnected");
+            } else if (Constants.ACTION_DATA_AVAILABLE.equals(action)) {
+                if (intent.hasExtra(Constants.EXTRA_DATA)) {
+                    byte[] pack = intent.getByteArrayExtra(Constants.EXTRA_DATA);
+                    lw.appendLog(TAG, bytesToHex(pack));
+                }
+            }
+        }
+    };
+
+    private static IntentFilter makeGattUpdateIntentFilter() {
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constants.ACTION_GATT_CONNECTED);
+        intentFilter.addAction(Constants.ACTION_GATT_DISCONNECTED);
+        intentFilter.addAction(Constants.ACTION_GATT_SERVICES_DISCOVERED);
+        intentFilter.addAction(Constants.ACTION_DATA_AVAILABLE);
+        return intentFilter;
+    }
+
+    Runnable AutoconnectTask = new Runnable() {
+        @Override
+        public void run() {
+            if (!BLEConnected && sPref.getBoolean(Constants.SETTINGS_AUTOCONNECT, false) &&
+                    ConnectTryCount <= Constants.CONNECT_ATTEMPTS_MAX) {//if waiting for connection - try to connect to saved device
+                String address = sPref.getString(Constants.SETTINGS_ADDRESS, "00:00:00:00:00:00");
+                if (!"00:00:00:00:00:00".equals(address)) {
+                    Intent intentValues = new Intent(Constants.CONNECTIONSERVICE_ACTION);
+                    intentValues.putExtra(Constants.CONNECTIONSERVICE_TASK, Constants.CONNECTIONSERVICE_ACTION_START_BLE_SERVICE);
+                    sendBroadcast(intentValues);
+                    lw.appendLog(TAG, "Connecting try " + ConnectTryCount);
+                    ConnectTryCount++;
+                }
+            }
+            if (ConnectTryCount > Constants.CONNECT_ATTEMPTS_MAX) {
+                SharedPreferences.Editor ed = sPref.edit(); //Setting for preference editing
+                ed.putBoolean(Constants.SETTINGS_AUTOCONNECT, false);
+                ed.apply();
+                sendNotification("autoconnect_failed");
+                ConnectTryCount = 0;
+            }
+            AutoconnectHandler.postDelayed(AutoconnectTask, Constants.RECONNECT_INTERVAL_MS);//refresh after RECONNECT_INTERVAL_MS milliseconds
+        }
+    };
 }
