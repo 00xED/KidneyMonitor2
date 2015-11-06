@@ -37,11 +37,11 @@ public class SettingsActivity extends AppCompatActivity {
 
         tvCurrentDeviceName = (TextView) findViewById(R.id.tv_ValueCurrentDeviceName);
         tvCurrentDeviceName.setText(sPref.getString(Constants.SETTINGS_NAME,
-                "value_current_device_none"));
+                "none"));
 
         tvCurrentDeviceAddress = (TextView) findViewById(R.id.tv_ValueCurrentDeviceAddress);
         tvCurrentDeviceAddress.setText(sPref.getString(Constants.SETTINGS_ADDRESS,
-                "value_current_device_default_address"));
+                "efault_address"));
 
         /**
          * Setting checkboxes states

@@ -34,14 +34,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="caption_current_device"
+                        android:text="current_device"
                         android:id="@+id/tv_CaptionCurrentDevice" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="value_current_device_none"
+                        android:text="device_none"
                         android:id="@+id/tv_ValueCurrentDeviceName"
                         android:layout_gravity="center_vertical" />
 
@@ -49,7 +49,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="value_current_device_address"
+                        android:text="device_address"
                         android:id="@+id/tv_ValueCurrentDeviceAddress" />
                 </LinearLayout>
 

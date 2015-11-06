@@ -109,6 +109,9 @@ public interface Constants {
     byte bFUNCT_CORRECT = (byte) 0x10;
     byte bFUNCT_FAULT = (byte) 0x11;
 
+    float PRESS_COEF = 51.715f;//1 psi = 51.715 mm. hg.
+    float TEMP_COEF = 10.0f;//0.1 Celsius
+    int CUR_COEF = 1000;//1 Ampere
     byte bDPRESS1 = (byte) 0xE0;//Receiving dialysis pressure1
     byte bDPRESS2 = (byte) 0xE1;//Receiving dialysis pressure2
     byte bDPRESS3 = (byte) 0xE2;//Receiving dialysis pressure3

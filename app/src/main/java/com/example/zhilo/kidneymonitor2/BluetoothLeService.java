@@ -30,7 +30,8 @@ public class BluetoothLeService extends Service {
     private BluetoothAdapter mBluetoothAdapter;
     private String mBluetoothDeviceAddress;
     private BluetoothGatt mBluetoothGatt;
-    static int mConnectionState = Constants.STATE_DISCONNECTED;
+    private BluetoothGattCharacteristic SPPDataCharacteristic = null;
+    public static int mConnectionState = Constants.STATE_DISCONNECTED;
 
     private static byte[] incomingBuffer = new byte[32];
     private static int incomingBufferInd = 0;
@@ -100,6 +101,7 @@ public class BluetoothLeService extends Service {
             for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
                 uuid = gattCharacteristic.getUuid().toString();
                 if (uuid.equals(Constants.UUID_SPP_DATA.toString())) {
+                    SPPDataCharacteristic = gattCharacteristic;
                     setCharacteristicIndication(gattCharacteristic, true);
                     setCharacteristicNotification(gattCharacteristic, true);
                 }
@@ -154,8 +156,11 @@ public class BluetoothLeService extends Service {
                     incomingBuffer[i] = b[i];
                 }
             }
-            else
+            else{
                 Arrays.fill(incomingBuffer, (byte) 0x00);
+                incomingBufferInd = 0;
+            }
+
         return pack;
     }
 
@@ -300,6 +305,24 @@ public class BluetoothLeService extends Service {
             return;
         }
         mBluetoothGatt.readCharacteristic(characteristic);
+    }
+
+    public void writeSPP(byte[] data){
+        writeCharacteristic(SPPDataCharacteristic, data);
+    }
+
+    /**
+     * Request a write to a given {@code BluetoothGattCharacteristic}.
+     * @param characteristic The characteristic to write to.
+     * @param data Data to write
+     */
+    public void writeCharacteristic(BluetoothGattCharacteristic characteristic, byte[] data){
+        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
+            lw.appendLog(TAG, "BluetoothAdapter not initialized");
+            return;
+        }
+        characteristic.setValue(data);
+        mBluetoothGatt.writeCharacteristic(characteristic);
     }
 
     /**

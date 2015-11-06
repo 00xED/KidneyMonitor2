@@ -104,7 +104,7 @@ public class ConnectionService extends Service {
 
         Notification notif = new Notification.Builder(ConnectionService.this)
                 .setContentIntent(contentIntent)
-                .setContentTitle(getResources().getText(R.string.app_name))
+                .setContentTitle("app_name")
                 .setContentText("title_click_to_open")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(icon)
@@ -135,7 +135,7 @@ public class ConnectionService extends Service {
 
         Notification notification = new Notification.Builder(context)
                 .setContentIntent(contentIntent)
-                .setContentTitle(getResources().getText(R.string.app_name))
+                .setContentTitle("app_name")
                 .setContentText(currentArg)
                 .setSmallIcon(R.drawable.ic_danger)
                 .setLargeIcon(icon)
@@ -241,7 +241,7 @@ public class ConnectionService extends Service {
             } else if (Constants.ACTION_DATA_AVAILABLE.equals(action)) {
                 if (intent.hasExtra(Constants.EXTRA_DATA)) {
                     byte[] pack = intent.getByteArrayExtra(Constants.EXTRA_DATA);
-                    lw.appendLog(TAG, bytesToHex(pack));
+                    lw.appendLog(TAG, "GOT " + bytesToHex(pack));
                     processPack(pack);
                 }
             }
@@ -253,6 +253,7 @@ public class ConnectionService extends Service {
             byte com1 = pack[Constants.COM1_INDEX];//first command
             byte com2 = pack[Constants.COM2_INDEX];//second command
 
+            byte data1 = pack[Constants.DATA_INDEX];
             int data_int = ByteBuffer.wrap(pack, Constants.DATA_INDEX, Constants.DATA_LENGTH).getInt();//data converted to int
             float data_float = ByteBuffer.wrap(pack, Constants.DATA_INDEX, Constants.DATA_LENGTH).getFloat();//data converted to float
 
@@ -268,8 +269,8 @@ public class ConnectionService extends Service {
 
                 case Constants.bSTATUS: {//setting current procedure
                     lw.appendLog(TAG, "got command STATUS and " + data_int);
-                    sendMessageBytes(bHEARTBEAT);
-                    switch (data_int) {
+                    sendMessageBytes(Constants.bHEARTBEAT);
+                    switch (data1) {
                         case Constants.bPROCEDURE_FILLING: {
                             lw.appendLog(TAG, "setting STATUS to FILLING, previous is " + ProcedureSettings.getInstance().getProcedure_previous());
                             lw.appendLog(TAG, "starus_set" +
@@ -354,182 +355,122 @@ public class ConnectionService extends Service {
                     break;
                 }
 
-                case Constants.bPARAMS: {//NOTE: not received from device
-                    lw.appendLog(TAG, "got command PARAMS and " + currentArg);
-                    switch (currentArg) {
-                        case bPARAMS_NORM: {
-                            lw.appendLog(TAG, getResources().getText(R.string.params_set).toString() +
-                                    getResources().getText(R.string.value_procedure_params_normal).toString(), true);
-                            PARAMS = PARAMS_NORMAL;
-                            break;
-                        }
-
-                        case bPARAMS_DANGER: {
-                            lw.appendLog(TAG, getResources().getText(R.string.params_set).toString() +
-                                    getResources().getText(R.string.value_procedure_params_danger).toString(), true);
-                            PARAMS = PARAMS_DANGER;
-                            break;
-                        }
-
-                        default: {
-                            lw.appendLog(TAG, getResources().getText(R.string.params_set).toString() +
-                                    getResources().getText(R.string.value_procedure_params_unknown).toString(), true);
-                            PARAMS = PARAMS_UNKNOWN;
-                            break;
-                        }
-                    }
+                case Constants.bDPRESS1: {//setting first pressure value
+                    ProcedureSettings.getInstance().setDialPress1(data_float * Constants.PRESS_COEF);
+                    lw.appendLog(TAG, "setting DPRESS1 to " + data_float * Constants.PRESS_COEF);
                     break;
                 }
 
-                case bSORBTIME: {//NOTE: not received from device
-                    lw.appendLog(TAG, "setting SORBTIME to " + currentArg, true);
-                    SORBTIME = String.valueOf(data_int);
+                case Constants.bDPRESS2: {//setting second pressure value
+                    ProcedureSettings.getInstance().setDialPress2(data_float * Constants.PRESS_COEF);
+                    lw.appendLog(TAG, "setting DPRESS2 to " + data_float * Constants.PRESS_COEF);
                     break;
                 }
 
-                case bFUNCT: {//NOTE: not received from device
-                    lw.appendLog(TAG, "got command FUNCT and " + currentArg);
-                    switch (currentArg) {
-                        case bFUNCT_CORRECT: {
-                            lw.appendLog(TAG, getResources().getText(R.string.funct_set).toString() +
-                                    getResources().getText(R.string.value_device_functioning_correct).toString(), true);
-                            FUNCT = FUNCT_CORRECT;
-                            break;
-                        }
-
-                        case bFUNCT_FAULT: {
-                            lw.appendLog(TAG, getResources().getText(R.string.funct_set).toString() +
-                                    getResources().getText(R.string.value_device_functioning_fault).toString(), true);
-                            FUNCT = FUNCT_FAULT;
-                            break;
-                        }
-
-                        default: {
-                            lw.appendLog(TAG, getResources().getText(R.string.funct_set).toString() +
-                                    getResources().getText(R.string.value_device_functioning_unknown).toString(), true);
-                            FUNCT = FUNCT_UNKNOWN;
-                            break;
-                        }
-                    }
+                case Constants.bDPRESS3: {//setting third pressure value
+                    ProcedureSettings.getInstance().setDialPress3(data_float * Constants.PRESS_COEF);
+                    lw.appendLog(TAG, "setting DPRESS3 to " + data_float * Constants.PRESS_COEF);
                     break;
                 }
 
-                case bDPRESS1: {//setting first pressure value
-                    fDPRESS1 = data_float * 51.715f;
-                    DPRESS1 = String.valueOf(fDPRESS1);//converting to mmHg and string
-                    lw.appendLog(TAG, "setting DPRESS1 to " + DPRESS1);
+                case Constants.bDTEMP1: {//setting temperature value
+                    ProcedureSettings.getInstance().setDialTemp1(data_int / Constants.TEMP_COEF);
+                    lw.appendLog(TAG, "setting DTEMP1 to " + data_int / Constants.TEMP_COEF);
                     break;
                 }
 
-                case bDPRESS2: {//setting second pressure value
-                    fDPRESS2 = data_float * 51.715f;
-                    DPRESS2 = String.valueOf(fDPRESS2);//converting to mmHg and string
-                    lw.appendLog(TAG, "setting DPRESS2 to " + DPRESS2);
+                case Constants.bDCOND1: {////setting conductivity value
+                    ProcedureSettings.getInstance().setDialCond1(data_int);
+                    lw.appendLog(TAG, "setting DCOND1 to " + data_int);
                     break;
                 }
 
-                case bDPRESS3: {//setting third pressure value
-                    fDPRESS3 = data_float * 51.715f;
-                    DPRESS3 = String.valueOf(fDPRESS3);//converting to mmHg and string
-                    lw.appendLog(TAG, "setting DPRESS3 to " + DPRESS3);
+                case Constants.bDCUR1: {//setting first electric current value
+                    //ProcedureSettings.getInstance().setDialCurrent1(data_float * Constants.CUR_COEF);
+                    lw.appendLog(TAG, "setting DCUR1 to " + data_float * Constants.CUR_COEF);
                     break;
                 }
 
-                case bDTEMP1: {//setting temperature value
-                    fDTEMP1 = data_int / 10.0f;//converting to Celsius degrees and string
-                    DTEMP1 = String.valueOf(fDTEMP1);
-                    lw.appendLog(TAG, "setting DTEMP1 to " + DTEMP1);
+                case Constants.bDCUR2: {//setting second electric current value
+                    //ProcedureSettings.getInstance().setDialCurrent2(data_float * Constants.CUR_COEF);
+                    lw.appendLog(TAG, "setting DCUR2 to " + data_float * Constants.CUR_COEF);
                     break;
                 }
 
-                case bDCOND1: {////setting conductivity value
-                    iDCOND1 = data_int;
-                    DCOND1 = String.valueOf(iDCOND1);
-                    lw.appendLog(TAG, "setting DCOND1 to " + DCOND1);
+                case Constants.bDCUR3: {//setting third electric current value
+                    //ProcedureSettings.getInstance().setDialCurrent3(data_float * Constants.CUR_COEF);
+                    lw.appendLog(TAG, "setting DCUR3 to " + data_float * Constants.CUR_COEF);
                     break;
                 }
 
-                case bDCUR1: {//setting first electric current value
-                    fDCUR1 = data_float * 1000;
-                    DCUR1 = String.valueOf(fDCUR1);
-                    lw.appendLog(TAG, "setting DCUR1 to " + DCUR1);
+                case Constants.bDCUR4: {//setting fourth electric current value
+                    //ProcedureSettings.getInstance().setDialCurrent4(data_float * Constants.CUR_COEF);
+                    lw.appendLog(TAG, "setting DCUR4 to " + data_float * Constants.CUR_COEF);
                     break;
                 }
 
-                case bDCUR2: {//setting second electric current value
-                    fDCUR2 = data_float * 1000;
-                    DCUR2 = String.valueOf(fDCUR2);
-                    lw.appendLog(TAG, "setting DCUR2 to " + DCUR2);
-                    break;
-                }
-
-                case bDCUR3: {//setting third electric current value
-                    fDCUR3 = data_float * 1000;
-                    DCUR3 = String.valueOf(fDCUR3);
-                    lw.appendLog(TAG, "setting DCUR3 to " + DCUR3);
-                    break;
-                }
-
-                case bDCUR4: {//setting fourth electric current value
-                    fDCUR4 = data_float * 1000;
-                    DCUR4 = String.valueOf(fDCUR4);
-                    lw.appendLog(TAG, "setting DCUR4 to " + DCUR4);
-                    break;
-                }
-
-                case bSENDDPUMPS: {//sending pumps flows
+                case Constants.bSENDDPUMPS: {//sending pumps flows
                     switch (com2){
                         case (byte)0x01:{
                             lw.appendLog(TAG, "send FPUMP1FLOW");
-                            sendMessageBytes((byte) (bSENDDPUMPS + (byte) 0x01), (byte) 0x01, intTo4byte(FPUMP1FLOW));//first filling pump
+                            sendMessageBytes((byte) (Constants.bSENDDPUMPS + (byte) 0x01), (byte) 0x01,
+                                    intTo4byte(ProcedureSettings.getInstance().getFillPump1Flow()));//first filling pump
                             break;
                         }
 
                         case (byte)0x02:{
                             lw.appendLog(TAG, "send DPUMP1FLOW");
-                            sendMessageBytes((byte) (bSENDDPUMPS + (byte) 0x01), (byte) 0x02, intTo4byte(DPUMP1FLOW));//first dialysis pump
+                            sendMessageBytes((byte) (Constants.bSENDDPUMPS + (byte) 0x01), (byte) 0x02,
+                                    intTo4byte(ProcedureSettings.getInstance().getDialPump1Flow()));//first dialysis pump
                             break;
                         }
 
                         case (byte)0x03:{
                             lw.appendLog(TAG, "send UFPUMP1FLOW", true);
-                            sendMessageBytes((byte) (bSENDDPUMPS + (byte) 0x01), (byte) 0x03, intTo4byte(UFPUMP1FLOW));//first unfilling pump
+                            sendMessageBytes((byte) (Constants.bSENDDPUMPS + (byte) 0x01), (byte) 0x03,
+                                    intTo4byte(ProcedureSettings.getInstance().getFlushPump1Flow()));//first unfilling pump
                             break;
                         }
 
                         case (byte)0x11:{
                             lw.appendLog(TAG, "send FPUMP2FLOW", true);
-                            sendMessageBytes((byte) (bSENDDPUMPS + (byte) 0x01), (byte) 0x11, intTo4byte(FPUMP2FLOW));//first filling pump
+                            sendMessageBytes((byte) (Constants.bSENDDPUMPS + (byte) 0x01), (byte) 0x11,
+                                    intTo4byte(ProcedureSettings.getInstance().getFillPump2Flow()));//second filling pump
                             break;
                         }
 
                         case (byte)0x12:{
                             lw.appendLog(TAG, "send DPUMP2FLOW", true);
-                            sendMessageBytes((byte) (bSENDDPUMPS + (byte) 0x01), (byte) 0x12, intTo4byte(DPUMP2FLOW));//first dialysis pump
+                            sendMessageBytes((byte) (Constants.bSENDDPUMPS + (byte) 0x01), (byte) 0x12,
+                                    intTo4byte(ProcedureSettings.getInstance().getDialPump2Flow()));//second dialysis pump
                             break;
                         }
 
                         case (byte)0x13:{
                             lw.appendLog(TAG, "send UFPUMP2FLOW", true);
-                            sendMessageBytes((byte) (bSENDDPUMPS + (byte) 0x01), (byte) 0x13, intTo4byte(UFPUMP2FLOW));//first unfilling pump
+                            sendMessageBytes((byte) (Constants.bSENDDPUMPS + (byte) 0x01), (byte) 0x13,
+                                    intTo4byte(ProcedureSettings.getInstance().getFlushPump2Flow()));//second unfilling pump
                             break;
                         }
 
                         case (byte)0x21:{
                             lw.appendLog(TAG, "send FPUMP3FLOW", true);
-                            sendMessageBytes((byte) (bSENDDPUMPS + (byte) 0x01), (byte) 0x21, intTo4byte(FPUMP3FLOW));//first filling pump
+                            sendMessageBytes((byte) (Constants.bSENDDPUMPS + (byte) 0x01), (byte) 0x21,
+                                    intTo4byte(ProcedureSettings.getInstance().getFillPump3Flow()));//third filling pump
                             break;
                         }
 
                         case (byte)0x22:{
                             lw.appendLog(TAG, "send DPUMP3FLOW", true);
-                            sendMessageBytes((byte) (bSENDDPUMPS + (byte) 0x01), (byte) 0x22, intTo4byte(DPUMP3FLOW));//first dialysis pump
+                            sendMessageBytes((byte) (Constants.bSENDDPUMPS + (byte) 0x01), (byte) 0x22,
+                                    intTo4byte(ProcedureSettings.getInstance().getDialPump3Flow()));//third dialysis pump
                             break;
                         }
 
                         case (byte)0x23:{
                             lw.appendLog(TAG, "send UFPUMP3FLOW", true);
-                            sendMessageBytes((byte) (bSENDDPUMPS + (byte) 0x01), (byte) 0x23, intTo4byte(UFPUMP3FLOW));//first unfilling pump
+                            sendMessageBytes((byte) (Constants.bSENDDPUMPS + (byte) 0x01), (byte) 0x23,
+                                    intTo4byte(ProcedureSettings.getInstance().getFlushPump3Flow()));//third unfilling pump
                             break;
                         }
 
@@ -539,41 +480,47 @@ public class ConnectionService extends Service {
                     break;
                 }
 
-                case bSENDDPRESS: {//sending values for pressures ranges
+                case Constants.bSENDDPRESS: {//sending values for pressures ranges
                     switch (com2){
                         case (byte)0x01:{
                             lw.appendLog(TAG, "send DPRESS1MIN");
-                            sendMessageBytes((byte) (bSENDDPRESS + (byte) 0x01), (byte) 0x01, floatTo4byte(DPRESS1MIN));//first min value
+                            sendMessageBytes((byte) (Constants.bSENDDPRESS + (byte) 0x01), (byte) 0x01,
+                                    floatTo4byte(ProcedureSettings.getInstance().getDialPress1Min()));//first min value
                             break;
                         }
 
                         case (byte)0x02:{
                             lw.appendLog(TAG, "send DPRESS1MAX");
-                            sendMessageBytes((byte) (bSENDDPRESS + (byte) 0x01), (byte) 0x02, floatTo4byte(DPRESS1MAX));//first max value
+                            sendMessageBytes((byte) (Constants.bSENDDPRESS + (byte) 0x01), (byte) 0x02,
+                                    floatTo4byte(ProcedureSettings.getInstance().getDialPress1Max()));//first max value
                             break;
                         }
 
                         case (byte)0x11:{
                             lw.appendLog(TAG, "send DPRESS2MIN");
-                            sendMessageBytes((byte) (bSENDDPRESS + (byte) 0x01), (byte) 0x11, floatTo4byte(DPRESS2MIN));//second min value
+                            sendMessageBytes((byte) (Constants.bSENDDPRESS + (byte) 0x01), (byte) 0x11,
+                                    floatTo4byte(ProcedureSettings.getInstance().getDialPress2Min()));//second min value
                             break;
                         }
 
                         case (byte)0x12:{
                             lw.appendLog(TAG, "send DPRESS2MAX");
-                            sendMessageBytes((byte) (bSENDDPRESS + (byte) 0x01), (byte) 0x12, floatTo4byte(DPRESS2MAX));//second max value
+                            sendMessageBytes((byte) (Constants.bSENDDPRESS + (byte) 0x01), (byte) 0x12,
+                                    floatTo4byte(ProcedureSettings.getInstance().getDialPress2Max()));//second max value
                             break;
                         }
 
                         case (byte)0x21:{
                             lw.appendLog(TAG, "send DPRESS3MIN");
-                            sendMessageBytes((byte) (bSENDDPRESS + (byte) 0x01), (byte) 0x21, floatTo4byte(DPRESS3MIN));//third min value
+                            sendMessageBytes((byte) (Constants.bSENDDPRESS + (byte) 0x01), (byte) 0x21,
+                                    floatTo4byte(ProcedureSettings.getInstance().getDialPress3Min()));//third min value
                             break;
                         }
 
                         case (byte)0x22:{
                             lw.appendLog(TAG, "send DPRESS3MAX");
-                            sendMessageBytes((byte) (bSENDDPRESS + (byte) 0x01), (byte) 0x22, floatTo4byte(DPRESS3MAX));//third max value
+                            sendMessageBytes((byte) (Constants.bSENDDPRESS + (byte) 0x01), (byte) 0x22,
+                                    floatTo4byte(ProcedureSettings.getInstance().getDialPress3Max()));//third max value
                             break;
                         }
 
@@ -583,17 +530,19 @@ public class ConnectionService extends Service {
                     break;
                 }
 
-                case bSENDDTEMP: {//sending values for temperature range
+                case Constants.bSENDDTEMP: {//sending values for temperature range
                     switch (com2){
                         case (byte)0x01:{
                             lw.appendLog(TAG, "send DTEMP1MIN ");
-                            sendMessageBytes((byte) (bSENDDTEMP + (byte) 0x01), (byte) 0x01, floatTo4byte(DTEMP1MIN));//min temp
+                            sendMessageBytes((byte) (Constants.bSENDDTEMP + (byte) 0x01), (byte) 0x01,
+                                    floatTo4byte(ProcedureSettings.getInstance().getDialTemp1Min()));//min temp
                             break;
                         }
 
                         case (byte)0x02:{
                             lw.appendLog(TAG, "send DTEMP1MAX ");
-                            sendMessageBytes((byte) (bSENDDTEMP + (byte) 0x01), (byte) 0x02, floatTo4byte(DTEMP1MAX));//max temp
+                            sendMessageBytes((byte) (Constants.bSENDDTEMP + (byte) 0x01), (byte) 0x02,
+                                    floatTo4byte(ProcedureSettings.getInstance().getDialTemp1Max()));//max temp
                             break;
                         }
 
@@ -603,17 +552,19 @@ public class ConnectionService extends Service {
                     break;
                 }
 
-                case bSENDDCOND: {//sending values for conductivity range
+                case Constants.bSENDDCOND: {//sending values for conductivity range
                     switch (com2){
                         case (byte)0x01:{
                             lw.appendLog(TAG, "send DCOND1MIN ");
-                            sendMessageBytes((byte) (bSENDDCOND + (byte) 0x01), (byte) 0x01, floatTo4byte(DCOND1MIN));
+                            sendMessageBytes((byte) (Constants.bSENDDCOND + (byte) 0x01), (byte) 0x01,
+                                    floatTo4byte(ProcedureSettings.getInstance().getDialCond1Min()));
                             break;
                         }
 
                         case (byte)0x02:{
                             lw.appendLog(TAG, "send DCOND1MAX ");
-                            sendMessageBytes((byte) (bSENDDCOND + (byte) 0x01), (byte) 0x02, floatTo4byte(DCOND1MAX));
+                            sendMessageBytes((byte) (Constants.bSENDDCOND + (byte) 0x01), (byte) 0x02,
+                                    floatTo4byte(ProcedureSettings.getInstance().getDialCond1Max()));
                             break;
                         }
 
@@ -624,73 +575,73 @@ public class ConnectionService extends Service {
                     break;
                 }
 
-                case PE_PRESS1: {//receiving error
-                    processError(getResources().getText(R.string.error_press).toString() + "1");
+                case Constants.PE_PRESS1: {//receiving error
+                    processError("error_press" + "1");
                     break;
                 }
 
-                case PE_PRESS2: {//receiving error
-                    processError(getResources().getText(R.string.error_press).toString() + "2");
+                case Constants.PE_PRESS2: {//receiving error
+                    processError("error_press" + "2");
                     break;
                 }
 
-                case PE_PRESS3: {//receiving error
-                    processError(getResources().getText(R.string.error_press).toString() + "3");
+                case Constants.PE_PRESS3: {//receiving error
+                    processError("error_press" + "3");
                     break;
                 }
 
-                case PE_TEMP: {//receiving error
-                    processError(getResources().getText(R.string.error_temp).toString());
+                case Constants.PE_TEMP: {//receiving error
+                    processError("error_temp");
                     break;
                 }
 
-                case PE_ELECTRO: {//receiving error
-                    processError(getResources().getText(R.string.error_electro).toString());
+                case Constants.PE_ELECTRO: {//receiving error
+                    processError("error_electro");
                     break;
                 }
 
-                case PE_EDS1: {//receiving error
-                    processError(getResources().getText(R.string.error_eds).toString() + "1");
+                case Constants.PE_EDS1: {//receiving error
+                    processError("error_eds" + "1");
                     break;
                 }
 
-                case PE_EDS2: {//receiving error
-                    processError(getResources().getText(R.string.error_eds).toString() + "2");
+                case Constants.PE_EDS2: {//receiving error
+                    processError("error_eds" + "2");
                     break;
                 }
 
-                case PE_EDS3: {//receiving error
-                    processError(getResources().getText(R.string.error_eds).toString() + "3");
+                case Constants.PE_EDS3: {//receiving error
+                    processError("error_eds" + "3");
                     break;
                 }
 
-                case PE_EDS4: {//receiving error
-                    processError(getResources().getText(R.string.error_eds).toString() + "4");
+                case Constants.PE_EDS4: {//receiving error
+                    processError("error_eds" + "4");
                     break;
                 }
 
-                case PE_BATT: {//receiving error
-                    processError(getResources().getText(R.string.error_batt).toString());
+                case Constants.PE_BATT: {//receiving error
+                    processError("error_batt");
                     break;
                 }
 
-                case PE_PUMP1: {//receiving error
-                    processError(getResources().getText(R.string.error_eds).toString() + "1");
+                case Constants.PE_PUMP1: {//receiving error
+                    processError("error_eds" + "1");
                     break;
                 }
 
-                case PE_PUMP2: {//receiving error
-                    processError(getResources().getText(R.string.error_eds).toString() + "2");
+                case Constants.PE_PUMP2: {//receiving error
+                    processError("error_eds" + "2");
                     break;
                 }
 
-                case PE_PUMP3: {//receiving error
-                    processError(getResources().getText(R.string.error_eds).toString() + "3");
+                case Constants.PE_PUMP3: {//receiving error
+                    processError("error_eds" + "3");
                     break;
                 }
 
-                case PE_ERROR: {//receiving error
-                    processError(getResources().getText(R.string.error_unknown).toString());
+                case Constants.PE_ERROR: {//receiving error
+                    processError("error_unknown");
                     break;
                 }
 
@@ -698,6 +649,71 @@ public class ConnectionService extends Service {
                     break;
             }
         }
+    }
+
+    /**
+     * Send packet with only first command
+     *
+     * @param com1 first command
+     */
+    void sendMessageBytes(byte com1) {
+        byte[] outp = new byte[]{Constants.PACK_START, com1, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, Constants.PACK_END};
+        mBluetoothLeService.writeSPP(outp);
+    }
+
+    /**
+     * Send packet with first command and data
+     *
+     * @param com1 first command
+     * @param data data array
+     */
+    void sendMessageBytes(byte com1, byte[] data) {
+        byte[] outp = new byte[]{Constants.PACK_START, com1, (byte) 0x00, data[3], data[2], data[1], data[0], Constants.PACK_END};
+        mBluetoothLeService.writeSPP(outp);
+    }
+
+    /**
+     * Send packet with only two commands
+     *
+     * @param com1 first command
+     * @param com2 second command
+     */
+    void sendMessageBytes(byte com1, byte com2) {
+        byte[] outp = new byte[]{Constants.PACK_START, com1, com2, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, Constants.PACK_END};
+        mBluetoothLeService.writeSPP(outp);
+    }
+
+    /**
+     * Send packet with two commands and data
+     *
+     * @param com1 first command
+     * @param com2 second command
+     * @param data data array
+     */
+    void sendMessageBytes(byte com1, byte com2, byte[] data) {
+        byte[] outp = new byte[]{Constants.PACK_START, com1, com2, data[3], data[2], data[1], data[0], Constants.PACK_END};
+        mBluetoothLeService.writeSPP(outp);
+    }
+
+    void processError(String msg){
+        sendNotification(msg);
+        lw.appendLog(TAG, msg, true);
+        ProcedureSettings.getInstance().setDev_funct(Constants.FUNCT_FAULT);
+        ProcedureSettings.getInstance().setProc_parameters(Constants.PARAMS_DANGER);
+    }
+
+    /**
+     * convert float to 4 byte array
+     */
+    byte[] floatTo4byte(float fvalue) {//
+        return ByteBuffer.allocate(4).putFloat(fvalue).array();
+    }
+
+    /**
+     * convert int to 4 byte array
+     */
+    byte[] intTo4byte(int ivalue) {
+        return ByteBuffer.allocate(4).putInt(ivalue).array();
     }
 
     /**
