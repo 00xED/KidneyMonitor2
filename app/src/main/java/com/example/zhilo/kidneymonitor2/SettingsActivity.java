@@ -193,15 +193,15 @@ public class SettingsActivity extends AppCompatActivity {
             {
                 if (ConnectionService.isServiceRunning) {
                     lw.appendLog(logTag, "Starting service");
-                    //startService(new Intent(this, ConnectionService.class));
-                    btStopService.setText(
-                            "title_service_stop");
-                } else {
-                    lw.appendLog(logTag, "Stopping service");
-                    //stopService(new Intent(this, ConnectionService.class));
-                    //ConnectionService.isServiceRunning=true;
+                    stopService(new Intent(this, ConnectionService.class));
                     btStopService.setText(
                             "title_service_start");
+                } else {
+                    lw.appendLog(logTag, "Stopping service");
+                    startService(new Intent(this, ConnectionService.class));
+                    //ConnectionService.isServiceRunning=true;
+                    btStopService.setText(
+                            "title_service_stop");
                 }
                 break;
             }

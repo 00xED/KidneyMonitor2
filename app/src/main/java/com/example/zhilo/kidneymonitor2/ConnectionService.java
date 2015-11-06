@@ -19,6 +19,8 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 
+import java.nio.ByteBuffer;
+
 public class ConnectionService extends Service {
 
     //Initialisation of LogWriter
@@ -79,7 +81,8 @@ public class ConnectionService extends Service {
         isServiceRunning = false;
         unregisterReceiver(brCommandReceiver);
         unregisterReceiver(brBLEUpdateReceiver);
-        unbindService(BLEServiceConnection);
+        if(BLEConnected)
+            getApplicationContext().unbindService(BLEServiceConnection);
         mBluetoothLeService = null;
         stopForeground(true);
         stopSelf();
@@ -239,10 +242,474 @@ public class ConnectionService extends Service {
                 if (intent.hasExtra(Constants.EXTRA_DATA)) {
                     byte[] pack = intent.getByteArrayExtra(Constants.EXTRA_DATA);
                     lw.appendLog(TAG, bytesToHex(pack));
+                    processPack(pack);
                 }
             }
         }
     };
+
+    void processPack(byte[] pack){
+        if(checkPack(pack)){
+            byte com1 = pack[Constants.COM1_INDEX];//first command
+            byte com2 = pack[Constants.COM2_INDEX];//second command
+
+            int data_int = ByteBuffer.wrap(pack, Constants.DATA_INDEX, Constants.DATA_LENGTH).getInt();//data converted to int
+            float data_float = ByteBuffer.wrap(pack, Constants.DATA_INDEX, Constants.DATA_LENGTH).getFloat();//data converted to float
+
+            ProcedureSettings.getInstance().setLast_connection(System.currentTimeMillis());//setting flag for time of last received command
+            switch (com1) {//executing first command
+
+                case Constants.bBATT: {//setting battery percentage
+                    lw.appendLog(TAG, "batt_set" + data_int + "%", true);
+                    lw.appendLog(TAG, "setting battery to " + data_int + "%");
+                    ProcedureSettings.getInstance().setBattery(data_int);
+                    break;
+                }
+
+                case Constants.bSTATUS: {//setting current procedure
+                    lw.appendLog(TAG, "got command STATUS and " + data_int);
+                    sendMessageBytes(bHEARTBEAT);
+                    switch (data_int) {
+                        case Constants.bPROCEDURE_FILLING: {
+                            lw.appendLog(TAG, "setting STATUS to FILLING, previous is " + ProcedureSettings.getInstance().getProcedure_previous());
+                            lw.appendLog(TAG, "starus_set" +
+                                    "value_status_filling", true);
+                            if ((ProcedureSettings.getInstance().getProcedure() != Constants.PROCEDURE_FILLING) &&
+                               (ProcedureSettings.getInstance().getProcedure() != Constants.PARAMETER_UNKNOWN))//if previous status is not FILLING and not UNKNOWN
+                                ProcedureSettings.getInstance().setProcedure_previous(ProcedureSettings.getInstance().getProcedure());
+
+                            ProcedureSettings.getInstance().setProcedure(Constants.PROCEDURE_FILLING);
+                            break;
+                        }
+
+                        case Constants.bPROCEDURE_DIALYSIS: {
+                            lw.appendLog(TAG, "setting STATUS to DIALYSIS, previous is " + ProcedureSettings.getInstance().getProcedure_previous());
+
+                            lw.appendLog(TAG, "starus_set" +
+                                    "value_status_dialysis", true);
+                            if ((ProcedureSettings.getInstance().getProcedure() != Constants.PROCEDURE_DIALYSIS) &&
+                                    (ProcedureSettings.getInstance().getProcedure() != Constants.PARAMETER_UNKNOWN))//if previous status is not FILLING and not UNKNOWN
+                                ProcedureSettings.getInstance().setProcedure_previous(ProcedureSettings.getInstance().getProcedure());
+
+                            ProcedureSettings.getInstance().setProcedure(Constants.PROCEDURE_DIALYSIS);
+                            break;
+                        }
+
+                        case Constants.bPROCEDURE_SHUTDOWN: {
+                            lw.appendLog(TAG, "setting STATUS to SHUTDOWN, previous is " + ProcedureSettings.getInstance().getProcedure_previous());
+                            lw.appendLog(TAG, "starus_set" +
+                                    "value_status_shutdown", true);
+                            if ((ProcedureSettings.getInstance().getProcedure() != Constants.PROCEDURE_SHUTDOWN) &&
+                                    (ProcedureSettings.getInstance().getProcedure() != Constants.PARAMETER_UNKNOWN))//if previous status is not FILLING and not UNKNOWN
+                                ProcedureSettings.getInstance().setProcedure_previous(ProcedureSettings.getInstance().getProcedure());
+
+                            ProcedureSettings.getInstance().setProcedure(Constants.PROCEDURE_SHUTDOWN);
+                            break;
+                        }
+
+                        case Constants.bPROCEDURE_DISINFECTION: {
+                            lw.appendLog(TAG, "setting STATUS to DISINFECTION, previous is " + ProcedureSettings.getInstance().getProcedure_previous());
+                            lw.appendLog(TAG, "starus_set" +
+                                    "value_status_disinfection", true);
+                            if ((ProcedureSettings.getInstance().getProcedure() != Constants.PROCEDURE_DISINFECTION) &&
+                                    (ProcedureSettings.getInstance().getProcedure() != Constants.PARAMETER_UNKNOWN))//if previous status is not FILLING and not UNKNOWN
+                                ProcedureSettings.getInstance().setProcedure_previous(ProcedureSettings.getInstance().getProcedure());
+
+                            ProcedureSettings.getInstance().setProcedure(Constants.PROCEDURE_DISINFECTION);
+                            break;
+                        }
+
+                        case Constants.bPROCEDURE_READY: {
+                            lw.appendLog(TAG, "setting STATUS to READY, previous is " + ProcedureSettings.getInstance().getProcedure_previous());
+                            lw.appendLog(TAG, "starus_set" +
+                                    "value_status_ready", true);
+                            if ((ProcedureSettings.getInstance().getProcedure() != Constants.PROCEDURE_READY) &&
+                                    (ProcedureSettings.getInstance().getProcedure() != Constants.PARAMETER_UNKNOWN))//if previous status is not FILLING and not UNKNOWN
+                                ProcedureSettings.getInstance().setProcedure_previous(ProcedureSettings.getInstance().getProcedure());
+
+                            ProcedureSettings.getInstance().setProcedure(Constants.PROCEDURE_READY);
+                            break;
+                        }
+
+                        case Constants.bPROCEDURE_FLUSH: {
+                            lw.appendLog(TAG, "setting STATUS to FLUSH, previous is " + ProcedureSettings.getInstance().getProcedure_previous());
+                            lw.appendLog(TAG, "starus_set" +
+                                    "value_status_flush", true);
+                            if ((ProcedureSettings.getInstance().getProcedure() != Constants.PROCEDURE_FLUSH) &&
+                                    (ProcedureSettings.getInstance().getProcedure() != Constants.PARAMETER_UNKNOWN))//if previous status is not FILLING and not UNKNOWN
+                                ProcedureSettings.getInstance().setProcedure_previous(ProcedureSettings.getInstance().getProcedure());
+
+                            ProcedureSettings.getInstance().setProcedure(Constants.PROCEDURE_FLUSH);
+                            break;
+                        }
+
+                        default: {
+                            lw.appendLog(TAG, "setting STATUS to UNKNOWN, previous is " + ProcedureSettings.getInstance().getProcedure_previous(), true);
+                            lw.appendLog(TAG, "starus_set" +
+                                    "value_status_unknown", true);
+                            ProcedureSettings.getInstance().setProcedure(Constants.PARAMETER_UNKNOWN);
+                            break;
+                        }
+                    }
+                    break;
+                }
+
+                case Constants.bPARAMS: {//NOTE: not received from device
+                    lw.appendLog(TAG, "got command PARAMS and " + currentArg);
+                    switch (currentArg) {
+                        case bPARAMS_NORM: {
+                            lw.appendLog(TAG, getResources().getText(R.string.params_set).toString() +
+                                    getResources().getText(R.string.value_procedure_params_normal).toString(), true);
+                            PARAMS = PARAMS_NORMAL;
+                            break;
+                        }
+
+                        case bPARAMS_DANGER: {
+                            lw.appendLog(TAG, getResources().getText(R.string.params_set).toString() +
+                                    getResources().getText(R.string.value_procedure_params_danger).toString(), true);
+                            PARAMS = PARAMS_DANGER;
+                            break;
+                        }
+
+                        default: {
+                            lw.appendLog(TAG, getResources().getText(R.string.params_set).toString() +
+                                    getResources().getText(R.string.value_procedure_params_unknown).toString(), true);
+                            PARAMS = PARAMS_UNKNOWN;
+                            break;
+                        }
+                    }
+                    break;
+                }
+
+                case bSORBTIME: {//NOTE: not received from device
+                    lw.appendLog(TAG, "setting SORBTIME to " + currentArg, true);
+                    SORBTIME = String.valueOf(data_int);
+                    break;
+                }
+
+                case bFUNCT: {//NOTE: not received from device
+                    lw.appendLog(TAG, "got command FUNCT and " + currentArg);
+                    switch (currentArg) {
+                        case bFUNCT_CORRECT: {
+                            lw.appendLog(TAG, getResources().getText(R.string.funct_set).toString() +
+                                    getResources().getText(R.string.value_device_functioning_correct).toString(), true);
+                            FUNCT = FUNCT_CORRECT;
+                            break;
+                        }
+
+                        case bFUNCT_FAULT: {
+                            lw.appendLog(TAG, getResources().getText(R.string.funct_set).toString() +
+                                    getResources().getText(R.string.value_device_functioning_fault).toString(), true);
+                            FUNCT = FUNCT_FAULT;
+                            break;
+                        }
+
+                        default: {
+                            lw.appendLog(TAG, getResources().getText(R.string.funct_set).toString() +
+                                    getResources().getText(R.string.value_device_functioning_unknown).toString(), true);
+                            FUNCT = FUNCT_UNKNOWN;
+                            break;
+                        }
+                    }
+                    break;
+                }
+
+                case bDPRESS1: {//setting first pressure value
+                    fDPRESS1 = data_float * 51.715f;
+                    DPRESS1 = String.valueOf(fDPRESS1);//converting to mmHg and string
+                    lw.appendLog(TAG, "setting DPRESS1 to " + DPRESS1);
+                    break;
+                }
+
+                case bDPRESS2: {//setting second pressure value
+                    fDPRESS2 = data_float * 51.715f;
+                    DPRESS2 = String.valueOf(fDPRESS2);//converting to mmHg and string
+                    lw.appendLog(TAG, "setting DPRESS2 to " + DPRESS2);
+                    break;
+                }
+
+                case bDPRESS3: {//setting third pressure value
+                    fDPRESS3 = data_float * 51.715f;
+                    DPRESS3 = String.valueOf(fDPRESS3);//converting to mmHg and string
+                    lw.appendLog(TAG, "setting DPRESS3 to " + DPRESS3);
+                    break;
+                }
+
+                case bDTEMP1: {//setting temperature value
+                    fDTEMP1 = data_int / 10.0f;//converting to Celsius degrees and string
+                    DTEMP1 = String.valueOf(fDTEMP1);
+                    lw.appendLog(TAG, "setting DTEMP1 to " + DTEMP1);
+                    break;
+                }
+
+                case bDCOND1: {////setting conductivity value
+                    iDCOND1 = data_int;
+                    DCOND1 = String.valueOf(iDCOND1);
+                    lw.appendLog(TAG, "setting DCOND1 to " + DCOND1);
+                    break;
+                }
+
+                case bDCUR1: {//setting first electric current value
+                    fDCUR1 = data_float * 1000;
+                    DCUR1 = String.valueOf(fDCUR1);
+                    lw.appendLog(TAG, "setting DCUR1 to " + DCUR1);
+                    break;
+                }
+
+                case bDCUR2: {//setting second electric current value
+                    fDCUR2 = data_float * 1000;
+                    DCUR2 = String.valueOf(fDCUR2);
+                    lw.appendLog(TAG, "setting DCUR2 to " + DCUR2);
+                    break;
+                }
+
+                case bDCUR3: {//setting third electric current value
+                    fDCUR3 = data_float * 1000;
+                    DCUR3 = String.valueOf(fDCUR3);
+                    lw.appendLog(TAG, "setting DCUR3 to " + DCUR3);
+                    break;
+                }
+
+                case bDCUR4: {//setting fourth electric current value
+                    fDCUR4 = data_float * 1000;
+                    DCUR4 = String.valueOf(fDCUR4);
+                    lw.appendLog(TAG, "setting DCUR4 to " + DCUR4);
+                    break;
+                }
+
+                case bSENDDPUMPS: {//sending pumps flows
+                    switch (com2){
+                        case (byte)0x01:{
+                            lw.appendLog(TAG, "send FPUMP1FLOW");
+                            sendMessageBytes((byte) (bSENDDPUMPS + (byte) 0x01), (byte) 0x01, intTo4byte(FPUMP1FLOW));//first filling pump
+                            break;
+                        }
+
+                        case (byte)0x02:{
+                            lw.appendLog(TAG, "send DPUMP1FLOW");
+                            sendMessageBytes((byte) (bSENDDPUMPS + (byte) 0x01), (byte) 0x02, intTo4byte(DPUMP1FLOW));//first dialysis pump
+                            break;
+                        }
+
+                        case (byte)0x03:{
+                            lw.appendLog(TAG, "send UFPUMP1FLOW", true);
+                            sendMessageBytes((byte) (bSENDDPUMPS + (byte) 0x01), (byte) 0x03, intTo4byte(UFPUMP1FLOW));//first unfilling pump
+                            break;
+                        }
+
+                        case (byte)0x11:{
+                            lw.appendLog(TAG, "send FPUMP2FLOW", true);
+                            sendMessageBytes((byte) (bSENDDPUMPS + (byte) 0x01), (byte) 0x11, intTo4byte(FPUMP2FLOW));//first filling pump
+                            break;
+                        }
+
+                        case (byte)0x12:{
+                            lw.appendLog(TAG, "send DPUMP2FLOW", true);
+                            sendMessageBytes((byte) (bSENDDPUMPS + (byte) 0x01), (byte) 0x12, intTo4byte(DPUMP2FLOW));//first dialysis pump
+                            break;
+                        }
+
+                        case (byte)0x13:{
+                            lw.appendLog(TAG, "send UFPUMP2FLOW", true);
+                            sendMessageBytes((byte) (bSENDDPUMPS + (byte) 0x01), (byte) 0x13, intTo4byte(UFPUMP2FLOW));//first unfilling pump
+                            break;
+                        }
+
+                        case (byte)0x21:{
+                            lw.appendLog(TAG, "send FPUMP3FLOW", true);
+                            sendMessageBytes((byte) (bSENDDPUMPS + (byte) 0x01), (byte) 0x21, intTo4byte(FPUMP3FLOW));//first filling pump
+                            break;
+                        }
+
+                        case (byte)0x22:{
+                            lw.appendLog(TAG, "send DPUMP3FLOW", true);
+                            sendMessageBytes((byte) (bSENDDPUMPS + (byte) 0x01), (byte) 0x22, intTo4byte(DPUMP3FLOW));//first dialysis pump
+                            break;
+                        }
+
+                        case (byte)0x23:{
+                            lw.appendLog(TAG, "send UFPUMP3FLOW", true);
+                            sendMessageBytes((byte) (bSENDDPUMPS + (byte) 0x01), (byte) 0x23, intTo4byte(UFPUMP3FLOW));//first unfilling pump
+                            break;
+                        }
+
+                        default:
+                            break;
+                    }
+                    break;
+                }
+
+                case bSENDDPRESS: {//sending values for pressures ranges
+                    switch (com2){
+                        case (byte)0x01:{
+                            lw.appendLog(TAG, "send DPRESS1MIN");
+                            sendMessageBytes((byte) (bSENDDPRESS + (byte) 0x01), (byte) 0x01, floatTo4byte(DPRESS1MIN));//first min value
+                            break;
+                        }
+
+                        case (byte)0x02:{
+                            lw.appendLog(TAG, "send DPRESS1MAX");
+                            sendMessageBytes((byte) (bSENDDPRESS + (byte) 0x01), (byte) 0x02, floatTo4byte(DPRESS1MAX));//first max value
+                            break;
+                        }
+
+                        case (byte)0x11:{
+                            lw.appendLog(TAG, "send DPRESS2MIN");
+                            sendMessageBytes((byte) (bSENDDPRESS + (byte) 0x01), (byte) 0x11, floatTo4byte(DPRESS2MIN));//second min value
+                            break;
+                        }
+
+                        case (byte)0x12:{
+                            lw.appendLog(TAG, "send DPRESS2MAX");
+                            sendMessageBytes((byte) (bSENDDPRESS + (byte) 0x01), (byte) 0x12, floatTo4byte(DPRESS2MAX));//second max value
+                            break;
+                        }
+
+                        case (byte)0x21:{
+                            lw.appendLog(TAG, "send DPRESS3MIN");
+                            sendMessageBytes((byte) (bSENDDPRESS + (byte) 0x01), (byte) 0x21, floatTo4byte(DPRESS3MIN));//third min value
+                            break;
+                        }
+
+                        case (byte)0x22:{
+                            lw.appendLog(TAG, "send DPRESS3MAX");
+                            sendMessageBytes((byte) (bSENDDPRESS + (byte) 0x01), (byte) 0x22, floatTo4byte(DPRESS3MAX));//third max value
+                            break;
+                        }
+
+                        default:
+                            break;
+                    }
+                    break;
+                }
+
+                case bSENDDTEMP: {//sending values for temperature range
+                    switch (com2){
+                        case (byte)0x01:{
+                            lw.appendLog(TAG, "send DTEMP1MIN ");
+                            sendMessageBytes((byte) (bSENDDTEMP + (byte) 0x01), (byte) 0x01, floatTo4byte(DTEMP1MIN));//min temp
+                            break;
+                        }
+
+                        case (byte)0x02:{
+                            lw.appendLog(TAG, "send DTEMP1MAX ");
+                            sendMessageBytes((byte) (bSENDDTEMP + (byte) 0x01), (byte) 0x02, floatTo4byte(DTEMP1MAX));//max temp
+                            break;
+                        }
+
+                        default:
+                            break;
+                    }
+                    break;
+                }
+
+                case bSENDDCOND: {//sending values for conductivity range
+                    switch (com2){
+                        case (byte)0x01:{
+                            lw.appendLog(TAG, "send DCOND1MIN ");
+                            sendMessageBytes((byte) (bSENDDCOND + (byte) 0x01), (byte) 0x01, floatTo4byte(DCOND1MIN));
+                            break;
+                        }
+
+                        case (byte)0x02:{
+                            lw.appendLog(TAG, "send DCOND1MAX ");
+                            sendMessageBytes((byte) (bSENDDCOND + (byte) 0x01), (byte) 0x02, floatTo4byte(DCOND1MAX));
+                            break;
+                        }
+
+                        default:
+                            break;
+                    }
+
+                    break;
+                }
+
+                case PE_PRESS1: {//receiving error
+                    processError(getResources().getText(R.string.error_press).toString() + "1");
+                    break;
+                }
+
+                case PE_PRESS2: {//receiving error
+                    processError(getResources().getText(R.string.error_press).toString() + "2");
+                    break;
+                }
+
+                case PE_PRESS3: {//receiving error
+                    processError(getResources().getText(R.string.error_press).toString() + "3");
+                    break;
+                }
+
+                case PE_TEMP: {//receiving error
+                    processError(getResources().getText(R.string.error_temp).toString());
+                    break;
+                }
+
+                case PE_ELECTRO: {//receiving error
+                    processError(getResources().getText(R.string.error_electro).toString());
+                    break;
+                }
+
+                case PE_EDS1: {//receiving error
+                    processError(getResources().getText(R.string.error_eds).toString() + "1");
+                    break;
+                }
+
+                case PE_EDS2: {//receiving error
+                    processError(getResources().getText(R.string.error_eds).toString() + "2");
+                    break;
+                }
+
+                case PE_EDS3: {//receiving error
+                    processError(getResources().getText(R.string.error_eds).toString() + "3");
+                    break;
+                }
+
+                case PE_EDS4: {//receiving error
+                    processError(getResources().getText(R.string.error_eds).toString() + "4");
+                    break;
+                }
+
+                case PE_BATT: {//receiving error
+                    processError(getResources().getText(R.string.error_batt).toString());
+                    break;
+                }
+
+                case PE_PUMP1: {//receiving error
+                    processError(getResources().getText(R.string.error_eds).toString() + "1");
+                    break;
+                }
+
+                case PE_PUMP2: {//receiving error
+                    processError(getResources().getText(R.string.error_eds).toString() + "2");
+                    break;
+                }
+
+                case PE_PUMP3: {//receiving error
+                    processError(getResources().getText(R.string.error_eds).toString() + "3");
+                    break;
+                }
+
+                case PE_ERROR: {//receiving error
+                    processError(getResources().getText(R.string.error_unknown).toString());
+                    break;
+                }
+
+                default:
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Check if received package is in desired format
+     * @param pack package as array of bytes
+     * @return true if package is correct, otherwise false
+     */
+    boolean checkPack(byte[] pack){
+        if(pack.length == 8)
+            return (pack[0] == Constants.PACK_START && pack[7] == Constants.PACK_END);
+        return false;
+    }
 
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();

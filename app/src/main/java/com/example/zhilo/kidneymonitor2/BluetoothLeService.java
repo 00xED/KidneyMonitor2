@@ -142,10 +142,10 @@ public class BluetoothLeService extends Service {
             incomingBufferInd++;
         }
 
-        if (arrayIndexOf(incomingBuffer, (byte) 0xAA) != -1)
-            if((arrayIndexOf(incomingBuffer, (byte) 0x55) != -1)){
-                int start = arrayIndexOf(incomingBuffer, (byte) 0x55);
-                int end = arrayIndexOf(incomingBuffer, (byte) 0xAA) + 1;
+        if (arrayIndexOf(incomingBuffer, Constants.PACK_END) != -1)
+            if((arrayIndexOf(incomingBuffer, Constants.PACK_START) != -1)){
+                int start = arrayIndexOf(incomingBuffer, Constants.PACK_START);
+                int end = arrayIndexOf(incomingBuffer, Constants.PACK_END) + 1;
                 pack = Arrays.copyOfRange(incomingBuffer, start, end);
                 incomingBufferInd -= pack.length;
                 byte[] b = Arrays.copyOfRange(incomingBuffer, end, incomingBuffer.length);
