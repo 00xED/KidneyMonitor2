@@ -12,9 +12,7 @@ public class ProcedureSettings {
     private static final String TAG = "ProcedureSettings";
     LogWriter lw;
 
-    private int dialPump1Flow;
-    private int dialPump2Flow;
-    private int dialPump3Flow;
+    private int dialPump1Flow, dialPump2Flow, dialPump3Flow;
 
     private float dialPress1Min;
     private float dialPress1;
@@ -34,9 +32,9 @@ public class ProcedureSettings {
     private float dialCond1;
     private float dialCond1Max;
 
-    private int fillPump1Flow;
-    private int fillPump2Flow;
-    private int fillPump3Flow;
+    private float dialCurrent1, dialCurrent2, dialCurrent3, dialCurrent4;
+
+    private int fillPump1Flow, fillPump2Flow, fillPump3Flow;
 
     private int flushPump1Flow;
     private int flushPump2Flow;
@@ -130,6 +128,18 @@ public class ProcedureSettings {
     public float getDialCond1() {
         return this.dialCond1;
     }
+    public float getDialCurrent1() {
+        return this.dialCurrent1;
+    }
+    public float getDialCurrent2() {
+        return this.dialCurrent2;
+    }
+    public float getDialCurrent3() {
+        return this.dialCurrent3;
+    }
+    public float getDialCurrent4() {
+        return this.dialCurrent4;
+    }
     public int getBattery() {
         return this.battery;
     }
@@ -165,6 +175,18 @@ public class ProcedureSettings {
     }
     public void setDialCond1(float dialCond1) {
         this.dialCond1 = dialCond1;
+    }
+    public void setDialCurrent1(float dialCurrent1) {
+        this.dialCurrent1 = dialCurrent1;
+    }
+    public void setDialCurrent2(float dialCurrent2) {
+        this.dialCurrent2 = dialCurrent2;
+    }
+    public void setDialCurrent3(float dialCurrent3) {
+        this.dialCurrent3 = dialCurrent3;
+    }
+    public void setDialCurrent4(float dialCurrent4) {
+        this.dialCurrent1 = dialCurrent4;
     }
     public void setBattery(int battery) {
         this.battery = battery;

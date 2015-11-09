@@ -107,6 +107,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
 
+            case R.id.bt2:{
+                Intent intent = new Intent(this, ParamActivity.class);
+                startActivity(intent);
+                break;
+            }
+
             default:
                 break;
         }

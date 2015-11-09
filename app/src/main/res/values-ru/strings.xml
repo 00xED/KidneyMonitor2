@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="l">\u00A0л</string>
+    <string name="mlm">\u00A0мл/мин</string>
+    <string name="macm2">\u00A0мА/см^2</string>
+    <string name="mmHg">\u00A0мм.рт.ст.</string>
+    <string name="param_dialysis_conductivity">ДП\u00A0</string>
+    <string name="param_dialysis_temperature">ДТ\u00A0</string>
+    <string name="param_dialysis_pump_1">ДН1\u00A0</string>
+    <string name="param_dialysis_pump_2">ДН2\u00A0</string>
+    <string name="param_dialysis_pressure_1">ДДД1\u00A0</string>
+    <string name="param_dialysis_pressure_2">ДДД2\u00A0</string>
+    <string name="param_peristaltic_pressure">ДДП\u00A0</string>
+    <string name="param_peristaltic_pump">ПН\u00A0</string>
+    <string name="param_ultrafiltrate">УФ\u00A0</string>
+    <string name="param_units">\u00A0единиц</string>
+    <string name="param_cells">Ячейки: </string>
+    <string name="param_pump_flows">Расходы насосов: ±20 мл/мин</string>
+    <string name="param_sensors_readings">Показания датчиков: ±10 мм.рт.ст.</string>
+    <string name="param_electrolyzer">Электролизер</string>
+</resources>

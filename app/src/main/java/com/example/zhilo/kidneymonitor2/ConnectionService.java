@@ -386,25 +386,25 @@ public class ConnectionService extends Service {
                 }
 
                 case Constants.bDCUR1: {//setting first electric current value
-                    //ProcedureSettings.getInstance().setDialCurrent1(data_float * Constants.CUR_COEF);
+                    ProcedureSettings.getInstance().setDialCurrent1(data_float * Constants.CUR_COEF);
                     lw.appendLog(TAG, "setting DCUR1 to " + data_float * Constants.CUR_COEF);
                     break;
                 }
 
                 case Constants.bDCUR2: {//setting second electric current value
-                    //ProcedureSettings.getInstance().setDialCurrent2(data_float * Constants.CUR_COEF);
+                    ProcedureSettings.getInstance().setDialCurrent2(data_float * Constants.CUR_COEF);
                     lw.appendLog(TAG, "setting DCUR2 to " + data_float * Constants.CUR_COEF);
                     break;
                 }
 
                 case Constants.bDCUR3: {//setting third electric current value
-                    //ProcedureSettings.getInstance().setDialCurrent3(data_float * Constants.CUR_COEF);
+                    ProcedureSettings.getInstance().setDialCurrent3(data_float * Constants.CUR_COEF);
                     lw.appendLog(TAG, "setting DCUR3 to " + data_float * Constants.CUR_COEF);
                     break;
                 }
 
                 case Constants.bDCUR4: {//setting fourth electric current value
-                    //ProcedureSettings.getInstance().setDialCurrent4(data_float * Constants.CUR_COEF);
+                    ProcedureSettings.getInstance().setDialCurrent4(data_float * Constants.CUR_COEF);
                     lw.appendLog(TAG, "setting DCUR4 to " + data_float * Constants.CUR_COEF);
                     break;
                 }

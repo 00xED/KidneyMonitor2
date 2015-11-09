@@ -146,7 +146,7 @@ public interface Constants {
      * Constants for BluetoothLeService
      */
     int CONNECT_ATTEMPTS_MAX = 20;
-        int RECONNECT_INTERVAL_MS = 5000;
+    int RECONNECT_INTERVAL_MS = 5000;
     int STATE_DISCONNECTED = 0;
     int STATE_CONNECTING = 1;
     int STATE_CONNECTED = 2;
@@ -162,4 +162,9 @@ public interface Constants {
             "com.example.zhilo.kidneymonitor2.BLE.EXTRA_DATA";//received data from the device
     UUID UUID_SPP_DATA = UUID.fromString("a4656700-45bb-4809-886e-180f8a42de85");//UUID for SPP Data characteristic
     UUID UUID_CONFIG_DESCRIPTOR = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");//UUID for client characteristic configuration descriptor
+
+    /**
+     * Constants for ParamActivity
+     */
+    int REFRESH_INTERVAL_MS = 1000;
 }

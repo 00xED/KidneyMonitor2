@@ -17,4 +17,13 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:onClick="OnClick" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/bt2"
+        android:layout_alignTop="@+id/bt_Settings"
+        android:layout_alignParentStart="true"
+        android:onClick="OnClick" />
 </RelativeLayout>
