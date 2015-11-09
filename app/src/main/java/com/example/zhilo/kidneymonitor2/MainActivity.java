@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     //Initialisation of LogWriter
     private static final String logTag = "MainActivity";
@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         lw.appendLog(logTag, "Start");
         lw.appendLog(logTag, "MainActivity opened");
 
@@ -100,18 +99,7 @@ public class MainActivity extends AppCompatActivity {
     public void OnClick(View v) {
 
         switch (v.getId()) {
-            case R.id.bt_Settings://Start or stop service
-            {
-                Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
-                break;
-            }
 
-            case R.id.bt2:{
-                Intent intent = new Intent(this, ParamActivity.class);
-                startActivity(intent);
-                break;
-            }
 
             default:
                 break;
