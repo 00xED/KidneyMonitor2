@@ -41,6 +41,7 @@ public class ProcedureSettings {
     private int flushPump3Flow;
 
     private int battery;
+    private int status;
     private int procedure;
     private int procedure_previous;
     private int proc_parameters;
@@ -146,10 +147,13 @@ public class ProcedureSettings {
     public int getProcedure() {
         return this.procedure;
     }
+    public int getStatus() {
+        return this.status;
+    }
     public int getProcedure_previous() {
         return this.procedure_previous;
     }
-    public int getProc_parameters() {
+    public int getParams() {
         return this.proc_parameters;
     }
     public int getDev_funct() {
@@ -194,10 +198,13 @@ public class ProcedureSettings {
     public void setProcedure(int procedure) {
         this.procedure = procedure;
     }
+    public void setStatus(int status) {
+        this.status = status;
+    }
     public void setProcedure_previous(int procedure_previous) {
         this.procedure_previous = procedure_previous;
     }
-    public void setProc_parameters(int proc_parameters) {
+    public void setParams(int proc_parameters) {
         this.proc_parameters = proc_parameters;
     }
     public void setDev_funct(int dev_funct) {
@@ -244,6 +251,7 @@ public class ProcedureSettings {
 
         battery = Constants.PARAMETER_UNKNOWN;
         procedure = Constants.PARAMETER_UNKNOWN;
+        status = Constants.STATUS_UNKNOWN;
         procedure_previous = Constants.PARAMETER_UNKNOWN;
         proc_parameters = Constants.PARAMETER_UNKNOWN;
         dev_funct = Constants.PARAMETER_UNKNOWN;

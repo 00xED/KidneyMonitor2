@@ -20,7 +20,7 @@
         android:id="@+id/tv_LastConnected"
         android:layout_alignTop="@+id/iv_Header"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_alignLeft="@+id/iv_Header"
         android:layout_marginLeft="10dp"
         android:textColor="@android:color/white" />
@@ -32,11 +32,9 @@
         android:text="Статус устройства"
         android:id="@+id/tv_Status"
         android:layout_below="@+id/iv_Header"
-        android:minLines="2"
-        android:maxWidth="135dp"
-        android:gravity="right"
         android:layout_toLeftOf="@+id/iv_Status"
-        android:layout_marginRight="10dp" />
+        android:textAlignment="textEnd"
+        android:layout_marginRight="2dp" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -53,14 +51,14 @@
         android:text="Выключено"
         android:id="@+id/tv_StatusValue"
         android:layout_below="@+id/iv_Header"
-        android:layout_alignBottom="@+id/iv_Status"
-        android:layout_toRightOf="@+id/iv_Status"
-        android:layout_marginLeft="10dp" />
+        android:layout_alignLeft="@+id/tv_ParamsValue"
+        android:layout_alignBottom="@+id/space4"
+        android:gravity="center_vertical" />
 
     <Space
         android:layout_width="fill_parent"
-        android:layout_height="5dp"
-        android:layout_below="@+id/tv_Status"
+        android:layout_height="10dp"
+        android:layout_below="@+id/iv_Status"
         android:layout_alignParentStart="true"
         android:id="@+id/space4" />
 
@@ -71,11 +69,9 @@
         android:text="Текущая процедура"
         android:id="@+id/tv_Procedure"
         android:layout_below="@+id/space4"
-        android:minLines="2"
-        android:maxWidth="135dp"
-        android:gravity="right"
-        android:layout_marginRight="5dp"
-        android:layout_alignRight="@+id/tv_Status" />
+        android:layout_toLeftOf="@+id/iv_Procedure"
+        android:textAlignment="textEnd"
+        android:layout_marginRight="2dp" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -89,16 +85,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Готов"
+        android:text="Дизинфекция"
         android:id="@+id/tv_ProcedureValue"
         android:layout_below="@+id/space4"
-        android:layout_alignLeft="@+id/tv_StatusValue" />
+        android:layout_toRightOf="@+id/iv_ProcedureDropdown"
+        android:layout_marginLeft="2dp"
+        android:layout_alignBottom="@+id/space5"
+        android:gravity="center_vertical" />
 
     <Space
         android:layout_width="fill_parent"
-        android:layout_height="5dp"
+        android:layout_height="10dp"
         android:id="@+id/space5"
-        android:layout_below="@+id/tv_Procedure"
+        android:layout_below="@+id/iv_Procedure"
         android:layout_alignParentStart="true" />
 
     <TextView
@@ -108,11 +107,9 @@
         android:text="Параметры процедуры"
         android:id="@+id/tv_Params"
         android:layout_below="@+id/space5"
-        android:minLines="2"
-        android:maxWidth="135dp"
-        android:gravity="right"
-        android:layout_marginRight="5dp"
-        android:layout_alignRight="@+id/tv_Status" />
+        android:layout_toLeftOf="@+id/iv_Params"
+        android:textAlignment="textEnd"
+        android:layout_marginRight="2dp" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -122,21 +119,33 @@
         android:layout_below="@+id/space5"
         android:layout_centerHorizontal="true" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/iv_ParamsDropdown"
+        android:src="@drawable/ic_shevron"
+        android:layout_marginLeft="2dp"
+        android:layout_below="@+id/space5"
+        android:layout_toRightOf="@+id/iv_Params"
+        android:layout_above="@+id/space6" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Опасность"
         android:id="@+id/tv_ParamsValue"
-        android:layout_alignStart="@+id/tv_ProcedureValue"
         android:layout_below="@+id/space5"
-        android:layout_alignLeft="@+id/tv_StatusValue"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_toRightOf="@+id/iv_ParamsDropdown"
+        android:layout_marginLeft="2dp"
+        android:layout_alignBottom="@+id/space6"
+        android:gravity="center_vertical" />
 
     <Space
         android:layout_width="fill_parent"
-        android:layout_height="5dp"
+        android:layout_height="10dp"
         android:id="@+id/space6"
-        android:layout_below="@+id/tv_Params"
+        android:layout_below="@+id/iv_Params"
         android:layout_alignParentStart="true" />
 
     <TextView
@@ -146,11 +155,9 @@
         android:text="Замена сорбентов"
         android:id="@+id/tv_SorbentTime"
         android:layout_below="@+id/space6"
-        android:minLines="2"
-        android:maxWidth="135dp"
-        android:gravity="right"
-        android:layout_marginRight="5dp"
-        android:layout_alignRight="@+id/tv_Status" />
+        android:layout_toLeftOf="@+id/iv_SorbentTime"
+        android:textAlignment="textEnd"
+        android:layout_marginRight="2dp" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -160,20 +167,33 @@
         android:layout_below="@+id/space6"
         android:layout_centerHorizontal="true" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/iv_SorbentTimeDropdown"
+        android:src="@drawable/ic_shevron"
+        android:layout_marginLeft="2dp"
+        android:layout_below="@+id/space6"
+        android:layout_toRightOf="@+id/iv_SorbentTime"
+        android:layout_above="@+id/space7" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="12ч. 12м."
         android:id="@+id/tv_SorbentTimeValue"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_toRightOf="@+id/iv_SorbentTimeDropdown"
         android:layout_below="@+id/space6"
-        android:layout_alignStart="@+id/tv_ParamsValue" />
+        android:layout_marginLeft="2dp"
+        android:layout_alignBottom="@+id/space7"
+        android:gravity="center_vertical" />
 
     <Space
         android:layout_width="fill_parent"
-        android:layout_height="5dp"
+        android:layout_height="10dp"
         android:id="@+id/space7"
-        android:layout_below="@+id/tv_SorbentTime"
+        android:layout_below="@+id/iv_SorbentTime"
         android:layout_alignParentStart="true" />
 
     <TextView
@@ -183,11 +203,10 @@
         android:text="Заряд батареи"
         android:id="@+id/tv_Battery"
         android:layout_below="@+id/space7"
-        android:minLines="2"
-        android:maxWidth="135dp"
-        android:gravity="right"
-        android:layout_marginRight="5dp"
-        android:layout_alignRight="@+id/tv_Status" />
+        android:layout_toLeftOf="@+id/iv_Battery"
+        android:textAlignment="textEnd"
+        android:layout_marginRight="2dp"
+        android:layout_above="@+id/space8" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -204,23 +223,26 @@
         android:id="@+id/tv_BatteryValue"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_below="@+id/space7"
-        android:layout_alignLeft="@+id/tv_StatusValue" />
+        android:layout_alignLeft="@+id/tv_StatusValue"
+        android:layout_alignBottom="@+id/space8"
+        android:gravity="center_vertical" />
 
     <Space
         android:layout_width="fill_parent"
-        android:layout_height="5dp"
+        android:layout_height="10dp"
         android:id="@+id/space8"
-        android:layout_below="@+id/tv_Battery"
+        android:layout_below="@+id/iv_Battery"
         android:layout_alignParentStart="true" />
 
     <Button
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
         android:id="@+id/bt_Pause"
         android:layout_below="@+id/space8"
         android:background="@drawable/ib_resume"
-        android:layout_alignStart="@+id/tv_LastConnected"
-        android:layout_marginRight="5dp" />
+        android:layout_marginRight="5dp"
+        android:onClick="OnClick"
+        android:layout_marginLeft="5dp" />
 
     <ImageView
         android:layout_width="fill_parent"
@@ -241,7 +263,8 @@
         android:layout_alignTop="@+id/iv_Footer"
         android:layout_alignLeft="@+id/iv_Footer"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:onClick="OnClick" />
 
     <Button
         android:layout_width="140dp"
@@ -252,7 +275,8 @@
         android:layout_alignRight="@+id/iv_Footer"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/bt_message" />
+        android:background="@drawable/bt_message"
+        android:onClick="OnClick" />
 
     <Button
         android:layout_width="140dp"
@@ -264,7 +288,8 @@
         android:layout_marginLeft="10dp"
         android:layout_alignBottom="@+id/iv_Footer"
         android:layout_alignLeft="@+id/iv_Footer"
-        android:background="@drawable/bt_log" />
+        android:background="@drawable/bt_log"
+        android:onClick="OnClick" />
 
     <Button
         android:layout_width="140dp"
@@ -276,13 +301,17 @@
         android:layout_marginRight="10dp"
         android:layout_alignBottom="@+id/iv_Footer"
         android:layout_alignRight="@+id/iv_Footer"
-        android:background="@drawable/bt_settings" />
+        android:background="@drawable/bt_settings"
+        android:onClick="OnClick" />
 
-    <Space
-        android:layout_width="20dp"
+    <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/iv_Header"
-        android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@+id/iv_Status"
-        android:id="@+id/space_right" />
+        android:id="@+id/iv_ProcedureDropdown"
+        android:src="@drawable/ic_shevron"
+        android:layout_marginLeft="2dp"
+        android:layout_alignTop="@+id/space4"
+        android:layout_above="@+id/space5"
+        android:layout_toRightOf="@+id/iv_Procedure" />
+
 </RelativeLayout>

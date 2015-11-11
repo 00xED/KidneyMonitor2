@@ -26,6 +26,9 @@ public interface Constants {
     int PROCEDURE_READY = 4;
     int PROCEDURE_FLUSH = 5;
     int PARAMETER_UNKNOWN = -1;
+    int STATUS_ON = 0;
+    int STATUS_OFF = 1;
+    int STATUS_UNKNOWN = -1;
 
     int PARAMS_NORMAL = 0;
     int PARAMS_DANGER = 1;
@@ -166,5 +169,5 @@ public interface Constants {
     /**
      * Constants for ParamActivity
      */
-    int REFRESH_INTERVAL_MS = 1000;
+    int PARAM_REFRESH_INTERVAL_MS = 1000;
 }

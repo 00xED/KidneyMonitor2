@@ -232,12 +232,14 @@ public class ConnectionService extends Service {
                 BLEConnected = true;
                 ConnectTryCount = 0;
                 lw.appendLog(TAG, "BLE connected");
+                ProcedureSettings.getInstance().setStatus(Constants.STATUS_ON);
             } else if (Constants.ACTION_GATT_DISCONNECTED.equals(action)) {
                 BLEConnected = false;
                 Intent intentValues = new Intent(Constants.CONNECTIONSERVICE_ACTION);
                 intentValues.putExtra(Constants.CONNECTIONSERVICE_TASK, Constants.CONNECTIONSERVICE_ACTION_STOP_BLE_SERVICE);
                 sendBroadcast(intentValues);
                 lw.appendLog(TAG, "BLE disconnected");
+                ProcedureSettings.getInstance().setStatus(Constants.STATUS_OFF);
             } else if (Constants.ACTION_DATA_AVAILABLE.equals(action)) {
                 if (intent.hasExtra(Constants.EXTRA_DATA)) {
                     byte[] pack = intent.getByteArrayExtra(Constants.EXTRA_DATA);
@@ -256,6 +258,10 @@ public class ConnectionService extends Service {
             byte data1 = pack[Constants.DATA_INDEX];
             int data_int = ByteBuffer.wrap(pack, Constants.DATA_INDEX, Constants.DATA_LENGTH).getInt();//data converted to int
             float data_float = ByteBuffer.wrap(pack, Constants.DATA_INDEX, Constants.DATA_LENGTH).getFloat();//data converted to float
+
+            float tempfValue = 0.0f;
+            int tempiValue = 0;
+            int errorCount = 0;
 
             ProcedureSettings.getInstance().setLast_connection(System.currentTimeMillis());//setting flag for time of last received command
             switch (com1) {//executing first command
@@ -355,57 +361,93 @@ public class ConnectionService extends Service {
                     break;
                 }
 
-                case Constants.bDPRESS1: {//setting first pressure value
-                    ProcedureSettings.getInstance().setDialPress1(data_float * Constants.PRESS_COEF);
-                    lw.appendLog(TAG, "setting DPRESS1 to " + data_float * Constants.PRESS_COEF);
+                case Constants.bDPRESS1: {//getting first pressure value
+                    tempfValue = data_float * Constants.PRESS_COEF;
+                    ProcedureSettings.getInstance().setDialPress1(tempfValue);
+                    lw.appendLog(TAG, "setting DPRESS1 to " + tempfValue);
+                    if(tempfValue > ProcedureSettings.getInstance().getDialPress1Max() ||
+                       tempfValue < ProcedureSettings.getInstance().getDialPress1Min()){
+                        errorCount++;
+                        processError("DPRESS1 not in range!");
+                    }
                     break;
                 }
 
-                case Constants.bDPRESS2: {//setting second pressure value
-                    ProcedureSettings.getInstance().setDialPress2(data_float * Constants.PRESS_COEF);
-                    lw.appendLog(TAG, "setting DPRESS2 to " + data_float * Constants.PRESS_COEF);
+                case Constants.bDPRESS2: {//getting second pressure value
+                    tempfValue = data_float * Constants.PRESS_COEF;
+                    ProcedureSettings.getInstance().setDialPress2(tempfValue);
+                    lw.appendLog(TAG, "setting DPRESS2 to " + tempfValue);
+                    if(tempfValue > ProcedureSettings.getInstance().getDialPress2Max() ||
+                            tempfValue < ProcedureSettings.getInstance().getDialPress2Min()){
+                        errorCount++;
+                        processError("DPRESS2 not in range!");
+                    }
+                    else
+                        ProcedureSettings.getInstance().setParams(Constants.PARAMS_NORMAL);
                     break;
                 }
 
-                case Constants.bDPRESS3: {//setting third pressure value
-                    ProcedureSettings.getInstance().setDialPress3(data_float * Constants.PRESS_COEF);
-                    lw.appendLog(TAG, "setting DPRESS3 to " + data_float * Constants.PRESS_COEF);
+                case Constants.bDPRESS3: {//getting third pressure value
+                    tempfValue = data_float * Constants.PRESS_COEF;
+                    ProcedureSettings.getInstance().setDialPress3(tempfValue);
+                    lw.appendLog(TAG, "setting DPRESS3 to " + tempfValue);
+                    if(tempfValue > ProcedureSettings.getInstance().getDialPress3Max() ||
+                            tempfValue < ProcedureSettings.getInstance().getDialPress3Min()){
+                        errorCount++;
+                        processError("DPRESS3 not in range!");
+                    }
                     break;
                 }
 
-                case Constants.bDTEMP1: {//setting temperature value
-                    ProcedureSettings.getInstance().setDialTemp1(data_int / Constants.TEMP_COEF);
-                    lw.appendLog(TAG, "setting DTEMP1 to " + data_int / Constants.TEMP_COEF);
+                case Constants.bDTEMP1: {//getting temperature value
+                    tempfValue = data_int / Constants.TEMP_COEF;
+                    ProcedureSettings.getInstance().setDialTemp1(tempfValue);
+                    lw.appendLog(TAG, "setting DTEMP1 to " + tempfValue);
+                    if(tempfValue > ProcedureSettings.getInstance().getDialTemp1Max() ||
+                            tempfValue < ProcedureSettings.getInstance().getDialTemp1Min()){
+                        errorCount++;
+                        processError("DTEMP1 not in range!");
+                    }
                     break;
                 }
 
-                case Constants.bDCOND1: {////setting conductivity value
-                    ProcedureSettings.getInstance().setDialCond1(data_int);
-                    lw.appendLog(TAG, "setting DCOND1 to " + data_int);
+                case Constants.bDCOND1: {////getting conductivity value
+                    tempiValue = data_int;
+                    ProcedureSettings.getInstance().setDialCond1(tempiValue);
+                    lw.appendLog(TAG, "setting DCOND1 to " + tempiValue);
+                    if(tempiValue > ProcedureSettings.getInstance().getDialCond1Max() ||
+                            tempiValue < ProcedureSettings.getInstance().getDialCond1Min()){
+                        errorCount++;
+                        processError("DCOND1 not in range!");
+                    }
                     break;
                 }
 
-                case Constants.bDCUR1: {//setting first electric current value
-                    ProcedureSettings.getInstance().setDialCurrent1(data_float * Constants.CUR_COEF);
-                    lw.appendLog(TAG, "setting DCUR1 to " + data_float * Constants.CUR_COEF);
+                case Constants.bDCUR1: {//getting first electric current value
+                    tempfValue = data_float * Constants.CUR_COEF;
+                    ProcedureSettings.getInstance().setDialCurrent1(tempfValue);
+                    lw.appendLog(TAG, "setting DCUR1 to " + tempfValue);
                     break;
                 }
 
-                case Constants.bDCUR2: {//setting second electric current value
-                    ProcedureSettings.getInstance().setDialCurrent2(data_float * Constants.CUR_COEF);
-                    lw.appendLog(TAG, "setting DCUR2 to " + data_float * Constants.CUR_COEF);
+                case Constants.bDCUR2: {//getting second electric current value
+                    tempfValue = data_float * Constants.CUR_COEF;
+                    ProcedureSettings.getInstance().setDialCurrent2(tempfValue);
+                    lw.appendLog(TAG, "setting DCUR2 to " + tempfValue);
                     break;
                 }
 
-                case Constants.bDCUR3: {//setting third electric current value
-                    ProcedureSettings.getInstance().setDialCurrent3(data_float * Constants.CUR_COEF);
-                    lw.appendLog(TAG, "setting DCUR3 to " + data_float * Constants.CUR_COEF);
+                case Constants.bDCUR3: {//getting third electric current value
+                    tempfValue = data_float * Constants.CUR_COEF;
+                    ProcedureSettings.getInstance().setDialCurrent3(tempfValue);
+                    lw.appendLog(TAG, "setting DCUR3 to " + tempfValue);
                     break;
                 }
 
-                case Constants.bDCUR4: {//setting fourth electric current value
-                    ProcedureSettings.getInstance().setDialCurrent4(data_float * Constants.CUR_COEF);
-                    lw.appendLog(TAG, "setting DCUR4 to " + data_float * Constants.CUR_COEF);
+                case Constants.bDCUR4: {//getting fourth electric current value
+                    tempfValue = data_float * Constants.CUR_COEF;
+                    ProcedureSettings.getInstance().setDialCurrent4(tempfValue);
+                    lw.appendLog(TAG, "setting DCUR4 to " + tempfValue);
                     break;
                 }
 
@@ -577,77 +619,99 @@ public class ConnectionService extends Service {
 
                 case Constants.PE_PRESS1: {//receiving error
                     processError("error_press" + "1");
+                    errorCount++;
                     break;
                 }
 
                 case Constants.PE_PRESS2: {//receiving error
                     processError("error_press" + "2");
+                    errorCount++;
                     break;
                 }
 
                 case Constants.PE_PRESS3: {//receiving error
                     processError("error_press" + "3");
+                    errorCount++;
                     break;
                 }
 
                 case Constants.PE_TEMP: {//receiving error
                     processError("error_temp");
+                    errorCount++;
                     break;
                 }
 
                 case Constants.PE_ELECTRO: {//receiving error
                     processError("error_electro");
+                    errorCount++;
                     break;
                 }
 
                 case Constants.PE_EDS1: {//receiving error
                     processError("error_eds" + "1");
+                    errorCount++;
                     break;
                 }
 
                 case Constants.PE_EDS2: {//receiving error
                     processError("error_eds" + "2");
+                    errorCount++;
                     break;
                 }
 
                 case Constants.PE_EDS3: {//receiving error
                     processError("error_eds" + "3");
+                    errorCount++;
                     break;
                 }
 
                 case Constants.PE_EDS4: {//receiving error
                     processError("error_eds" + "4");
+                    errorCount++;
                     break;
                 }
 
                 case Constants.PE_BATT: {//receiving error
                     processError("error_batt");
+                    errorCount++;
                     break;
                 }
 
                 case Constants.PE_PUMP1: {//receiving error
                     processError("error_eds" + "1");
+                    errorCount++;
                     break;
                 }
 
                 case Constants.PE_PUMP2: {//receiving error
                     processError("error_eds" + "2");
+                    errorCount++;
                     break;
                 }
 
                 case Constants.PE_PUMP3: {//receiving error
                     processError("error_eds" + "3");
+                    errorCount++;
                     break;
                 }
 
                 case Constants.PE_ERROR: {//receiving error
                     processError("error_unknown");
+                    errorCount++;
                     break;
                 }
 
                 default:
                     break;
             }
+
+            if(errorCount != 0){
+                ProcedureSettings.getInstance().setParams(Constants.PARAMS_DANGER);
+            }
+            else{
+                ProcedureSettings.getInstance().setParams(Constants.PARAMS_NORMAL);
+            }
+
         }
     }
 
@@ -699,7 +763,7 @@ public class ConnectionService extends Service {
         sendNotification(msg);
         lw.appendLog(TAG, msg, true);
         ProcedureSettings.getInstance().setDev_funct(Constants.FUNCT_FAULT);
-        ProcedureSettings.getInstance().setProc_parameters(Constants.PARAMS_DANGER);
+        ProcedureSettings.getInstance().setParams(Constants.PARAMS_DANGER);
     }
 
     /**

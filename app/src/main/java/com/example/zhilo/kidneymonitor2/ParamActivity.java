@@ -241,7 +241,7 @@ public class ParamActivity extends AppCompatActivity {
             pbDCur4.setMax(500);
             pbDCur4.setProgress(progress);
 
-            RefreshHandler.postDelayed(RefreshTask, Constants.REFRESH_INTERVAL_MS);//refresh after RECONNECT_INTERVAL_MS milliseconds
+            RefreshHandler.postDelayed(RefreshTask, Constants.PARAM_REFRESH_INTERVAL_MS);//refresh after RECONNECT_INTERVAL_MS milliseconds
         }
     };
 }
