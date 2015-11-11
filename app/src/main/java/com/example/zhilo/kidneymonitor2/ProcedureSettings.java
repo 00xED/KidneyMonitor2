@@ -45,7 +45,6 @@ public class ProcedureSettings {
     private int procedure;
     private int procedure_previous;
     private int proc_parameters;
-    private int dev_funct;
     private int sorbtime;
     private long last_connection;
 
@@ -156,9 +155,6 @@ public class ProcedureSettings {
     public int getParams() {
         return this.proc_parameters;
     }
-    public int getDev_funct() {
-        return this.dev_funct;
-    }
     public int getSorbtime() {
         return this.sorbtime;
     }
@@ -190,7 +186,7 @@ public class ProcedureSettings {
         this.dialCurrent3 = dialCurrent3;
     }
     public void setDialCurrent4(float dialCurrent4) {
-        this.dialCurrent1 = dialCurrent4;
+        this.dialCurrent4 = dialCurrent4;
     }
     public void setBattery(int battery) {
         this.battery = battery;
@@ -207,9 +203,7 @@ public class ProcedureSettings {
     public void setParams(int proc_parameters) {
         this.proc_parameters = proc_parameters;
     }
-    public void setDev_funct(int dev_funct) {
-        this.dev_funct = dev_funct;
-    }
+
     public void setSorbtime(int sorbtime) {
         this.sorbtime = sorbtime;
     }
@@ -254,7 +248,6 @@ public class ProcedureSettings {
         status = Constants.STATUS_UNKNOWN;
         procedure_previous = Constants.PARAMETER_UNKNOWN;
         proc_parameters = Constants.PARAMETER_UNKNOWN;
-        dev_funct = Constants.PARAMETER_UNKNOWN;
         sorbtime = Constants.PARAMETER_UNKNOWN;
         last_connection = Constants.PARAMETER_UNKNOWN;
 

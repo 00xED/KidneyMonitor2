@@ -115,6 +115,7 @@ public class DeviceListActivity extends Activity {
         final BluetoothManager bluetoothManager =
                 (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
+        setTitle(R.string.select_device);
 
         // Get a set of currently paired devices
         /*Set < BluetoothDevice > pairedDevices = mBluetoothAdapter.getBondedDevices();
@@ -150,7 +151,7 @@ public class DeviceListActivity extends Activity {
 
         // Indicate scanning in the title
         setProgressBarIndeterminateVisibility(true);
-        setTitle("scanning");
+        setTitle(R.string.scanning);
 
         // Turn on sub-title for new devices
         findViewById(R.id.title_new_devices).setVisibility(View.VISIBLE);

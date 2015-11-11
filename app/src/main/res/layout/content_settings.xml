@@ -34,14 +34,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="current_device"
+                        android:text="@string/current_device"
                         android:id="@+id/tv_CaptionCurrentDevice" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="device_none"
+                        android:text="@string/current_device_none"
                         android:id="@+id/tv_ValueCurrentDeviceName"
                         android:layout_gravity="center_vertical" />
 
@@ -49,14 +49,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="device_address"
+                        android:text="@string/current_device_none"
                         android:id="@+id/tv_ValueCurrentDeviceAddress" />
                 </LinearLayout>
 
                 <Button
                     android:layout_width="fill_parent"
                     android:layout_height="match_parent"
-                    android:text="button_scan"
+                    android:text="@string/scan"
                     android:id="@+id/bt_Scan"
                     android:onClick="OnClick"
                     android:layout_marginLeft="30dp"
@@ -81,13 +81,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="title_service_options"
+                    android:text="@string/service_options"
                     android:id="@+id/textView40" />
 
                 <Switch
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="title_foreground_service"
+                    android:text="@string/foreground_service"
                     android:id="@+id/sw_ForegroundService"
                     android:checked="false"
                     android:onClick="OnClick" />
@@ -99,7 +99,7 @@
                 <Switch
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="title_connect_auto"
+                    android:text="@string/autoconnect"
                     android:id="@+id/sw_Autoconnect"
                     android:checked="false"
                     android:onClick="OnClick" />
@@ -111,7 +111,7 @@
                 <Button
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="title_service_stop"
+                    android:text="@string/service_stop"
                     android:id="@+id/bt_StopService"
                     android:onClick="OnClick" />
 
@@ -123,13 +123,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="title_notification_options"
+                    android:text="@string/notification_options"
                     android:id="@+id/textView45" />
 
                 <Switch
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="title_sound"
+                    android:text="@string/sound"
                     android:id="@+id/sw_Sound"
                     android:checked="false"
                     android:onClick="OnClick" />
@@ -141,7 +141,7 @@
                 <Switch
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="title_vibration"
+                    android:text="@string/vibration"
                     android:id="@+id/sw_Vibration"
                     android:checked="false"
                     android:onClick="OnClick" />
@@ -154,13 +154,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="title_test_mode"
+                    android:text="@string/test_mode"
                     android:id="@+id/textView46" />
 
                 <Switch
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="title_test_mode"
+                    android:text="@string/test_mode"
                     android:id="@+id/sw_TestMode"
                     android:checked="false"
                     android:onClick="OnClick" />
@@ -172,7 +172,7 @@
                 <Button
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="title_set_defaults"
+                    android:text="@string/set_defaults"
                     android:id="@+id/bt_SetDefaults"
                     android:onClick="OnClick" />
 

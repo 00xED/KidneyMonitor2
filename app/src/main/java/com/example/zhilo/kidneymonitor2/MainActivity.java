@@ -120,10 +120,10 @@ public class MainActivity extends Activity {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             Toast.makeText(this,
-                    "title_prefs_new",
-                    Toast.LENGTH_SHORT).show();
+                    getResources().getText(R.string.prefs_new).toString(),
+                            Toast.LENGTH_SHORT).show();
         } else Toast.makeText(this,
-                "title_prefs_loaded",
+                getResources().getText(R.string.prefs_loaded).toString(),
                 Toast.LENGTH_SHORT).show();
 
         //If service is not running - start it
@@ -166,8 +166,33 @@ public class MainActivity extends Activity {
                 startActivity(intent);
                 break;
             }
+
             case R.id.bt_Log: {
                 Intent intent = new Intent(this, LogActivity.class);
+                startActivity(intent);
+                break;
+            }
+
+            case R.id.iv_ParamsDropdown:{
+                Intent intent = new Intent(this, ParamActivity.class);
+                startActivity(intent);
+                break;
+            }
+
+            case R.id.iv_Params:{
+                Intent intent = new Intent(this, ParamActivity.class);
+                startActivity(intent);
+                break;
+            }
+
+            case R.id.tv_Params:{
+                Intent intent = new Intent(this, ParamActivity.class);
+                startActivity(intent);
+                break;
+            }
+
+            case R.id.tv_ParamsValue:{
+                Intent intent = new Intent(this, ParamActivity.class);
                 startActivity(intent);
                 break;
             }

@@ -762,7 +762,6 @@ public class ConnectionService extends Service {
     void processError(String msg){
         sendNotification(msg);
         lw.appendLog(TAG, msg, true);
-        ProcedureSettings.getInstance().setDev_funct(Constants.FUNCT_FAULT);
         ProcedureSettings.getInstance().setParams(Constants.PARAMS_DANGER);
     }
 

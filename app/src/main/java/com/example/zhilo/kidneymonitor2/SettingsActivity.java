@@ -37,11 +37,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         tvCurrentDeviceName = (TextView) findViewById(R.id.tv_ValueCurrentDeviceName);
         tvCurrentDeviceName.setText(sPref.getString(Constants.SETTINGS_NAME,
-                "none"));
+                getResources().getText(R.string.current_device_none).toString()));
 
         tvCurrentDeviceAddress = (TextView) findViewById(R.id.tv_ValueCurrentDeviceAddress);
-        tvCurrentDeviceAddress.setText(sPref.getString(Constants.SETTINGS_ADDRESS,
-                "efault_address"));
+        tvCurrentDeviceAddress.setText(sPref.getString(Constants.SETTINGS_ADDRESS, "00:00:00:00:00:00"));
 
         /**
          * Setting checkboxes states
@@ -80,10 +79,10 @@ public class SettingsActivity extends AppCompatActivity {
         btStopService = (Button) findViewById(R.id.bt_StopService);
         if (ConnectionService.isServiceRunning)
             btStopService.setText(
-                    "title_service_stop");
+                    getResources().getText(R.string.service_stop).toString());
         else
             btStopService.setText(
-                    "title_service_start");
+                    getResources().getText(R.string.service_start).toString());
     }
 
     public void OnClick(View v) {
@@ -101,10 +100,10 @@ public class SettingsActivity extends AppCompatActivity {
             {
                 ed.clear();
                 ed.apply();
-                tvCurrentDeviceName.setText("value_current_device_none");
-                tvCurrentDeviceAddress.setText("value_current_device_default_address");
+                tvCurrentDeviceName.setText(getResources().getText(R.string.current_device_none).toString());
+                tvCurrentDeviceAddress.setText("00:00:00:00:00:00");
                 Toast.makeText(this,
-                        "title_prefs_cleared",
+                        getResources().getText(R.string.prefs_cleared).toString(),
                         Toast.LENGTH_SHORT).show();
                 lw.appendLog(logTag, "Deleting settings and logs");
                 File logFile = new File(Environment.getExternalStorageDirectory(), Constants.logFile);
@@ -138,9 +137,9 @@ public class SettingsActivity extends AppCompatActivity {
                     ed.putBoolean(Constants.SETTINGS_FOREGROUND, false);
                 ed.apply();
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("notif_restart")
+                builder.setMessage(getResources().getText(R.string.notif_restart).toString())
                         .setCancelable(false)
-                        .setNegativeButton("ok",
+                        .setNegativeButton("OK",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         dialog.cancel();
@@ -195,13 +194,13 @@ public class SettingsActivity extends AppCompatActivity {
                     lw.appendLog(logTag, "Starting service");
                     stopService(new Intent(this, ConnectionService.class));
                     btStopService.setText(
-                            "title_service_start");
+                            getResources().getText(R.string.service_start).toString());
                 } else {
                     lw.appendLog(logTag, "Stopping service");
                     startService(new Intent(this, ConnectionService.class));
                     //ConnectionService.isServiceRunning=true;
                     btStopService.setText(
-                            "title_service_stop");
+                            getResources().getText(R.string.service_stop).toString());
                 }
                 break;
             }
@@ -233,7 +232,7 @@ public class SettingsActivity extends AppCompatActivity {
                 ed.putString(Constants.SETTINGS_ADDRESS, address);
                 ed.apply();
                 Toast.makeText(this,
-                        "title_prefs_saved",
+                        getResources().getText(R.string.prefs_saved).toString(),
                         Toast.LENGTH_SHORT).show();
 
                 lw.appendLog(logTag, "Bluetooth device chosen:" + name + "@" + address);
