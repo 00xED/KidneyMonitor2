@@ -35,6 +35,7 @@ public class ParamActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_param);
+        getSupportActionBar().hide();
 
         pbDPumpFlow1 = (ProgressBar) findViewById(R.id.pb_DPumpFlow1);
         pbDPumpFlow1.setMax(200);

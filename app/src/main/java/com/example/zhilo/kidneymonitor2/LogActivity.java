@@ -29,6 +29,7 @@ public class LogActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log);
+        getSupportActionBar().hide();
         mTvLog = (TextView) findViewById(R.id.tv_Log);
         mCbAutoscroll = (CheckBox) findViewById(R.id.cb_Autoscroll);
         mCbAutoscroll.setChecked(true);
@@ -98,8 +99,8 @@ public class LogActivity extends AppCompatActivity {
         protected Void doInBackground(Void... params) {
 
             text = readLog();
-            if(text.length()>20000)
-                text = text.delete(0, text.length()-20000);
+            if(text.length()>10000)
+                text = text.delete(0, text.length()-10000);
             return null;
         }
 
@@ -115,14 +116,14 @@ public class LogActivity extends AppCompatActivity {
         public StringBuilder readLog() {
 
                 //Get the text file
-                File file = new File(Environment.getExternalStorageDirectory(), "kidneymonitor/kidneymonitor.log");
+                File file = new File(Environment.getExternalStorageDirectory(), Constants.logFile);
 
             if (!file.exists()) {
                 try {
                     if(!file.createNewFile())
-                        Log.d("LogWriter", "can't create new file");
+                        Log.e("LOGACTIVITY", "can't create new file");
                 } catch (IOException e) {
-                    Log.d("LogWriter", e.toString());
+                    Log.e("LOGACTIVITY", e.toString());
                     e.printStackTrace();
                 }
             }
@@ -137,9 +138,7 @@ public class LogActivity extends AppCompatActivity {
 
                     while ((line = br.readLine()) != null) {
                         text.append(line);
-                        //mTvLog.append(line);
                         text.append('\n');
-                        //mTvLog.append("\n");
                     }
 
                     br.close();
@@ -148,7 +147,6 @@ public class LogActivity extends AppCompatActivity {
                 }
             }
             return text;
-            //mTvLog.append(text);
         }
 
     }
