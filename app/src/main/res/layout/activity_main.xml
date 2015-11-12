@@ -16,14 +16,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
+        android:text="@string/last_connected_unknown"
         android:id="@+id/tv_LastConnected"
         android:layout_alignTop="@+id/iv_Header"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:layout_alignLeft="@+id/iv_Header"
         android:layout_marginLeft="10dp"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:onClick="OnClick"
+        android:clickable="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -71,7 +73,9 @@
         android:layout_below="@+id/space4"
         android:layout_toLeftOf="@+id/iv_Procedure"
         android:textAlignment="textEnd"
-        android:layout_marginRight="2dp" />
+        android:layout_marginRight="2dp"
+        android:onClick="OnClick"
+        android:clickable="true" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -79,7 +83,9 @@
         android:id="@+id/iv_Procedure"
         android:src="@drawable/ic_question_mark"
         android:layout_below="@+id/space4"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="OnClick"
+        android:clickable="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -91,7 +97,9 @@
         android:layout_toRightOf="@+id/iv_ProcedureDropdown"
         android:layout_marginLeft="2dp"
         android:layout_alignBottom="@+id/space5"
-        android:gravity="center_vertical" />
+        android:gravity="center_vertical"
+        android:onClick="OnClick"
+        android:clickable="true" />
 
     <Space
         android:layout_width="fill_parent"
@@ -163,7 +171,9 @@
         android:layout_below="@+id/space6"
         android:layout_toLeftOf="@+id/iv_SorbentTime"
         android:textAlignment="textEnd"
-        android:layout_marginRight="2dp" />
+        android:layout_marginRight="2dp"
+        android:clickable="true"
+        android:onClick="OnClick" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -171,7 +181,9 @@
         android:id="@+id/iv_SorbentTime"
         android:src="@drawable/ic_question_mark"
         android:layout_below="@+id/space6"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:onClick="OnClick" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -181,7 +193,9 @@
         android:layout_marginLeft="2dp"
         android:layout_below="@+id/space6"
         android:layout_toRightOf="@+id/iv_SorbentTime"
-        android:layout_above="@+id/space7" />
+        android:layout_above="@+id/space7"
+        android:clickable="true"
+        android:onClick="OnClick" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -193,7 +207,9 @@
         android:layout_below="@+id/space6"
         android:layout_marginLeft="2dp"
         android:layout_alignBottom="@+id/space7"
-        android:gravity="center_vertical" />
+        android:gravity="center_vertical"
+        android:clickable="true"
+        android:onClick="OnClick" />
 
     <Space
         android:layout_width="fill_parent"
@@ -318,6 +334,8 @@
         android:layout_marginLeft="2dp"
         android:layout_alignTop="@+id/space4"
         android:layout_above="@+id/space5"
-        android:layout_toRightOf="@+id/iv_Procedure" />
+        android:layout_toRightOf="@+id/iv_Procedure"
+        android:onClick="OnClick"
+        android:clickable="true" />
 
 </RelativeLayout>

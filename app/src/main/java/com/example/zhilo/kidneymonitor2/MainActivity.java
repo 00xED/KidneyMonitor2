@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -11,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView tvStatus, tvProcedure, tvParams, tvSorbtime, tvBatt, tvLastConnected;
     private TextView tvCaptionStatus, tvCaptionProcedure, tvCaptionParams, tvCaptionSorbentTime, tvCaptionBattery;
-    private ImageView ivStatus, ivProcedure, ivParams, ivBatt, ivSorbtime;
+    private ImageView ivStatus, ivProcedure, ivParams, ivBatt, ivSorbtime, ivProcedureDropdown;
     private Button btPause, btProcedure, btLog, btSettings, btMessage;
 
     //Handler for automatic refreshing of screen values
@@ -60,11 +63,13 @@ public class MainActivity extends AppCompatActivity {
         tvBatt = (TextView) findViewById(R.id.tv_BatteryValue);
         tvBatt.setTypeface(tfPlayBold);
         tvLastConnected = (TextView) findViewById(R.id.tv_LastConnected);
+        tvLastConnected.setPaintFlags(tvLastConnected.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         tvLastConnected.setTypeface(tfPlayBold);
 
         ivBatt = (ImageView) findViewById(R.id.iv_Battery);
         ivStatus = (ImageView) findViewById(R.id.iv_Status);
         ivProcedure = (ImageView) findViewById(R.id.iv_Procedure);
+        ivProcedureDropdown = (ImageView) findViewById(R.id.iv_ProcedureDropdown);
         ivParams = (ImageView) findViewById(R.id.iv_Params);
         ivSorbtime = (ImageView) findViewById(R.id.iv_SorbentTime);
         btPause = (Button) findViewById(R.id.bt_Pause);
@@ -199,9 +204,226 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
 
+            case R.id.iv_ProcedureDropdown:{
+                Intent intent = new Intent(this, ProceduresActivity.class);
+                startActivity(intent);
+                break;
+            }
+
+            case R.id.iv_Procedure:{
+                Intent intent = new Intent(this, ProceduresActivity.class);
+                startActivity(intent);
+                break;
+            }
+
+            case R.id.tv_Procedure:{
+                Intent intent = new Intent(this, ProceduresActivity.class);
+                startActivity(intent);
+                break;
+            }
+
+            case R.id.tv_ProcedureValue:{
+                Intent intent = new Intent(this, ProceduresActivity.class);
+                startActivity(intent);
+                break;
+            }
+
+            case R.id.bt_Procedure:{
+                Intent intent = new Intent(this, ProceduresActivity.class);
+                startActivity(intent);
+                break;
+            }
+
+            case R.id.iv_SorbentTime:{
+                SorbTimeResetConfirmation();
+                break;
+            }
+
+            case R.id.tv_SorbentTime:{
+                SorbTimeResetConfirmation();
+                break;
+            }
+
+            case R.id.tv_SorbentTimeValue:{
+                SorbTimeResetConfirmation();
+                break;
+            }
+
+            case R.id.iv_SorbentTimeDropdown:{
+                SorbTimeResetConfirmation();
+                break;
+            }
+
+
+            case R.id.tv_LastConnected:{
+                enableAutoconnect();
+                break;
+            }
+
+            case R.id.bt_Pause:{
+                SharedPreferences sPref = getSharedPreferences(Constants.APP_PREFERENCES, MODE_PRIVATE); //Loading preferences
+                if (ProcedureSettings.getInstance().getProcedure() == Constants.PARAMETER_UNKNOWN)
+                    break;
+                else if (sPref.getBoolean(Constants.SETTINGS_TESTMODE, false))
+                    PauseConfirmationTest();
+                else
+                    PauseConfirmation();
+
+                break;
+            }
+
             default:
                 break;
         }
+    }
+
+    void SorbTimeResetConfirmation(){
+        final Context context = MainActivity.this;
+        AlertDialog.Builder ad = new AlertDialog.Builder(context);
+            ad.setTitle(getResources().getText(R.string.reset_sorbent).toString());
+            ad.setMessage(getResources().getText(R.string.reset_sorbent).toString());
+
+        ad.setPositiveButton(getResources().getText(R.string.yes).toString(), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                ProcedureSettings.getInstance().setSorbtime(-1);
+            }
+        });
+        ad.setNegativeButton(getResources().getText(R.string.no).toString(), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+
+            }
+        });
+        ad.setCancelable(true);
+        ad.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            public void onCancel(DialogInterface dialog) {
+
+            }
+        });
+        ad.show();
+    }
+
+    void PauseConfirmationTest(){
+        final Context context = MainActivity.this;
+        AlertDialog.Builder ad = new AlertDialog.Builder(context);
+        if (ProcedureSettings.getInstance().getProcedure() != Constants.PROCEDURE_READY) {
+            ad.setTitle(getResources().getText(R.string.stop_confirmation).toString());
+            ad.setMessage(getResources().getText(R.string.stop_confirmation).toString());
+        } else {
+            ad.setTitle(getResources().getText(R.string.resume_confirmation).toString());
+            ad.setMessage(getResources().getText(R.string.resume_confirmation).toString());
+        }
+        ad.setPositiveButton(getResources().getText(R.string.yes).toString(), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                Intent intentValues = new Intent(Constants.CONNECTIONSERVICE_ACTION);
+                intentValues.putExtra(Constants.CONNECTIONSERVICE_TASK, Constants.CONNECTIONSERVICE_ACTION_START_PROCEDURE);
+                if (ProcedureSettings.getInstance().getProcedure() != Constants.PROCEDURE_READY)
+                    intentValues.putExtra(Constants.CONNECTIONSERVICE_ARG, Constants.PROCEDURE_READY);
+                else
+                    intentValues.putExtra(Constants.CONNECTIONSERVICE_ARG, ProcedureSettings.getInstance().getProcedure_previous());
+                sendBroadcast(intentValues);
+            }
+        });
+        ad.setNegativeButton(getResources().getText(R.string.no).toString(), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+
+            }
+        });
+        ad.setCancelable(true);
+        ad.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            public void onCancel(DialogInterface dialog) {
+
+            }
+        });
+        ad.show();
+    }
+
+    void PauseConfirmation(){
+        final Context context = MainActivity.this;
+        Intent intent = new Intent(Constants.CONNECTIONSERVICE_ACTION);
+        AlertDialog.Builder ad = new AlertDialog.Builder(context);
+        if (ProcedureSettings.getInstance().getProcedure() != Constants.PROCEDURE_READY) {
+            ad.setTitle(getResources().getText(R.string.stop_confirmation).toString());
+            ad.setMessage(getResources().getText(R.string.stop_confirmation).toString());
+            intent.putExtra(Constants.CONNECTIONSERVICE_TASK, Constants.CONNECTIONSERVICE_ACTION_START_PROCEDURE);
+            intent.putExtra(Constants.CONNECTIONSERVICE_ARG, Constants.PROCEDURE_READY);
+        } else {
+            switch (ProcedureSettings.getInstance().getProcedure_previous()) {
+                case Constants.PROCEDURE_DIALYSIS: {
+                    ad.setTitle(getResources().getText(R.string.resume_confirmation).toString());
+                    ad.setMessage(getResources().getText(R.string.resume_confirmation).toString() +
+                            getResources().getText(R.string.procedure_dialysis).toString() + "?");
+                    intent.putExtra(Constants.CONNECTIONSERVICE_TASK, Constants.CONNECTIONSERVICE_ACTION_START_PROCEDURE);
+                    intent.putExtra(Constants.CONNECTIONSERVICE_ARG, Constants.PROCEDURE_DIALYSIS);
+                    break;
+                }
+
+                case Constants.PROCEDURE_DISINFECTION: {
+                    ad.setTitle(getResources().getText(R.string.resume_confirmation).toString());
+                    ad.setMessage(getResources().getText(R.string.resume_confirmation).toString() +
+                            getResources().getText(R.string.procedure_disinfection).toString() + "?");
+                    intent.putExtra(Constants.CONNECTIONSERVICE_TASK, Constants.CONNECTIONSERVICE_ACTION_START_PROCEDURE);
+                    intent.putExtra(Constants.CONNECTIONSERVICE_ARG, Constants.PROCEDURE_DISINFECTION);
+                    break;
+                }
+
+                case Constants.PROCEDURE_FILL: {
+                    ad.setTitle(getResources().getText(R.string.resume_confirmation).toString());
+                    ad.setMessage(getResources().getText(R.string.resume_confirmation).toString() +
+                            getResources().getText(R.string.procedure_filling).toString() + "?");
+                    intent.putExtra(Constants.CONNECTIONSERVICE_TASK, Constants.CONNECTIONSERVICE_ACTION_START_PROCEDURE);
+                    intent.putExtra(Constants.CONNECTIONSERVICE_ARG, Constants.PROCEDURE_FILL);
+                    break;
+                }
+
+                case Constants.PROCEDURE_FLUSH: {
+                    ad.setTitle(getResources().getText(R.string.resume_confirmation).toString());
+                    ad.setMessage(getResources().getText(R.string.resume_confirmation).toString() +
+                            getResources().getText(R.string.procedure_flush).toString() + "?");
+                    intent.putExtra(Constants.CONNECTIONSERVICE_TASK, Constants.CONNECTIONSERVICE_ACTION_START_PROCEDURE);
+                    intent.putExtra(Constants.CONNECTIONSERVICE_ARG, Constants.PROCEDURE_FLUSH);
+                    break;
+                }
+
+                case Constants.PROCEDURE_SHUTDOWN: {
+                    ad.setTitle(getResources().getText(R.string.resume_confirmation).toString());
+                    ad.setMessage(getResources().getText(R.string.resume_confirmation).toString() +
+                            getResources().getText(R.string.procedure_shutdown).toString() + "?");
+                    intent.putExtra(Constants.CONNECTIONSERVICE_TASK, Constants.CONNECTIONSERVICE_ACTION_START_PROCEDURE);
+                    intent.putExtra(Constants.CONNECTIONSERVICE_ARG, Constants.PROCEDURE_FLUSH);
+                    break;
+                }
+
+                default:
+                    break;
+            }
+        }
+
+        final Intent intentf = intent;
+        ad.setPositiveButton(getResources().getText(R.string.yes).toString(), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+
+                sendBroadcast(intentf);
+            }
+        });
+        ad.setNegativeButton(getResources().getText(R.string.no).toString(), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+
+            }
+        });
+        ad.setCancelable(true);
+        ad.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            public void onCancel(DialogInterface dialog) {
+
+            }
+        });
+        ad.show();
+    }
+
+    void enableAutoconnect(){
+        SharedPreferences sPref = getSharedPreferences(Constants.APP_PREFERENCES, MODE_PRIVATE); //Loading preferences
+        SharedPreferences.Editor ed = sPref.edit(); //Setting for preference editing
+        ed.putBoolean(Constants.SETTINGS_AUTOCONNECT, true);
+        ed.commit();
     }
 
     Runnable RefreshTask = new Runnable() {
@@ -212,6 +434,7 @@ public class MainActivity extends AppCompatActivity {
             int currentParams = ProcedureSettings.getInstance().getParams();
             int currentBattery = ProcedureSettings.getInstance().getBattery();
             long currentLastConnected = ProcedureSettings.getInstance().getLast_connection();
+            long currentSorbTime = ProcedureSettings.getInstance().getSorbtime();
             //current state
             switch (currentStatus) {
                 case Constants.STATUS_ON: {
@@ -238,7 +461,7 @@ public class MainActivity extends AppCompatActivity {
 
             //current procedure
             switch (currentProcedure) {
-                case Constants.PROCEDURE_FILLING: {
+                case Constants.PROCEDURE_FILL: {
                     tvProcedure.
                             setText(getResources().getText(R.string.procedure_filling).toString());
                     ivProcedure.setImageResource(R.drawable.ic_fill);
@@ -322,27 +545,24 @@ public class MainActivity extends AppCompatActivity {
 
             //sorbtime
             {
-                SharedPreferences sPref = getSharedPreferences(Constants.APP_PREFERENCES, MODE_PRIVATE); //Loading preferences
-                /*long remaining_time = sPref.getLong(Constants.TIME_REMAINING, -1);
-
-                if (remaining_time == -1 || !ConnectionService.STATE.equals(ConnectionService.STATE_ON))//If received value is default then set to unknown
-                {
-                    tvSorbtime.setText(getResources().getText(R.string.value_time_sorbent_unknown).toString());
-                    ivSorbtime.setImageResource(R.drawable.ic_time_grey);
-                } else    //Convert received time in seconds to hours and minutes
-                {
+                if(currentSorbTime == -1){
+                    tvSorbtime.setText(getResources().getText(R.string.unknown).toString());
+                    ivSorbtime.setImageResource(R.drawable.ic_question_mark);
+                }
+                else{
+                    long remaining_time = Constants.SORBENT_CHANGE_MS - (System.currentTimeMillis() - currentSorbTime);
                     int hours = (int) TimeUnit.MILLISECONDS.toHours(remaining_time);
                     remaining_time -= TimeUnit.HOURS.toMillis(hours);
                     int mins = (int) TimeUnit.MILLISECONDS.toMinutes(remaining_time);
                     remaining_time -= TimeUnit.MINUTES.toMillis(mins);
                     int sec = (int) TimeUnit.MILLISECONDS.toSeconds(remaining_time);
                     tvSorbtime.setText(hours +
-                            getResources().getText(R.string.value_sorbtime_hours).toString() +
+                            getResources().getText(R.string.sorbtime_hours).toString() +
                             mins +
-                            getResources().getText(R.string.value_sorbtime_mins).toString() + sec);
+                            getResources().getText(R.string.sorbtime_mins).toString() + sec);
 
-                    ivSorbtime.setImageResource(R.drawable.ic_time_green);
-                }*/
+                    ivSorbtime.setImageResource(R.drawable.ic_clock_green);
+                }
             }
 
             //Battery value
@@ -374,6 +594,31 @@ public class MainActivity extends AppCompatActivity {
                     String strDate = sdf.format(resultDate);
                     tvLastConnected.setText(getResources().getText(R.string.last_connected).toString() + strDate);
                 }
+            }
+
+            //Enable or disable views when not available
+            if(ProcedureSettings.getInstance().getProcedure() == Constants.PARAMETER_UNKNOWN){
+                btPause.setEnabled(false);
+                btPause.setBackground(getResources().getDrawable(R.drawable.ib_pause_disabled));
+                btProcedure.setEnabled(false);
+                btProcedure.setBackground(getResources().getDrawable(R.drawable.bt_procedure_disabled));
+                ivProcedure.setEnabled(false);
+                ivProcedureDropdown.setEnabled(false);
+                tvProcedure.setEnabled(false);
+                tvCaptionProcedure.setEnabled(false);
+            }
+            else{
+                btPause.setEnabled(true);
+                if(ProcedureSettings.getInstance().getProcedure() == Constants.PROCEDURE_READY)
+                    btPause.setBackground(getResources().getDrawable(R.drawable.ib_resume));
+                else
+                    btPause.setBackground(getResources().getDrawable(R.drawable.ib_pause));
+                btProcedure.setEnabled(true);
+                btProcedure.setBackground(getResources().getDrawable(R.drawable.bt_procedure));
+                ivProcedure.setEnabled(true);
+                ivProcedureDropdown.setEnabled(true);
+                tvProcedure.setEnabled(true);
+                tvCaptionProcedure.setEnabled(true);
             }
 
 

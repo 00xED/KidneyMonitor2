@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.zhilo.kidneymonitor2.InstructionActivity">
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="70dp"
+        android:id="@+id/iv_Header"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/bg_header_procedures"
+        android:scaleType="fitXY"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp" />
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        android:id="@+id/relativeLayout"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentRight="false"
+        android:layout_above="@+id/iv_Footer"
+        android:layout_below="@+id/iv_Header"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+
+        <ScrollView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollView5"
+            android:layout_centerInParent="true">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/iv_InstructionImage"
+                    android:layout_gravity="center_horizontal" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/tv_InstructionText"
+                    android:layout_gravity="center_horizontal" />
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:id="@+id/iv_Footer"
+            android:src="@drawable/bg_footer_thin"
+            android:scaleType="fitXY"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentBottom="true" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:id="@+id/ib_ok"
+            android:src="@drawable/ib_ok"
+            android:scaleType="fitXY"
+            android:layout_alignTop="@+id/iv_Footer"
+            android:layout_marginTop="30dp"
+            android:clickable="true"
+            android:onClick="OnClick"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:id="@+id/ib_cancel"
+            android:src="@drawable/ib_cancel"
+            android:scaleType="fitXY"
+            android:layout_alignTop="@+id/iv_Footer"
+            android:layout_marginTop="30dp"
+            android:clickable="true"
+            android:onClick="OnClick"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" />
+</RelativeLayout>

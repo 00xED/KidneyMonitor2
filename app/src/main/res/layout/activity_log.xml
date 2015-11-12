@@ -16,18 +16,19 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="@string/clear_log"
         android:id="@+id/bt_ClearLog"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
+        android:clickable="true"
         android:onClick="OnClick" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New CheckBox"
+        android:text="@string/log_autoscroll"
         android:id="@+id/cb_Autoscroll"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"

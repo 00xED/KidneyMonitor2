@@ -19,7 +19,7 @@ public interface Constants {
      */
     String procedureSettingsFile = "kidneymonitor2/settings.txt";
 
-    int PROCEDURE_FILLING = 0;
+    int PROCEDURE_FILL = 0;
     int PROCEDURE_DIALYSIS = 1;
     int PROCEDURE_SHUTDOWN = 2;
     int PROCEDURE_DISINFECTION = 3;
@@ -32,13 +32,11 @@ public interface Constants {
 
     int PARAMS_NORMAL = 0;
     int PARAMS_DANGER = 1;
-
-    int FUNCT_CORRECT = 0;
-    int FUNCT_FAULT = 1;
     /**
      * Constants for MainActivity
      */
     int REQUEST_ENABLE_BT = 1;
+    long SORBENT_CHANGE_MS = 12*60*60*1000;
 
     /**
      * Constants for DeviceListActivity
@@ -55,6 +53,7 @@ public interface Constants {
     String SETTINGS_VIBRATION = "VIBRATION";
     String SETTINGS_SOUND = "SOUND";
     String SETTINGS_TESTMODE = "TESTMODE";
+    String SETTINGS_SORBTIME = "SORBTIME";
     String SETTINGS_AUTOCONNECT = "AUTOCONNECT";
 
     /**
@@ -64,7 +63,8 @@ public interface Constants {
     String CONNECTIONSERVICE_TASK = "ConnectionService_BR_Task";
     String CONNECTIONSERVICE_ARG = "ConnectionService_BR_Arg";
     String CONNECTIONSERVICE_ACTION_START_BLE_SERVICE = "com.example.zhilo.kidneymonitor2.ConnectionService.START_BLE";
-    String CONNECTIONSERVICE_ACTION_STOP_BLE_SERVICE = "com.example.zhilo.kidneymonitor2.ConnectionService.STOP _BLE";
+    String CONNECTIONSERVICE_ACTION_STOP_BLE_SERVICE = "com.example.zhilo.kidneymonitor2.ConnectionService.STOP_BLE";
+    String CONNECTIONSERVICE_ACTION_START_PROCEDURE  = "com.example.zhilo.kidneymonitor2.ConnectionService.START_PROCEDURE";
     int FOREGROUND_SERVICE_ID = 237; //Magic number, voodoo number
 
     byte PACK_START = (byte) 0x55;

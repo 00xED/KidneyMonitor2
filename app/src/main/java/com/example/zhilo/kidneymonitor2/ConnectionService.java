@@ -184,7 +184,7 @@ public class ConnectionService extends Service {
     BroadcastReceiver brCommandReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             final String task = intent.getStringExtra(Constants.CONNECTIONSERVICE_TASK);
-            final String arg = intent.getStringExtra(Constants.CONNECTIONSERVICE_ARG);
+            final int arg = intent.getIntExtra(Constants.CONNECTIONSERVICE_ARG, Constants.PARAMETER_UNKNOWN);
             // switch tasks for setting main screen values
             if (Constants.CONNECTIONSERVICE_ACTION_START_BLE_SERVICE.equals(task)) {
                 Intent gattServiceIntent = new Intent(getApplicationContext(), BluetoothLeService.class);
@@ -193,9 +193,10 @@ public class ConnectionService extends Service {
                 //unbindService(BLEServiceConnection);
                 getApplicationContext().unbindService(BLEServiceConnection);
                 mBluetoothLeService = null;
-            } else {
-
+            } else if (Constants.CONNECTIONSERVICE_ACTION_START_PROCEDURE.equals(task)) {
+                startProcedure(arg);
             }
+
         }
     };
 
@@ -267,7 +268,7 @@ public class ConnectionService extends Service {
             switch (com1) {//executing first command
 
                 case Constants.bBATT: {//setting battery percentage
-                    lw.appendLog(TAG, "batt_set" + data_int + "%", true);
+                    lw.appendLog(TAG, getResources().getText(R.string.batt_set).toString() + data_int + "%", true);
                     lw.appendLog(TAG, "setting battery to " + data_int + "%");
                     ProcedureSettings.getInstance().setBattery(data_int);
                     break;
@@ -279,57 +280,59 @@ public class ConnectionService extends Service {
                     switch (data1) {
                         case Constants.bPROCEDURE_FILLING: {
                             lw.appendLog(TAG, "setting STATUS to FILLING, previous is " + ProcedureSettings.getInstance().getProcedure_previous());
-                            lw.appendLog(TAG, "starus_set" +
-                                    "value_status_filling", true);
-                            if ((ProcedureSettings.getInstance().getProcedure() != Constants.PROCEDURE_FILLING) &&
+                            lw.appendLog(TAG, getResources().getText(R.string.starus_set).toString() +
+                                    getResources().getText(R.string.procedure_filling).toString(), true);
+                            if ((ProcedureSettings.getInstance().getProcedure() != Constants.PROCEDURE_FILL) &&
                                (ProcedureSettings.getInstance().getProcedure() != Constants.PARAMETER_UNKNOWN))//if previous status is not FILLING and not UNKNOWN
                                 ProcedureSettings.getInstance().setProcedure_previous(ProcedureSettings.getInstance().getProcedure());
-
-                            ProcedureSettings.getInstance().setProcedure(Constants.PROCEDURE_FILLING);
+                            ProcedureSettings.getInstance().setSorbtime(-1);
+                            ProcedureSettings.getInstance().setProcedure(Constants.PROCEDURE_FILL);
                             break;
                         }
 
                         case Constants.bPROCEDURE_DIALYSIS: {
                             lw.appendLog(TAG, "setting STATUS to DIALYSIS, previous is " + ProcedureSettings.getInstance().getProcedure_previous());
 
-                            lw.appendLog(TAG, "starus_set" +
-                                    "value_status_dialysis", true);
+                            lw.appendLog(TAG, getResources().getText(R.string.starus_set).toString() +
+                                    getResources().getText(R.string.procedure_dialysis).toString(), true);
                             if ((ProcedureSettings.getInstance().getProcedure() != Constants.PROCEDURE_DIALYSIS) &&
                                     (ProcedureSettings.getInstance().getProcedure() != Constants.PARAMETER_UNKNOWN))//if previous status is not FILLING and not UNKNOWN
                                 ProcedureSettings.getInstance().setProcedure_previous(ProcedureSettings.getInstance().getProcedure());
 
+                            if(ProcedureSettings.getInstance().getProcedure_previous() == Constants.PROCEDURE_FILL)
+                                ProcedureSettings.getInstance().setSorbtime(System.currentTimeMillis());
                             ProcedureSettings.getInstance().setProcedure(Constants.PROCEDURE_DIALYSIS);
                             break;
                         }
 
                         case Constants.bPROCEDURE_SHUTDOWN: {
                             lw.appendLog(TAG, "setting STATUS to SHUTDOWN, previous is " + ProcedureSettings.getInstance().getProcedure_previous());
-                            lw.appendLog(TAG, "starus_set" +
-                                    "value_status_shutdown", true);
+                            lw.appendLog(TAG, getResources().getText(R.string.starus_set).toString() +
+                                    getResources().getText(R.string.procedure_shutdown).toString(), true);
                             if ((ProcedureSettings.getInstance().getProcedure() != Constants.PROCEDURE_SHUTDOWN) &&
                                     (ProcedureSettings.getInstance().getProcedure() != Constants.PARAMETER_UNKNOWN))//if previous status is not FILLING and not UNKNOWN
                                 ProcedureSettings.getInstance().setProcedure_previous(ProcedureSettings.getInstance().getProcedure());
-
+                            ProcedureSettings.getInstance().setSorbtime(-1);
                             ProcedureSettings.getInstance().setProcedure(Constants.PROCEDURE_SHUTDOWN);
                             break;
                         }
 
                         case Constants.bPROCEDURE_DISINFECTION: {
                             lw.appendLog(TAG, "setting STATUS to DISINFECTION, previous is " + ProcedureSettings.getInstance().getProcedure_previous());
-                            lw.appendLog(TAG, "starus_set" +
-                                    "value_status_disinfection", true);
+                            lw.appendLog(TAG, getResources().getText(R.string.starus_set).toString() +
+                                    getResources().getText(R.string.procedure_disinfection).toString(), true);
                             if ((ProcedureSettings.getInstance().getProcedure() != Constants.PROCEDURE_DISINFECTION) &&
                                     (ProcedureSettings.getInstance().getProcedure() != Constants.PARAMETER_UNKNOWN))//if previous status is not FILLING and not UNKNOWN
                                 ProcedureSettings.getInstance().setProcedure_previous(ProcedureSettings.getInstance().getProcedure());
-
+                            ProcedureSettings.getInstance().setSorbtime(-1);
                             ProcedureSettings.getInstance().setProcedure(Constants.PROCEDURE_DISINFECTION);
                             break;
                         }
 
                         case Constants.bPROCEDURE_READY: {
                             lw.appendLog(TAG, "setting STATUS to READY, previous is " + ProcedureSettings.getInstance().getProcedure_previous());
-                            lw.appendLog(TAG, "starus_set" +
-                                    "value_status_ready", true);
+                            lw.appendLog(TAG, getResources().getText(R.string.starus_set).toString() +
+                                    getResources().getText(R.string.procedure_ready).toString(), true);
                             if ((ProcedureSettings.getInstance().getProcedure() != Constants.PROCEDURE_READY) &&
                                     (ProcedureSettings.getInstance().getProcedure() != Constants.PARAMETER_UNKNOWN))//if previous status is not FILLING and not UNKNOWN
                                 ProcedureSettings.getInstance().setProcedure_previous(ProcedureSettings.getInstance().getProcedure());
@@ -340,20 +343,20 @@ public class ConnectionService extends Service {
 
                         case Constants.bPROCEDURE_FLUSH: {
                             lw.appendLog(TAG, "setting STATUS to FLUSH, previous is " + ProcedureSettings.getInstance().getProcedure_previous());
-                            lw.appendLog(TAG, "starus_set" +
-                                    "value_status_flush", true);
+                            lw.appendLog(TAG, getResources().getText(R.string.starus_set).toString() +
+                                    getResources().getText(R.string.procedure_flush).toString(), true);
                             if ((ProcedureSettings.getInstance().getProcedure() != Constants.PROCEDURE_FLUSH) &&
                                     (ProcedureSettings.getInstance().getProcedure() != Constants.PARAMETER_UNKNOWN))//if previous status is not FILLING and not UNKNOWN
                                 ProcedureSettings.getInstance().setProcedure_previous(ProcedureSettings.getInstance().getProcedure());
-
+                            ProcedureSettings.getInstance().setSorbtime(-1);
                             ProcedureSettings.getInstance().setProcedure(Constants.PROCEDURE_FLUSH);
                             break;
                         }
 
                         default: {
                             lw.appendLog(TAG, "setting STATUS to UNKNOWN, previous is " + ProcedureSettings.getInstance().getProcedure_previous(), true);
-                            lw.appendLog(TAG, "starus_set" +
-                                    "value_status_unknown", true);
+                            lw.appendLog(TAG, getResources().getText(R.string.starus_set).toString() +
+                                    "procedure_unknown", true);
                             ProcedureSettings.getInstance().setProcedure(Constants.PARAMETER_UNKNOWN);
                             break;
                         }
@@ -468,49 +471,49 @@ public class ConnectionService extends Service {
                         }
 
                         case (byte)0x03:{
-                            lw.appendLog(TAG, "send UFPUMP1FLOW", true);
+                            lw.appendLog(TAG, "send UFPUMP1FLOW");
                             sendMessageBytes((byte) (Constants.bSENDDPUMPS + (byte) 0x01), (byte) 0x03,
                                     intTo4byte(ProcedureSettings.getInstance().getFlushPump1Flow()));//first unfilling pump
                             break;
                         }
 
                         case (byte)0x11:{
-                            lw.appendLog(TAG, "send FPUMP2FLOW", true);
+                            lw.appendLog(TAG, "send FPUMP2FLOW");
                             sendMessageBytes((byte) (Constants.bSENDDPUMPS + (byte) 0x01), (byte) 0x11,
                                     intTo4byte(ProcedureSettings.getInstance().getFillPump2Flow()));//second filling pump
                             break;
                         }
 
                         case (byte)0x12:{
-                            lw.appendLog(TAG, "send DPUMP2FLOW", true);
+                            lw.appendLog(TAG, "send DPUMP2FLOW");
                             sendMessageBytes((byte) (Constants.bSENDDPUMPS + (byte) 0x01), (byte) 0x12,
                                     intTo4byte(ProcedureSettings.getInstance().getDialPump2Flow()));//second dialysis pump
                             break;
                         }
 
                         case (byte)0x13:{
-                            lw.appendLog(TAG, "send UFPUMP2FLOW", true);
+                            lw.appendLog(TAG, "send UFPUMP2FLOW");
                             sendMessageBytes((byte) (Constants.bSENDDPUMPS + (byte) 0x01), (byte) 0x13,
                                     intTo4byte(ProcedureSettings.getInstance().getFlushPump2Flow()));//second unfilling pump
                             break;
                         }
 
                         case (byte)0x21:{
-                            lw.appendLog(TAG, "send FPUMP3FLOW", true);
+                            lw.appendLog(TAG, "send FPUMP3FLOW");
                             sendMessageBytes((byte) (Constants.bSENDDPUMPS + (byte) 0x01), (byte) 0x21,
                                     intTo4byte(ProcedureSettings.getInstance().getFillPump3Flow()));//third filling pump
                             break;
                         }
 
                         case (byte)0x22:{
-                            lw.appendLog(TAG, "send DPUMP3FLOW", true);
+                            lw.appendLog(TAG, "send DPUMP3FLOW");
                             sendMessageBytes((byte) (Constants.bSENDDPUMPS + (byte) 0x01), (byte) 0x22,
                                     intTo4byte(ProcedureSettings.getInstance().getDialPump3Flow()));//third dialysis pump
                             break;
                         }
 
                         case (byte)0x23:{
-                            lw.appendLog(TAG, "send UFPUMP3FLOW", true);
+                            lw.appendLog(TAG, "send UFPUMP3FLOW");
                             sendMessageBytes((byte) (Constants.bSENDDPUMPS + (byte) 0x01), (byte) 0x23,
                                     intTo4byte(ProcedureSettings.getInstance().getFlushPump3Flow()));//third unfilling pump
                             break;
@@ -618,85 +621,85 @@ public class ConnectionService extends Service {
                 }
 
                 case Constants.PE_PRESS1: {//receiving error
-                    processError("error_press" + "1");
+                    processError(getResources().getText(R.string.error_press).toString() + "1");
                     errorCount++;
                     break;
                 }
 
                 case Constants.PE_PRESS2: {//receiving error
-                    processError("error_press" + "2");
+                    processError(getResources().getText(R.string.error_press).toString() + "2");
                     errorCount++;
                     break;
                 }
 
                 case Constants.PE_PRESS3: {//receiving error
-                    processError("error_press" + "3");
+                    processError(getResources().getText(R.string.error_press).toString() + "3");
                     errorCount++;
                     break;
                 }
 
                 case Constants.PE_TEMP: {//receiving error
-                    processError("error_temp");
+                    processError(getResources().getText(R.string.error_temp).toString());
                     errorCount++;
                     break;
                 }
 
                 case Constants.PE_ELECTRO: {//receiving error
-                    processError("error_electro");
+                    processError(getResources().getText(R.string.error_electro).toString());
                     errorCount++;
                     break;
                 }
 
                 case Constants.PE_EDS1: {//receiving error
-                    processError("error_eds" + "1");
+                    processError(getResources().getText(R.string.error_eds).toString() + "1");
                     errorCount++;
                     break;
                 }
 
                 case Constants.PE_EDS2: {//receiving error
-                    processError("error_eds" + "2");
+                    processError(getResources().getText(R.string.error_eds).toString() + "2");
                     errorCount++;
                     break;
                 }
 
                 case Constants.PE_EDS3: {//receiving error
-                    processError("error_eds" + "3");
+                    processError(getResources().getText(R.string.error_eds).toString() + "3");
                     errorCount++;
                     break;
                 }
 
                 case Constants.PE_EDS4: {//receiving error
-                    processError("error_eds" + "4");
+                    processError(getResources().getText(R.string.error_eds).toString() + "4");
                     errorCount++;
                     break;
                 }
 
                 case Constants.PE_BATT: {//receiving error
-                    processError("error_batt");
+                    processError(getResources().getText(R.string.error_batt).toString());
                     errorCount++;
                     break;
                 }
 
                 case Constants.PE_PUMP1: {//receiving error
-                    processError("error_eds" + "1");
+                    processError(getResources().getText(R.string.error_eds).toString() + "1");
                     errorCount++;
                     break;
                 }
 
                 case Constants.PE_PUMP2: {//receiving error
-                    processError("error_eds" + "2");
+                    processError(getResources().getText(R.string.error_eds).toString() + "2");
                     errorCount++;
                     break;
                 }
 
                 case Constants.PE_PUMP3: {//receiving error
-                    processError("error_eds" + "3");
+                    processError(getResources().getText(R.string.error_eds).toString() + "3");
                     errorCount++;
                     break;
                 }
 
                 case Constants.PE_ERROR: {//receiving error
-                    processError("error_unknown");
+                    processError(getResources().getText(R.string.error_unknown).toString());
                     errorCount++;
                     break;
                 }
@@ -712,6 +715,55 @@ public class ConnectionService extends Service {
                 ProcedureSettings.getInstance().setParams(Constants.PARAMS_NORMAL);
             }
 
+        }
+    }
+
+    public void startProcedure(int selectedProcedure){
+        switch (selectedProcedure) {
+            case Constants.PROCEDURE_DIALYSIS: {
+                sendMessageBytes(Constants.bSTATUS, new byte[]{(byte) 0x00, (byte) 0x00, (byte) 0x00, Constants.bDIALYSIS});
+                lw.appendLog(TAG, getResources().getText(R.string.user_switched_to).toString() +
+                        getResources().getText(R.string.procedure_dialysis).toString(), true);
+                break;
+            }
+
+            case Constants.PROCEDURE_FILL: {
+                sendMessageBytes(Constants.bSTATUS, new byte[]{(byte) 0x00, (byte) 0x00, (byte) 0x00, Constants.bFILLING});
+                lw.appendLog(TAG, getResources().getText(R.string.user_switched_to).toString() +
+                        getResources().getText(R.string.procedure_filling).toString(), true);
+                break;
+            }
+
+            case Constants.PROCEDURE_SHUTDOWN: {
+                sendMessageBytes(Constants.bSTATUS, new byte[]{(byte) 0x00, (byte) 0x00, (byte) 0x00, Constants.bSHUTDOWN});
+                lw.appendLog(TAG, getResources().getText(R.string.user_switched_to).toString() +
+                        getResources().getText(R.string.procedure_shutdown).toString(), true);
+                break;
+            }
+
+            case Constants.PROCEDURE_DISINFECTION: {
+                sendMessageBytes(Constants.bSTATUS, new byte[]{(byte) 0x00, (byte) 0x00, (byte) 0x00, Constants.bDISINFECTION});
+                lw.appendLog(TAG, getResources().getText(R.string.user_switched_to).toString() +
+                        getResources().getText(R.string.procedure_disinfection).toString(), true);
+                break;
+            }
+
+            case Constants.PROCEDURE_FLUSH: {
+                sendMessageBytes(Constants.bSTATUS, new byte[]{(byte) 0x00, (byte) 0x00, (byte) 0x00, Constants.bFLUSH});
+                lw.appendLog(TAG, getResources().getText(R.string.user_switched_to).toString() +
+                        getResources().getText(R.string.procedure_flush).toString(), true);
+                break;
+            }
+
+            case Constants.PROCEDURE_READY: {
+                sendMessageBytes(Constants.bSTATUS, new byte[]{(byte) 0x00, (byte) 0x00, (byte) 0x00, Constants.bPAUSE});
+                lw.appendLog(TAG, getResources().getText(R.string.user_switched_to).toString() +
+                        getResources().getText(R.string.pause_procedure).toString(), true);
+                break;
+            }
+
+            default:
+                break;
         }
     }
 

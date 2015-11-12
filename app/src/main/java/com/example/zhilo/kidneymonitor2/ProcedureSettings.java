@@ -1,5 +1,6 @@
 package com.example.zhilo.kidneymonitor2;
 
+
 import android.os.Environment;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -45,7 +46,7 @@ public class ProcedureSettings {
     private int procedure;
     private int procedure_previous;
     private int proc_parameters;
-    private int sorbtime;
+    private long sorbtime;
     private long last_connection;
 
     public static ProcedureSettings getInstance(){
@@ -155,7 +156,7 @@ public class ProcedureSettings {
     public int getParams() {
         return this.proc_parameters;
     }
-    public int getSorbtime() {
+    public long getSorbtime() {
         return this.sorbtime;
     }
     public long getLast_connection() {
@@ -204,7 +205,7 @@ public class ProcedureSettings {
         this.proc_parameters = proc_parameters;
     }
 
-    public void setSorbtime(int sorbtime) {
+    public void setSorbtime(long sorbtime) {
         this.sorbtime = sorbtime;
     }
     public void setLast_connection(long last_connection) {

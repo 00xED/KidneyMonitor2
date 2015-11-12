@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -20,18 +21,19 @@ public class LogActivity extends AppCompatActivity {
 
     private TextView mTvLog;
     private CheckBox mCbAutoscroll;
+    private Button mBtClearLog;
 
     private Handler scrollDownHandler = new Handler();//scroll down
     private Handler textRefreshHandler = new Handler();//scroll down
     textUpdateTask textupdatetask;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log);
         getSupportActionBar().hide();
         mTvLog = (TextView) findViewById(R.id.tv_Log);
         mCbAutoscroll = (CheckBox) findViewById(R.id.cb_Autoscroll);
+        mBtClearLog = (Button) findViewById(R.id.bt_ClearLog);
         mCbAutoscroll.setChecked(true);
         scrollDownHandler.post(scrollDownTask);
         textRefreshHandler.post(textUpdateTask);
@@ -40,7 +42,7 @@ public class LogActivity extends AppCompatActivity {
     /**
      * Checks if we can read from internal storage
      */
-    public boolean isExternalStorageReadable() {
+    private boolean isExternalStorageReadable() {
         String state = Environment.getExternalStorageState();
         return (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state));
     }

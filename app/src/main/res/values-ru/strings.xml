@@ -35,7 +35,7 @@
     <string name="paired_devices">Сопряженные устройства</string>
     <string name="current_device">Текущее устройство</string>
     <string name="current_device_none">Нет</string>
-    <string name="error_connect_failed">Соединение не удалос</string>
+    <string name="error_connect_failed">Соединение не удалось</string>
     <string name="error_connect_lost">Соединение потеряно</string>
     <string name="last_connected">Последнее поключение:</string>
     <string name="last_connected_unknown">Попробовать подключиться?</string>
@@ -62,6 +62,13 @@
     <string name="sorbtime_mins">м.</string>
     <string name="test_mode">Тестовый режим</string>
     <string name="notif_restart">Необходим перезапуск приложения, чтобы изменения вступили в силу</string>
+    <string name="pause_procedure">Остановить процедуру</string>
+    <string name="stop_confirmation">Остановить процедуру?</string>
+    <string name="resume_confirmation">Возобновить процедуру\u00A0</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+
+    <string name="user_switched_to">Пользователь переключился на:</string>
     
     <string name="l">\u00A0л</string>
     <string name="mlm">\u00A0мл/мин</string>
@@ -81,4 +88,56 @@
     <string name="param_pump_flows">Расходы насосов: ±20 мл/мин</string>
     <string name="param_sensors_readings">Показания датчиков: ±10 мм.рт.ст.</string>
     <string name="param_electrolyzer">Электролизер</string>
+
+    <string name="batt_set">Уровень батареи:</string>
+    <string name="connected_to">Подключен к: </string>
+    <string name="error_batt">Ошибка батареи</string>
+    <string name="error_eds">Проводимость вне нормы на датчике №</string>
+    <string name="error_electro">Электролизёр вне нормы</string>
+    <string name="error_press">Давление вне нормы на датчике №</string>
+    <string name="error_pump">Насос вне нормы на датчике №</string>
+    <string name="error_temp">Температура вне нормы</string>
+    <string name="error_unknown">Неизвестная ошибка</string>
+    <string name="funct_set">Устройство функционирует: </string>
+    <string name="params_set">Параметры процедуры: </string>
+    <string name="starus_set">Текущая процедура: </string>
+    <string name="reset_sorbent">Сбросить таймер замены сорбентов?</string>
+
+    <string-array name="instruction_filling">
+        <item>Проведите процедуру заполнения перитонеальной полости пациента подогретым РПД.\n
+            Подробнее см. пункт n Руководства по эксплуатации.</item>
+        <item>Подогрейте мешок для магистралей аппарата.</item>
+        <item>Уложите пакет с магистралями в рюкзак.</item>
+        <item>Подвесьте мешок на стойку и подсоедините к магисттрали аппарата.</item>
+        <item>Отожмите зажимы на трубках мешка.</item>
+        <item>Нажмите OK для начала процедуры заполнения.</item>
+    </string-array>
+
+    <string-array name="instruction_dialysis">
+        <item>С помощью зажимов пережмите трубки мешка.\n
+            Подробнее см. пункт n Руководства по эксплуатации.</item>
+        <item>Отсоедините  мешок от магистралей аппарата.</item>
+        <item>Закройте рюкзак и наденьте на себя. Надёжно зафиксируйте.</item>
+        <item>Подсоедините трубки аппарата к катетеру пациента.</item>
+        <item>Нажмите OK для начала процедуры диализа.</item>
+    </string-array>
+
+    <string-array name="instruction_flush">
+        <item>Отсоедените трубки аппарата от катетера пациента.\n
+            Подробнее см. пункт n Руководства по эксплуатации.</item>
+        <item>Проведите процедуру слива РПД из перитонеальной полости пациента в мешок.</item>
+        <item>С мопощью зажимов пережмите трубки насосов, электролизёра, дегазатора и ультрафильтрата.</item>
+        <item>Поместите использованные одноразовые мешки и магистраль в герметичный пакет и выбросите в короб для дальнейшей утилизации.</item>
+        <item>Нажмите OK для начала процедуры слива</item>
+    </string-array>
+
+    <string-array name="instruction_disinfection">
+        <item>Подсоедините дезинфицирующий прибор к аппарату.</item>
+        <item>Включите дезинфицирующий прибор.</item>
+        <item>Нажмите OK для начала процедуры дезинфекции.</item>
+    </string-array>
+
+    <string-array name="instruction_shutdown">
+        <item>Нажмите ОК для выключения прибора</item>
+    </string-array>
 </resources>
