@@ -11,7 +11,7 @@ import android.widget.RadioButton;
 public class ProceduresActivity extends AppCompatActivity {
 
     private RadioButton rbFill, rbDialisys, rbFlush, rbShutdown, rbDisinfection;
-    private ImageView ivFilling, ivDialisys, ivFlush, ivShutdown, ivDisinfection;
+    private ImageView ivFill, ivDialisys, ivFlush, ivShutdown, ivDisinfection;
 
     int selectedProcedure = -1;
     
@@ -27,7 +27,7 @@ public class ProceduresActivity extends AppCompatActivity {
         rbShutdown = (RadioButton) findViewById(R.id.rb_shutdown);
         rbDisinfection = (RadioButton) findViewById(R.id.rb_disinfection);
 
-        ivFilling = (ImageView) findViewById(R.id.ib_fill);
+        ivFill = (ImageView) findViewById(R.id.ib_fill);
         ivDialisys = (ImageView) findViewById(R.id.ib_dialisys);
         ivFlush = (ImageView) findViewById(R.id.ib_flush);
         ivShutdown = (ImageView) findViewById(R.id.ib_shutdown);
@@ -64,10 +64,21 @@ public class ProceduresActivity extends AppCompatActivity {
                 break;
             }
 
+            case Constants.PROCEDURE_DISINFECTION_DONE: {
+                disableAllRows();
+                rbShutdown.setEnabled(true);
+                ivShutdown.setImageResource(R.drawable.ib_shutdown);
+                rbFill.setEnabled(true);
+                ivFill.setImageResource(R.drawable.ib_fill);
+                break;
+            }
+
             case Constants.PROCEDURE_FLUSH: {
                 disableAllRows();
                 rbShutdown.setEnabled(true);
                 ivShutdown.setImageResource(R.drawable.ib_shutdown);
+                rbFill.setEnabled(true);
+                ivFill.setImageResource(R.drawable.ib_fill);
                 break;
             }
 
@@ -77,6 +88,8 @@ public class ProceduresActivity extends AppCompatActivity {
                         disableAllRows();
                         rbFlush.setEnabled(true);
                         ivFlush.setImageResource(R.drawable.ib_flush);
+                        rbDialisys.setEnabled(true);
+                        ivDialisys.setImageResource(R.drawable.ib_dialisys);
                         break;
                     }
 
@@ -84,6 +97,8 @@ public class ProceduresActivity extends AppCompatActivity {
                         disableAllRows();
                         rbDialisys.setEnabled(true);
                         ivDialisys.setImageResource(R.drawable.ib_dialisys);
+                        rbFill.setEnabled(true);
+                        ivFill.setImageResource(R.drawable.ib_fill);
                         break;
                     }
 
@@ -98,6 +113,17 @@ public class ProceduresActivity extends AppCompatActivity {
                         disableAllRows();
                         rbShutdown.setEnabled(true);
                         ivShutdown.setImageResource(R.drawable.ib_shutdown);
+                        rbDisinfection.setEnabled(true);
+                        ivDisinfection.setImageResource(R.drawable.ib_disinfection);
+                        break;
+                    }
+
+                    case Constants.PROCEDURE_DISINFECTION_DONE: {
+                        disableAllRows();
+                        rbShutdown.setEnabled(true);
+                        ivShutdown.setImageResource(R.drawable.ib_shutdown);
+                        rbFill.setEnabled(true);
+                        ivFill.setImageResource(R.drawable.ib_fill);
                         break;
                     }
 
@@ -105,8 +131,12 @@ public class ProceduresActivity extends AppCompatActivity {
                         disableAllRows();
                         rbShutdown.setEnabled(true);
                         ivShutdown.setImageResource(R.drawable.ib_shutdown);
+                        rbFlush.setEnabled(true);
+                        ivFlush.setImageResource(R.drawable.ib_flush);
                         break;
                     }
+
+
 
                     default: {
                         enableAllRows();
@@ -226,7 +256,7 @@ public class ProceduresActivity extends AppCompatActivity {
 
     public void disableAllRows(){
         rbFill.setEnabled(false);
-        ivFilling.setImageResource(R.drawable.ib_fill_disabled);
+        ivFill.setImageResource(R.drawable.ib_fill_disabled);
         rbDialisys.setEnabled(false);
         ivDialisys.setImageResource(R.drawable.ib_dialisys_disabled);
         rbFlush.setEnabled(false);
@@ -239,7 +269,7 @@ public class ProceduresActivity extends AppCompatActivity {
 
     public void enableAllRows(){
         rbFill.setEnabled(true);
-        ivFilling.setImageResource(R.drawable.ib_fill);
+        ivFill.setImageResource(R.drawable.ib_fill);
         rbDialisys.setEnabled(true);
         ivDialisys.setImageResource(R.drawable.ib_dialisys);
         rbFlush.setEnabled(true);

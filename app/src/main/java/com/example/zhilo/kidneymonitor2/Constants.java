@@ -19,19 +19,24 @@ public interface Constants {
      */
     String procedureSettingsFile = "kidneymonitor2/settings.txt";
 
+    int PARAMETER_UNKNOWN = -1;
     int PROCEDURE_FILL = 0;
     int PROCEDURE_DIALYSIS = 1;
     int PROCEDURE_SHUTDOWN = 2;
     int PROCEDURE_DISINFECTION = 3;
     int PROCEDURE_READY = 4;
     int PROCEDURE_FLUSH = 5;
-    int PARAMETER_UNKNOWN = -1;
+    int PROCEDURE_FILL_DONE = 6;
+    int PROCEDURE_DIALYSIS_DONE = 7;
+    int PROCEDURE_DISINFECTION_DONE = 8;
+
     int STATUS_ON = 0;
     int STATUS_OFF = 1;
     int STATUS_UNKNOWN = -1;
 
     int PARAMS_NORMAL = 0;
     int PARAMS_DANGER = 1;
+
     /**
      * Constants for MainActivity
      */

@@ -58,6 +58,18 @@ public class InstructionActivity extends AppCompatActivity {
                 break;
             }
 
+            case(Constants.PROCEDURE_FILL_DONE):{
+                ivBackground.setImageResource(R.drawable.bg_header_fill);
+                instructionsStrings = getResources().getStringArray(R.array.instruction_filling_done);
+                break;
+            }
+
+            case(Constants.PROCEDURE_DIALYSIS_DONE):{
+                ivBackground.setImageResource(R.drawable.bg_header_dialisys);
+                instructionsStrings = getResources().getStringArray(R.array.instruction_dialysis_done);
+                break;
+            }
+
             default:
                 break;
         }
@@ -123,10 +135,12 @@ public class InstructionActivity extends AppCompatActivity {
 
             case(Constants.PROCEDURE_FLUSH):{
                 if(stage == instructionsStrings.length){
-                    Intent intent = new Intent(Constants.CONNECTIONSERVICE_ACTION);
+                    /*Intent intent = new Intent(Constants.CONNECTIONSERVICE_ACTION);
                     intent.putExtra(Constants.CONNECTIONSERVICE_TASK, Constants.CONNECTIONSERVICE_ACTION_START_PROCEDURE);
                     intent.putExtra(Constants.CONNECTIONSERVICE_ARG, selectedProcedure);
-                    sendBroadcast(intent);
+                    sendBroadcast(intent);*/
+                    Intent intent = new Intent(this, ProceduresActivity.class);
+                    startActivity(intent);
                     InstructionActivity.this.finish();
                 }
                 else{
@@ -162,6 +176,38 @@ public class InstructionActivity extends AppCompatActivity {
                 else{
                     tvInstructionText.setText(instructionsStrings[stage]);
                     ivInstructionImage.setImageResource(R.drawable.instruct_disinfection);
+                }
+                break;
+            }
+
+            case(Constants.PROCEDURE_FILL_DONE):{
+                if(stage == instructionsStrings.length){
+                    Intent intent = new Intent(this, InstructionActivity.class);
+                    Bundle parameters = new Bundle();
+                    parameters.putInt("procedure", Constants.PROCEDURE_DIALYSIS); //Your id
+                    intent.putExtras(parameters); //Put your id to your next Intent
+                    InstructionActivity.this.finish();
+                    startActivity(intent);
+                }
+                else{
+                    tvInstructionText.setText(instructionsStrings[stage]);
+                    ivInstructionImage.setImageResource(R.drawable.instruct_filling);
+                }
+                break;
+            }
+
+            case(Constants.PROCEDURE_DIALYSIS_DONE):{
+                if(stage == instructionsStrings.length){
+                    Intent intent = new Intent(this, InstructionActivity.class);
+                    Bundle parameters = new Bundle();
+                    parameters.putInt("procedure", Constants.PROCEDURE_FLUSH); //Your id
+                    intent.putExtras(parameters); //Put your id to your next Intent
+                    InstructionActivity.this.finish();
+                    startActivity(intent);
+                }
+                else{
+                    tvInstructionText.setText(instructionsStrings[stage]);
+                    ivInstructionImage.setImageResource(R.drawable.instruct_dialysis);
                 }
                 break;
             }
