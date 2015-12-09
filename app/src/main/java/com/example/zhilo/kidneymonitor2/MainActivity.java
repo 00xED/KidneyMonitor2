@@ -32,9 +32,9 @@ public class MainActivity extends AppCompatActivity {
 
     private BluetoothAdapter mBluetoothAdapter;
 
-    private TextView tvStatus, tvProcedure, tvParams, tvSorbtime, tvBatt, tvLastConnected;
-    private TextView tvCaptionStatus, tvCaptionProcedure, tvCaptionParams, tvCaptionSorbentTime, tvCaptionBattery;
-    private ImageView ivStatus, ivProcedure, ivParams, ivBatt, ivSorbtime, ivProcedureDropdown;
+    private TextView tvStatus, tvProcedure, tvDisinfection, tvSorbtime, tvBatt, tvLastConnected;
+    private TextView tvCaptionStatus, tvCaptionProcedure, tvCaptionDisinfection, tvCaptionSorbentTime, tvCaptionBattery;
+    private ImageView ivStatus, ivProcedure, ivDisinfection, ivBatt, ivSorbtime, ivProcedureDropdown;
     private Button btPause, btProcedure, btLog, btSettings, btMessage;
 
     //Handler for automatic refreshing of screen values
@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
         tvStatus.setTypeface(tfPlayBold);
         tvProcedure = (TextView) findViewById(R.id.tv_ProcedureValue);
         tvProcedure.setTypeface(tfPlayBold);
-        tvParams = (TextView) findViewById(R.id.tv_ParamsValue);
-        tvParams.setTypeface(tfPlayBold);
+        tvDisinfection = (TextView) findViewById(R.id.tv_DisinfectionValue);
+        tvDisinfection.setTypeface(tfPlayBold);
         tvSorbtime = (TextView) findViewById(R.id.tv_SorbentTimeValue);
         tvSorbtime.setTypeface(tfPlayBold);
         tvBatt = (TextView) findViewById(R.id.tv_BatteryValue);
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         ivStatus = (ImageView) findViewById(R.id.iv_Status);
         ivProcedure = (ImageView) findViewById(R.id.iv_Procedure);
         ivProcedureDropdown = (ImageView) findViewById(R.id.iv_ProcedureDropdown);
-        ivParams = (ImageView) findViewById(R.id.iv_Params);
+        ivDisinfection = (ImageView) findViewById(R.id.iv_Disinfection);
         ivSorbtime = (ImageView) findViewById(R.id.iv_SorbentTime);
         btPause = (Button) findViewById(R.id.bt_Pause);
         btPause.setTypeface(tfPlayBold);
@@ -87,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
         tvCaptionStatus.setTypeface(tfPlayBold);
         tvCaptionProcedure = (TextView) findViewById(R.id.tv_Procedure);
         tvCaptionProcedure.setTypeface(tfPlayBold);
-        tvCaptionParams = (TextView) findViewById(R.id.tv_Params);
-        tvCaptionParams.setTypeface(tfPlayBold);
+        tvCaptionDisinfection = (TextView) findViewById(R.id.tv_Disinfection);
+        tvCaptionDisinfection.setTypeface(tfPlayBold);
         tvCaptionSorbentTime = (TextView) findViewById(R.id.tv_SorbentTime);
         tvCaptionSorbentTime.setTypeface(tfPlayBold);
         tvCaptionBattery = (TextView) findViewById(R.id.tv_Battery);
@@ -180,25 +180,25 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
 
-            case R.id.iv_ParamsDropdown:{
+            case R.id.iv_StatusDropdown:{
                 Intent intent = new Intent(this, ParamActivity.class);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.iv_Params:{
+            case R.id.iv_Status:{
                 Intent intent = new Intent(this, ParamActivity.class);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.tv_Params:{
+            case R.id.tv_Status:{
                 Intent intent = new Intent(this, ParamActivity.class);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.tv_ParamsValue:{
+            case R.id.tv_StatusValue:{
                 Intent intent = new Intent(this, ParamActivity.class);
                 startActivity(intent);
                 break;
@@ -253,7 +253,6 @@ public class MainActivity extends AppCompatActivity {
                 SorbTimeResetConfirmation();
                 break;
             }
-
 
             case R.id.tv_LastConnected:{
                 enableAutoconnect();
@@ -431,10 +430,12 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             int currentStatus = ProcedureSettings.getInstance().getStatus();
             int currentProcedure = ProcedureSettings.getInstance().getProcedure();
-            int currentParams = ProcedureSettings.getInstance().getParams();
             int currentBattery = ProcedureSettings.getInstance().getBattery();
             long currentLastConnected = ProcedureSettings.getInstance().getLast_connection();
             long currentSorbTime = ProcedureSettings.getInstance().getSorbtime();
+            //TODO: disinfection status receive
+            int currentDisinfection = Constants.PARAMETER_UNKNOWN;
+
             //current state
             switch (currentStatus) {
                 case Constants.STATUS_ON: {
@@ -444,10 +445,37 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
 
+                case Constants.STATUS_SENDING: {
+                    tvStatus.
+                            setText(getResources().getText(R.string.state_sending).toString());
+                    ivStatus.setImageResource(R.drawable.ic_tick);
+                    break;
+                }
+
+                case Constants.STATUS_ERROR: {
+                    tvStatus.
+                            setText(getResources().getText(R.string.state_error).toString());
+                    ivStatus.setImageResource(R.drawable.ic_danger);
+                    break;
+                }
+
+                case Constants.STATUS_CRITICAL_ERROR: {
+                    tvStatus.
+                            setText(getResources().getText(R.string.state_critical_error).toString());
+                    ivStatus.setImageResource(R.drawable.ic_danger);
+                    break;
+                }
+
+                case Constants.STATUS_NORMAL: {
+                    tvStatus.
+                            setText(getResources().getText(R.string.state_normal).toString());
+                    ivStatus.setImageResource(R.drawable.ic_tick);
+                    break;
+                }
+
                 case Constants.STATUS_OFF: {
                     tvStatus.
                             setText(getResources().getText(R.string.state_off).toString());
-                    ivStatus.setImageResource(R.drawable.ic_danger);
                     break;
                 }
 
@@ -518,30 +546,29 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            //procedure parameters
-            switch (currentParams) {
-                case Constants.PARAMS_NORMAL: {
-                    tvParams.
-                            setText(getResources().getText(R.string.procedure_params_normal).toString());
-                    ivParams.setImageResource(R.drawable.ic_tick);
+            //current procedure
+            switch (currentDisinfection) {
+                case Constants.DISINFECTION_OK: {
+                    tvDisinfection.
+                            setText(getResources().getText(R.string.disinfection_ok).toString());
+                    ivDisinfection.setImageResource(R.drawable.ic_tick);
                     break;
                 }
 
-                case Constants.PARAMS_DANGER: {
-                    tvParams.
-                            setText(getResources().getText(R.string.procedure_params_danger).toString());
-                    ivParams.setImageResource(R.drawable.ic_danger);
+                case Constants.DISINFECTION_NEED: {
+                    tvDisinfection.
+                            setText(getResources().getText(R.string.disinfection_need).toString());
+                    ivDisinfection.setImageResource(R.drawable.ic_danger);
                     break;
                 }
 
                 default: {
-                    tvParams.
+                    tvDisinfection.
                             setText(getResources().getText(R.string.unknown).toString());
-                    ivParams.setImageResource(R.drawable.ic_question_mark);
+                    ivDisinfection.setImageResource(R.drawable.ic_question_mark);
                     break;
                 }
             }
-
 
             //sorbtime
             {

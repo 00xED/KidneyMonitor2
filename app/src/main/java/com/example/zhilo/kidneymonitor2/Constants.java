@@ -32,10 +32,13 @@ public interface Constants {
 
     int STATUS_ON = 0;
     int STATUS_OFF = 1;
-    int STATUS_UNKNOWN = -1;
+    int STATUS_SENDING = 2;
+    int STATUS_NORMAL = 3;
+    int STATUS_ERROR = 4;
+    int STATUS_CRITICAL_ERROR = 5;
 
-    int PARAMS_NORMAL = 0;
-    int PARAMS_DANGER = 1;
+    int DISINFECTION_OK = 0;
+    int DISINFECTION_NEED = 1;
 
     /**
      * Constants for MainActivity

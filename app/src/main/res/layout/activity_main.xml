@@ -46,16 +46,28 @@
         android:src="@drawable/ic_question_mark"
         android:layout_centerHorizontal="true" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/iv_StatusDropdown"
+        android:src="@drawable/ic_shevron"
+        android:layout_marginLeft="2dp"
+        android:onClick="OnClick"
+        android:clickable="true"
+        android:layout_below="@+id/iv_Header"
+        android:layout_toEndOf="@+id/iv_Status"
+        android:layout_toRightOf="@+id/iv_Status" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Выключено"
+        android:text="Неизвестно"
         android:id="@+id/tv_StatusValue"
         android:layout_below="@+id/iv_Header"
-        android:layout_alignLeft="@+id/tv_ParamsValue"
         android:layout_alignBottom="@+id/space4"
-        android:gravity="center_vertical" />
+        android:gravity="center_vertical"
+        android:layout_toRightOf="@+id/iv_StatusDropdown" />
 
     <Space
         android:layout_width="fill_parent"
@@ -91,7 +103,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Дизинфекция"
+        android:text="Неизвестно"
         android:id="@+id/tv_ProcedureValue"
         android:layout_below="@+id/space4"
         android:layout_toRightOf="@+id/iv_ProcedureDropdown"
@@ -112,10 +124,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Параметры процедуры"
-        android:id="@+id/tv_Params"
+        android:text="Дезинфекция"
+        android:id="@+id/tv_Disinfection"
         android:layout_below="@+id/space5"
-        android:layout_toLeftOf="@+id/iv_Params"
+        android:layout_toLeftOf="@+id/iv_Disinfection"
         android:textAlignment="textEnd"
         android:layout_marginRight="2dp"
         android:onClick="OnClick"
@@ -124,42 +136,31 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/iv_Params"
+        android:id="@+id/iv_Disinfection"
         android:src="@drawable/ic_question_mark"
         android:layout_below="@+id/space5"
         android:layout_centerHorizontal="true"
         android:onClick="OnClick" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/iv_ParamsDropdown"
-        android:src="@drawable/ic_shevron"
-        android:layout_marginLeft="2dp"
-        android:layout_below="@+id/space5"
-        android:layout_toRightOf="@+id/iv_Params"
-        android:layout_above="@+id/space6"
-        android:onClick="OnClick" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Опасность"
-        android:id="@+id/tv_ParamsValue"
+        android:text="Неизвестно"
+        android:id="@+id/tv_DisinfectionValue"
         android:layout_below="@+id/space5"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_toRightOf="@+id/iv_ParamsDropdown"
         android:layout_marginLeft="2dp"
         android:layout_alignBottom="@+id/space6"
         android:gravity="center_vertical"
         android:onClick="OnClick"
-        android:clickable="true" />
+        android:clickable="true"
+        android:layout_alignLeft="@+id/tv_StatusValue" />
 
     <Space
         android:layout_width="fill_parent"
         android:layout_height="10dp"
         android:id="@+id/space6"
-        android:layout_below="@+id/iv_Params"
+        android:layout_below="@+id/iv_Disinfection"
         android:layout_alignParentStart="true" />
 
     <TextView
@@ -200,7 +201,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="12ч. 12м."
+        android:text="Неизвестно"
         android:id="@+id/tv_SorbentTimeValue"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_toRightOf="@+id/iv_SorbentTimeDropdown"
@@ -241,7 +242,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="100%"
+        android:text="Неизвестно"
         android:id="@+id/tv_BatteryValue"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_below="@+id/space7"

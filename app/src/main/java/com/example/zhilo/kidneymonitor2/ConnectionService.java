@@ -385,8 +385,6 @@ public class ConnectionService extends Service {
                         errorCount++;
                         processError("DPRESS2 not in range!");
                     }
-                    else
-                        ProcedureSettings.getInstance().setParams(Constants.PARAMS_NORMAL);
                     break;
                 }
 
@@ -455,6 +453,7 @@ public class ConnectionService extends Service {
                 }
 
                 case Constants.bSENDDPUMPS: {//sending pumps flows
+                    ProcedureSettings.getInstance().setStatus(Constants.STATUS_SENDING);
                     switch (com2){
                         case (byte)0x01:{
                             lw.appendLog(TAG, "send FPUMP1FLOW");
@@ -610,6 +609,8 @@ public class ConnectionService extends Service {
                             lw.appendLog(TAG, "send DCOND1MAX ");
                             sendMessageBytes((byte) (Constants.bSENDDCOND + (byte) 0x01), (byte) 0x02,
                                     floatTo4byte(ProcedureSettings.getInstance().getDialCond1Max()));
+
+                            ProcedureSettings.getInstance().setStatus(Constants.STATUS_NORMAL);
                             break;
                         }
 
@@ -709,10 +710,10 @@ public class ConnectionService extends Service {
             }
 
             if(errorCount != 0){
-                ProcedureSettings.getInstance().setParams(Constants.PARAMS_DANGER);
+                ProcedureSettings.getInstance().setStatus(Constants.STATUS_ERROR);
             }
             else{
-                ProcedureSettings.getInstance().setParams(Constants.PARAMS_NORMAL);
+                ProcedureSettings.getInstance().setStatus(Constants.STATUS_NORMAL);
             }
 
         }
@@ -814,7 +815,7 @@ public class ConnectionService extends Service {
     void processError(String msg){
         sendNotification(msg);
         lw.appendLog(TAG, msg, true);
-        ProcedureSettings.getInstance().setParams(Constants.PARAMS_DANGER);
+        ProcedureSettings.getInstance().setStatus(Constants.STATUS_ERROR);
     }
 
     /**

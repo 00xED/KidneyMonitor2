@@ -15,12 +15,14 @@
     <string name="procedure_shutdown">Отключение</string>
     <string name="procedure_ready">Готов</string>
     <string name="procedure_flush">Слив</string>
-    <string name="procedure_params_danger">Угроза</string>
-    <string name="procedure_params_normal">Норма</string>
     <string name="device_functioning_correct">Исправно</string>
     <string name="device_functioning_fault">Неисправно</string>
     <string name="state_off">Выключено</string>
     <string name="state_on">Включено</string>
+    <string name="state_error">Ошибка</string>
+    <string name="state_critical_error">Критическая ошибка</string>
+    <string name="state_sending">Передача данных</string>
+    <string name="state_normal">Норма</string>
     <string name="procedure_disinfection">Дезинфекция</string>
     <string name="procedure_filling">Заполнение</string>
     <string name="settings">Настройки</string>
@@ -67,6 +69,9 @@
     <string name="resume_confirmation">Возобновить процедуру\u00A0</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+    <string name="disinfection_ok">Не требуется</string>
+    <string name="disinfection_need">Требуется</string>
+
 
     <string name="user_switched_to">Пользователь переключился на:</string>
     

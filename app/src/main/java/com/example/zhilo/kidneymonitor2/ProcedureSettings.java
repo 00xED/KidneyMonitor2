@@ -45,7 +45,6 @@ public class ProcedureSettings {
     private int status;
     private int procedure;
     private int procedure_previous;
-    private int proc_parameters;
     private long sorbtime;
     private long last_connection;
 
@@ -153,9 +152,6 @@ public class ProcedureSettings {
     public int getProcedure_previous() {
         return this.procedure_previous;
     }
-    public int getParams() {
-        return this.proc_parameters;
-    }
     public long getSorbtime() {
         return this.sorbtime;
     }
@@ -201,9 +197,6 @@ public class ProcedureSettings {
     public void setProcedure_previous(int procedure_previous) {
         this.procedure_previous = procedure_previous;
     }
-    public void setParams(int proc_parameters) {
-        this.proc_parameters = proc_parameters;
-    }
 
     public void setSorbtime(long sorbtime) {
         this.sorbtime = sorbtime;
@@ -246,9 +239,8 @@ public class ProcedureSettings {
 
         battery = Constants.PARAMETER_UNKNOWN;
         procedure = Constants.PARAMETER_UNKNOWN;
-        status = Constants.STATUS_UNKNOWN;
+        status = Constants.PARAMETER_UNKNOWN;
         procedure_previous = Constants.PARAMETER_UNKNOWN;
-        proc_parameters = Constants.PARAMETER_UNKNOWN;
         sorbtime = Constants.PARAMETER_UNKNOWN;
         last_connection = Constants.PARAMETER_UNKNOWN;
 
