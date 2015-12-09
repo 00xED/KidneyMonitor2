@@ -24,7 +24,7 @@ import java.nio.ByteBuffer;
 public class ConnectionService extends Service {
 
     //Initialisation of LogWriter
-    private static final String TAG = "ConnectionService";
+    private static final String TAG = "CS";
     LogWriter lw = new LogWriter();
 
     public static boolean isServiceRunning = false;
