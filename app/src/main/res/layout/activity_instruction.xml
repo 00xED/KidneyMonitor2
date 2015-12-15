@@ -17,7 +17,7 @@
         android:layout_marginTop="5dp" />
 
     <RelativeLayout
-        android:layout_width="300dp"
+        android:layout_width="fill_parent"
         android:layout_height="400dp"
         android:id="@+id/relativeLayout"
         android:layout_alignParentLeft="false"
@@ -28,7 +28,7 @@
         android:layout_marginRight="5dp">
 
         <ScrollView
-            android:layout_width="300dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/scrollView5"
             android:layout_centerInParent="true">
@@ -42,7 +42,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/iv_InstructionImage"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/instruct_fill_1"
+                    android:scaleType="fitStart"
+                    android:adjustViewBounds="true" />
 
                 <TextView
                     android:layout_width="fill_parent"

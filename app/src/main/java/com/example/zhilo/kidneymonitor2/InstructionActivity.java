@@ -15,6 +15,52 @@ public class InstructionActivity extends AppCompatActivity {
     private int stage = 0;
     private String[] instructionsStrings;
 
+    private static final int[] instruct_fill = {
+            R.drawable.instruct_fill_1,
+            R.drawable.instruct_fill_2,
+            R.drawable.instruct_fill_3,
+            R.drawable.instruct_fill_4,
+            R.drawable.instruct_fill_5,
+            R.drawable.ic_question_mark,
+            R.drawable.empty
+    };
+
+    private static final int[] instruct_dialisys = {
+            R.drawable.instruct_dialisys_1,
+            R.drawable.instruct_dialisys_2,
+            R.drawable.ic_question_mark,
+            R.drawable.instruct_dialisys_4,
+            R.drawable.empty
+    };
+
+    private static final int[] instruct_flush = {
+            R.drawable.instruct_flush_1,
+            R.drawable.instruct_flush_2,
+            R.drawable.ic_question_mark,
+            R.drawable.instruct_flush_4,
+            R.drawable.instruct_flush_5,
+            R.drawable.empty
+    };
+
+    private static final int[] instruct_disinfection = {
+            R.drawable.instruct_disinfection_1,
+            R.drawable.ic_question_mark,
+            R.drawable.instruct_disinfection_3,
+            R.drawable.empty,
+    };
+
+    private static final int[] instruct_fill_done = {
+            R.drawable.instruct_fill_done_1,
+            R.drawable.empty,
+    };
+
+    private static final int[] instruct_disinfection_done = {
+            R.drawable.empty,
+            R.drawable.instruct_disinfection_done_2,
+            R.drawable.ic_question_mark,
+            R.drawable.instruct_disinfection_done_4
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +116,12 @@ public class InstructionActivity extends AppCompatActivity {
                 break;
             }
 
+            case(Constants.PROCEDURE_DISINFECTION_DONE):{
+                ivBackground.setImageResource(R.drawable.bg_header_disinfection);
+                instructionsStrings = getResources().getStringArray(R.array.instruction_disinfection_done);
+                break;
+            }
+
             default:
                 break;
         }
@@ -113,7 +165,7 @@ public class InstructionActivity extends AppCompatActivity {
                 }
                 else{
                     tvInstructionText.setText(instructionsStrings[stage]);
-                    ivInstructionImage.setImageResource(R.drawable.instruct_filling);
+                    ivInstructionImage.setImageResource(instruct_fill[stage]);
                 }
                 break;
             }
@@ -128,7 +180,7 @@ public class InstructionActivity extends AppCompatActivity {
                 }
                 else{
                     tvInstructionText.setText(instructionsStrings[stage]);
-                    ivInstructionImage.setImageResource(R.drawable.instruct_dialysis);
+                    ivInstructionImage.setImageResource(instruct_dialisys[stage]);
                 }
                 break;
             }
@@ -145,7 +197,7 @@ public class InstructionActivity extends AppCompatActivity {
                 }
                 else{
                     tvInstructionText.setText(instructionsStrings[stage]);
-                    ivInstructionImage.setImageResource(R.drawable.instruct_flush);
+                    ivInstructionImage.setImageResource(instruct_flush[stage]);
                 }
                 break;
             }
@@ -160,7 +212,7 @@ public class InstructionActivity extends AppCompatActivity {
                 }
                 else{
                     tvInstructionText.setText(instructionsStrings[stage]);
-                    ivInstructionImage.setImageResource(R.drawable.instruct_shutdown);
+                    ivInstructionImage.setImageResource(R.drawable.empty);
                 }
                 break;
             }
@@ -175,7 +227,7 @@ public class InstructionActivity extends AppCompatActivity {
                 }
                 else{
                     tvInstructionText.setText(instructionsStrings[stage]);
-                    ivInstructionImage.setImageResource(R.drawable.instruct_disinfection);
+                    ivInstructionImage.setImageResource(instruct_disinfection[stage]);
                 }
                 break;
             }
@@ -191,7 +243,7 @@ public class InstructionActivity extends AppCompatActivity {
                 }
                 else{
                     tvInstructionText.setText(instructionsStrings[stage]);
-                    ivInstructionImage.setImageResource(R.drawable.instruct_filling);
+                    ivInstructionImage.setImageResource(instruct_fill_done[stage]);
                 }
                 break;
             }
@@ -207,7 +259,20 @@ public class InstructionActivity extends AppCompatActivity {
                 }
                 else{
                     tvInstructionText.setText(instructionsStrings[stage]);
-                    ivInstructionImage.setImageResource(R.drawable.instruct_dialysis);
+                    ivInstructionImage.setImageResource(R.drawable.empty);
+                }
+                break;
+            }
+
+            case(Constants.PROCEDURE_DISINFECTION_DONE):{
+                if(stage == instructionsStrings.length){
+                    Intent intent = new Intent(this, ProceduresActivity.class);
+                    InstructionActivity.this.finish();
+                    startActivity(intent);
+                }
+                else{
+                    tvInstructionText.setText(instructionsStrings[stage]);
+                    ivInstructionImage.setImageResource(instruct_disinfection_done[stage]);
                 }
                 break;
             }
