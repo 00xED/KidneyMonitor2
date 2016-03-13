@@ -43,9 +43,16 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/iv_InstructionImage"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/instruct_fill_1"
                     android:scaleType="fitStart"
                     android:adjustViewBounds="true" />
+
+                <WebView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/webView"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitStart"
+                    android:adjustViewBounds="true"/>
 
                 <TextView
                     android:layout_width="fill_parent"

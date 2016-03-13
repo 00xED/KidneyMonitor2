@@ -67,6 +67,8 @@ public interface Constants {
     /**
      * Constants for ConnectionService
      */
+    String APP_NAME = "Kidney Monitor";
+
     String CONNECTIONSERVICE_ACTION = "ConnectionService_BR_Action";
     String CONNECTIONSERVICE_TASK = "ConnectionService_BR_Task";
     String CONNECTIONSERVICE_ARG = "ConnectionService_BR_Arg";
@@ -156,7 +158,7 @@ public interface Constants {
     /**
      * Constants for BluetoothLeService
      */
-    int CONNECT_ATTEMPTS_MAX = 20;
+    int CONNECT_ATTEMPTS_MAX = 50;
     int RECONNECT_INTERVAL_MS = 5000;
     int STATE_DISCONNECTED = 0;
     int STATE_CONNECTING = 1;

@@ -72,8 +72,11 @@
     <string name="disinfection_ok">Не требуется</string>
     <string name="disinfection_need">Требуется</string>
 
+    <string name="autoconnect_failed">Не удалось подключиться</string>
 
     <string name="user_switched_to">Пользователь переключился на:</string>
+
+
     
     <string name="l">\u00A0л</string>
     <string name="mlm">\u00A0мл/мин</string>
@@ -107,6 +110,9 @@
     <string name="params_set">Параметры процедуры: </string>
     <string name="starus_set">Текущая процедура: </string>
     <string name="reset_sorbent">Сбросить таймер замены сорбентов?</string>
+
+    <string name="ble_not_supported">BLE не поддерживается, закрытие приложения</string>
+    <string name="error_bluetooth_not_supported">Bluetooth не поддерживается, закрытие приложения</string>
 
     <string-array name="instruction_filling">
         <item>Проведите процедуру заполнения перитонеальной полости пациента подогретым РПД.\n

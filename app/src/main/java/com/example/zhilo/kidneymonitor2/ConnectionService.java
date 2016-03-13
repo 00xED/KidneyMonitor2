@@ -104,10 +104,10 @@ public class ConnectionService extends Service {
 
         Notification notif = new Notification.Builder(ConnectionService.this)
                 .setContentIntent(contentIntent)
-                .setContentTitle("app_name")
-                .setContentText("title_click_to_open")
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(icon)
+                .setContentTitle(Constants.APP_NAME)
+                .setContentText(getResources().getText(R.string.click_to_open).toString())
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setLargeIcon(icon)
                 .build();
 
         Intent i = new Intent(this, ConnectionService.class);
@@ -135,7 +135,7 @@ public class ConnectionService extends Service {
 
         Notification notification = new Notification.Builder(context)
                 .setContentIntent(contentIntent)
-                .setContentTitle("app_name")
+                .setContentTitle(Constants.APP_NAME)
                 .setContentText(currentArg)
                 .setSmallIcon(R.drawable.ic_danger)
                 .setLargeIcon(icon)
@@ -244,8 +244,9 @@ public class ConnectionService extends Service {
             } else if (Constants.ACTION_DATA_AVAILABLE.equals(action)) {
                 if (intent.hasExtra(Constants.EXTRA_DATA)) {
                     byte[] pack = intent.getByteArrayExtra(Constants.EXTRA_DATA);
-                    lw.appendLog(TAG, "GOT " + bytesToHex(pack));
+                    //lw.appendLog(TAG, "GOT " + bytesToHex(pack), true);
                     processPack(pack);
+                    //mBluetoothLeService.writeSPP(pack);
                 }
             }
         }
@@ -870,7 +871,7 @@ public class ConnectionService extends Service {
                 SharedPreferences.Editor ed = sPref.edit(); //Setting for preference editing
                 ed.putBoolean(Constants.SETTINGS_AUTOCONNECT, false);
                 ed.apply();
-                sendNotification("autoconnect_failed");
+                sendNotification(getResources().getText(R.string.autoconnect_failed).toString());
                 ConnectTryCount = 0;
             }
             AutoconnectHandler.postDelayed(AutoconnectTask, Constants.RECONNECT_INTERVAL_MS);//refresh after RECONNECT_INTERVAL_MS milliseconds

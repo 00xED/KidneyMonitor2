@@ -27,6 +27,8 @@ public class DeviceListActivity extends Activity {
     private static final String logTag = "DeviceListActivity";
     LogWriter lw = new LogWriter();
 
+    Boolean switc = false;
+
     //Member fields
     private BluetoothAdapter mBluetoothAdapter;
     //Newly discovered devices
@@ -69,6 +71,12 @@ public class DeviceListActivity extends Activity {
                         public void run() {
                             //mLeDeviceListAdapter.addDevice(device);
                             mNewDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+                            /*if(switc){
+                                switc = false;
+                            } else {
+                                mNewDevicesArrayAdapter.remove(mNewDevicesArrayAdapter.getItem(mNewDevicesArrayAdapter.getCount()-1));
+                                switc = true;
+                            }*/
                             //mLeDeviceListAdapter.notifyDataSetChanged();
                         }
                     });

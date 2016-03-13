@@ -14,7 +14,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -99,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         // Use this check to determine whether BLE is supported on the device.  Then you can
         // selectively disable BLE-related features.
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-            Toast.makeText(this, "ble_not_supported", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getText(R.string.ble_not_supported).toString(), Toast.LENGTH_SHORT).show();
             lw.appendLog(logTag, "BLE not supported, closing app");
             finish();
         }
@@ -112,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Checks if Bluetooth is supported on the device.
         if (mBluetoothAdapter == null) {
-            Toast.makeText(this, "error_bluetooth_not_supported", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getText(R.string.error_bluetooth_not_supported).toString(), Toast.LENGTH_SHORT).show();
             lw.appendLog(logTag, "Bluetooth not supported, closing app");
             finish();
             return;
@@ -128,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             Toast.makeText(this,
                     getResources().getText(R.string.prefs_new).toString(),
-                            Toast.LENGTH_SHORT).show();
+                    Toast.LENGTH_SHORT).show();
         } else Toast.makeText(this,
                 getResources().getText(R.string.prefs_loaded).toString(),
                 Toast.LENGTH_SHORT).show();
@@ -180,86 +182,86 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
 
-            case R.id.iv_StatusDropdown:{
+            case R.id.iv_StatusDropdown: {
                 Intent intent = new Intent(this, ParamActivity.class);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.iv_Status:{
+            case R.id.iv_Status: {
                 Intent intent = new Intent(this, ParamActivity.class);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.tv_Status:{
+            case R.id.tv_Status: {
                 Intent intent = new Intent(this, ParamActivity.class);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.tv_StatusValue:{
+            case R.id.tv_StatusValue: {
                 Intent intent = new Intent(this, ParamActivity.class);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.iv_ProcedureDropdown:{
+            case R.id.iv_ProcedureDropdown: {
                 Intent intent = new Intent(this, ProceduresActivity.class);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.iv_Procedure:{
+            case R.id.iv_Procedure: {
                 Intent intent = new Intent(this, ProceduresActivity.class);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.tv_Procedure:{
+            case R.id.tv_Procedure: {
                 Intent intent = new Intent(this, ProceduresActivity.class);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.tv_ProcedureValue:{
+            case R.id.tv_ProcedureValue: {
                 Intent intent = new Intent(this, ProceduresActivity.class);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.bt_Procedure:{
+            case R.id.bt_Procedure: {
                 Intent intent = new Intent(this, ProceduresActivity.class);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.iv_SorbentTime:{
+            case R.id.iv_SorbentTime: {
                 SorbTimeResetConfirmation();
                 break;
             }
 
-            case R.id.tv_SorbentTime:{
+            case R.id.tv_SorbentTime: {
                 SorbTimeResetConfirmation();
                 break;
             }
 
-            case R.id.tv_SorbentTimeValue:{
+            case R.id.tv_SorbentTimeValue: {
                 SorbTimeResetConfirmation();
                 break;
             }
 
-            case R.id.iv_SorbentTimeDropdown:{
+            case R.id.iv_SorbentTimeDropdown: {
                 SorbTimeResetConfirmation();
                 break;
             }
 
-            case R.id.tv_LastConnected:{
+            case R.id.tv_LastConnected: {
                 enableAutoconnect();
                 break;
             }
 
-            case R.id.bt_Pause:{
+            case R.id.bt_Pause: {
                 SharedPreferences sPref = getSharedPreferences(Constants.APP_PREFERENCES, MODE_PRIVATE); //Loading preferences
                 if (ProcedureSettings.getInstance().getProcedure() == Constants.PARAMETER_UNKNOWN)
                     break;
@@ -276,11 +278,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    void SorbTimeResetConfirmation(){
+    void SorbTimeResetConfirmation() {
         final Context context = MainActivity.this;
         AlertDialog.Builder ad = new AlertDialog.Builder(context);
-            ad.setTitle(getResources().getText(R.string.reset_sorbent).toString());
-            ad.setMessage(getResources().getText(R.string.reset_sorbent).toString());
+        ad.setTitle(getResources().getText(R.string.reset_sorbent).toString());
+        ad.setMessage(getResources().getText(R.string.reset_sorbent).toString());
 
         ad.setPositiveButton(getResources().getText(R.string.yes).toString(), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int arg1) {
@@ -301,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
         ad.show();
     }
 
-    void PauseConfirmationTest(){
+    void PauseConfirmationTest() {
         final Context context = MainActivity.this;
         AlertDialog.Builder ad = new AlertDialog.Builder(context);
         if (ProcedureSettings.getInstance().getProcedure() != Constants.PROCEDURE_READY) {
@@ -336,7 +338,7 @@ public class MainActivity extends AppCompatActivity {
         ad.show();
     }
 
-    void PauseConfirmation(){
+    void PauseConfirmation() {
         final Context context = MainActivity.this;
         Intent intent = new Intent(Constants.CONNECTIONSERVICE_ACTION);
         AlertDialog.Builder ad = new AlertDialog.Builder(context);
@@ -418,11 +420,11 @@ public class MainActivity extends AppCompatActivity {
         ad.show();
     }
 
-    void enableAutoconnect(){
+    void enableAutoconnect() {
         SharedPreferences sPref = getSharedPreferences(Constants.APP_PREFERENCES, MODE_PRIVATE); //Loading preferences
         SharedPreferences.Editor ed = sPref.edit(); //Setting for preference editing
         ed.putBoolean(Constants.SETTINGS_AUTOCONNECT, true);
-        ed.commit();
+        ed.apply();
     }
 
     Runnable RefreshTask = new Runnable() {
@@ -432,6 +434,7 @@ public class MainActivity extends AppCompatActivity {
             int currentProcedure = ProcedureSettings.getInstance().getProcedure();
             int currentBattery = ProcedureSettings.getInstance().getBattery();
             long currentLastConnected = ProcedureSettings.getInstance().getLast_connection();
+            //TODO: sorbtime status receive
             long currentSorbTime = ProcedureSettings.getInstance().getSorbtime();
             //TODO: disinfection status receive
             int currentDisinfection = Constants.PARAMETER_UNKNOWN;
@@ -547,6 +550,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             //current procedure
+
             switch (currentDisinfection) {
                 case Constants.DISINFECTION_OK: {
                     tvDisinfection.
@@ -572,11 +576,10 @@ public class MainActivity extends AppCompatActivity {
 
             //sorbtime
             {
-                if(currentSorbTime == -1){
+                if (currentSorbTime == -1) {
                     tvSorbtime.setText(getResources().getText(R.string.unknown).toString());
                     ivSorbtime.setImageResource(R.drawable.ic_question_mark);
-                }
-                else{
+                } else {
                     long remaining_time = Constants.SORBENT_CHANGE_MS - (System.currentTimeMillis() - currentSorbTime);
                     int hours = (int) TimeUnit.MILLISECONDS.toHours(remaining_time);
                     remaining_time -= TimeUnit.HOURS.toMillis(hours);
@@ -624,7 +627,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             //Enable or disable views when not available
-            if(ProcedureSettings.getInstance().getProcedure() == Constants.PARAMETER_UNKNOWN){
+            if (ProcedureSettings.getInstance().getProcedure() == Constants.PARAMETER_UNKNOWN) {
                 btPause.setEnabled(false);
                 btPause.setBackground(getResources().getDrawable(R.drawable.ib_pause_disabled));
                 btProcedure.setEnabled(false);
@@ -633,10 +636,9 @@ public class MainActivity extends AppCompatActivity {
                 ivProcedureDropdown.setEnabled(false);
                 tvProcedure.setEnabled(false);
                 tvCaptionProcedure.setEnabled(false);
-            }
-            else{
+            } else {
                 btPause.setEnabled(true);
-                if(ProcedureSettings.getInstance().getProcedure() == Constants.PROCEDURE_READY)
+                if (ProcedureSettings.getInstance().getProcedure() == Constants.PROCEDURE_READY)
                     btPause.setBackground(getResources().getDrawable(R.drawable.ib_resume));
                 else
                     btPause.setBackground(getResources().getDrawable(R.drawable.ib_pause));

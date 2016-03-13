@@ -13,6 +13,8 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.os.IBinder;
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +35,7 @@ public class BluetoothLeService extends Service {
     private BluetoothGattCharacteristic SPPDataCharacteristic = null;
     public static int mConnectionState = Constants.STATE_DISCONNECTED;
 
-    private static byte[] incomingBuffer = new byte[32];
+    private static byte[] incomingBuffer = new byte[1024];
     private static int incomingBufferInd = 0;
 
     // Implements callback methods for GATT events that the app cares about.  For example,
@@ -132,8 +134,8 @@ public class BluetoothLeService extends Service {
             final byte[] pack = processInput(characteristic.getValue());
             if (pack != null)
                 intent.putExtra(Constants.EXTRA_DATA, pack);
+            sendBroadcast(intent);
         }
-        sendBroadcast(intent);
     }
 
     private byte[] processInput(byte[] input) {

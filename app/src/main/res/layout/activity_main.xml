@@ -36,7 +36,8 @@
         android:layout_below="@+id/iv_Header"
         android:layout_toLeftOf="@+id/iv_Status"
         android:textAlignment="textEnd"
-        android:layout_marginRight="2dp" />
+        android:layout_marginRight="2dp"
+        android:onClick="OnClick" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -44,7 +45,8 @@
         android:id="@+id/iv_Status"
         android:layout_below="@+id/iv_Header"
         android:src="@drawable/ic_question_mark"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="OnClick" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -67,7 +69,8 @@
         android:layout_below="@+id/iv_Header"
         android:layout_alignBottom="@+id/space4"
         android:gravity="center_vertical"
-        android:layout_toRightOf="@+id/iv_StatusDropdown" />
+        android:layout_toRightOf="@+id/iv_StatusDropdown"
+        android:onClick="OnClick" />
 
     <Space
         android:layout_width="fill_parent"

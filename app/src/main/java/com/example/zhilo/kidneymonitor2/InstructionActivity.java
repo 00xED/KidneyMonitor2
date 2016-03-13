@@ -1,9 +1,13 @@
 package com.example.zhilo.kidneymonitor2;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -69,6 +73,7 @@ public class InstructionActivity extends AppCompatActivity {
         ivBackground = (ImageView) findViewById(R.id.iv_Header);
         ivInstructionImage = (ImageView) findViewById(R.id.iv_InstructionImage);
         tvInstructionText = (TextView) findViewById(R.id.tv_InstructionText);
+        WebView wv = (WebView) findViewById(R.id.webView);
 
         Bundle parameters = getIntent().getExtras();
         selectedProcedure = parameters.getInt("procedure");
@@ -151,6 +156,14 @@ public class InstructionActivity extends AppCompatActivity {
         }
     }
 
+    private int getScale(){
+        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        int width = display.getWidth();
+        Double val = new Double(width)/new Double(572);
+        val = val * 100d;
+        return val.intValue();
+    }
+
     public void updateScreen()
     {
 
@@ -162,10 +175,15 @@ public class InstructionActivity extends AppCompatActivity {
                     intent.putExtra(Constants.CONNECTIONSERVICE_ARG, selectedProcedure);
                     sendBroadcast(intent);
                     InstructionActivity.this.finish();
-                }
-                else{
+                } else {
+                    /*tvInstructionText.setText(instructionsStrings[stage]);
+                    WebView wv = (WebView) findViewById(R.id.webView);
+                    wv.loadUrl("file:///android_asset/images/fill_3.gif");
+                    wv.setInitialScale(getScale());
+                    //ivInstructionImage.setImageResource(instruct_fill[stage]);*/
                     tvInstructionText.setText(instructionsStrings[stage]);
                     ivInstructionImage.setImageResource(instruct_fill[stage]);
+
                 }
                 break;
             }
@@ -195,7 +213,7 @@ public class InstructionActivity extends AppCompatActivity {
                     startActivity(intent);
                     InstructionActivity.this.finish();
                 }
-                else{
+                else {
                     tvInstructionText.setText(instructionsStrings[stage]);
                     ivInstructionImage.setImageResource(instruct_flush[stage]);
                 }
