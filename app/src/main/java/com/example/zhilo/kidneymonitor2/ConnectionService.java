@@ -369,11 +369,11 @@ public class ConnectionService extends Service {
                     tempfValue = data_float * Constants.PRESS_COEF;
                     ProcedureSettings.getInstance().setDialPress1(tempfValue);
                     lw.appendLog(TAG, "setting DPRESS1 to " + tempfValue);
-                    if(tempfValue > ProcedureSettings.getInstance().getDialPress1Max() ||
+                    /*if(tempfValue > ProcedureSettings.getInstance().getDialPress1Max() ||
                        tempfValue < ProcedureSettings.getInstance().getDialPress1Min()){
                         errorCount++;
                         processError("DPRESS1 not in range!");
-                    }
+                    }*/
                     break;
                 }
 
@@ -381,11 +381,11 @@ public class ConnectionService extends Service {
                     tempfValue = data_float * Constants.PRESS_COEF;
                     ProcedureSettings.getInstance().setDialPress2(tempfValue);
                     lw.appendLog(TAG, "setting DPRESS2 to " + tempfValue);
-                    if(tempfValue > ProcedureSettings.getInstance().getDialPress2Max() ||
+                   /* if(tempfValue > ProcedureSettings.getInstance().getDialPress2Max() ||
                             tempfValue < ProcedureSettings.getInstance().getDialPress2Min()){
                         errorCount++;
                         processError("DPRESS2 not in range!");
-                    }
+                    }*/
                     break;
                 }
 
@@ -393,11 +393,11 @@ public class ConnectionService extends Service {
                     tempfValue = data_float * Constants.PRESS_COEF;
                     ProcedureSettings.getInstance().setDialPress3(tempfValue);
                     lw.appendLog(TAG, "setting DPRESS3 to " + tempfValue);
-                    if(tempfValue > ProcedureSettings.getInstance().getDialPress3Max() ||
+                   /* if(tempfValue > ProcedureSettings.getInstance().getDialPress3Max() ||
                             tempfValue < ProcedureSettings.getInstance().getDialPress3Min()){
                         errorCount++;
                         processError("DPRESS3 not in range!");
-                    }
+                    }*/
                     break;
                 }
 
@@ -405,11 +405,11 @@ public class ConnectionService extends Service {
                     tempfValue = data_int / Constants.TEMP_COEF;
                     ProcedureSettings.getInstance().setDialTemp1(tempfValue);
                     lw.appendLog(TAG, "setting DTEMP1 to " + tempfValue);
-                    if(tempfValue > ProcedureSettings.getInstance().getDialTemp1Max() ||
+                   /* if(tempfValue > ProcedureSettings.getInstance().getDialTemp1Max() ||
                             tempfValue < ProcedureSettings.getInstance().getDialTemp1Min()){
                         errorCount++;
                         processError("DTEMP1 not in range!");
-                    }
+                    }*/
                     break;
                 }
 
@@ -417,11 +417,11 @@ public class ConnectionService extends Service {
                     tempiValue = data_int;
                     ProcedureSettings.getInstance().setDialCond1(tempiValue);
                     lw.appendLog(TAG, "setting DCOND1 to " + tempiValue);
-                    if(tempiValue > ProcedureSettings.getInstance().getDialCond1Max() ||
+                   /* if(tempiValue > ProcedureSettings.getInstance().getDialCond1Max() ||
                             tempiValue < ProcedureSettings.getInstance().getDialCond1Min()){
                         errorCount++;
                         processError("DCOND1 not in range!");
-                    }
+                    }*/
                     break;
                 }
 
@@ -623,86 +623,86 @@ public class ConnectionService extends Service {
                 }
 
                 case Constants.PE_PRESS1: {//receiving error
-                    processError(getResources().getText(R.string.error_press).toString() + "1");
-                    errorCount++;
+                  /*  processError(getResources().getText(R.string.error_press).toString() + "1");
+                    errorCount++;*/
                     break;
                 }
 
                 case Constants.PE_PRESS2: {//receiving error
-                    processError(getResources().getText(R.string.error_press).toString() + "2");
-                    errorCount++;
+                   /* processError(getResources().getText(R.string.error_press).toString() + "2");
+                    errorCount++;*/
                     break;
                 }
 
                 case Constants.PE_PRESS3: {//receiving error
-                    processError(getResources().getText(R.string.error_press).toString() + "3");
-                    errorCount++;
+                  /*  processError(getResources().getText(R.string.error_press).toString() + "3");
+                    errorCount++;*/
                     break;
                 }
 
                 case Constants.PE_TEMP: {//receiving error
-                    processError(getResources().getText(R.string.error_temp).toString());
-                    errorCount++;
+                   /* processError(getResources().getText(R.string.error_temp).toString());
+                    errorCount++;*/
                     break;
                 }
 
                 case Constants.PE_ELECTRO: {//receiving error
-                    processError(getResources().getText(R.string.error_electro).toString());
-                    errorCount++;
+                  /*  processError(getResources().getText(R.string.error_electro).toString());
+                    errorCount++;*/
                     break;
                 }
 
                 case Constants.PE_EDS1: {//receiving error
-                    processError(getResources().getText(R.string.error_eds).toString() + "1");
-                    errorCount++;
+                 /*   processError(getResources().getText(R.string.error_eds).toString() + "1");
+                    errorCount++;*/
                     break;
                 }
 
                 case Constants.PE_EDS2: {//receiving error
-                    processError(getResources().getText(R.string.error_eds).toString() + "2");
-                    errorCount++;
+                  /*  processError(getResources().getText(R.string.error_eds).toString() + "2");
+                    errorCount++;*/
                     break;
                 }
 
                 case Constants.PE_EDS3: {//receiving error
-                    processError(getResources().getText(R.string.error_eds).toString() + "3");
-                    errorCount++;
+                /*    processError(getResources().getText(R.string.error_eds).toString() + "3");
+                    errorCount++;*/
                     break;
                 }
 
                 case Constants.PE_EDS4: {//receiving error
-                    processError(getResources().getText(R.string.error_eds).toString() + "4");
-                    errorCount++;
+                   /* processError(getResources().getText(R.string.error_eds).toString() + "4");
+                    errorCount++;*/
                     break;
                 }
 
                 case Constants.PE_BATT: {//receiving error
-                    processError(getResources().getText(R.string.error_batt).toString());
-                    errorCount++;
+                  /*  processError(getResources().getText(R.string.error_batt).toString());
+                    errorCount++;*/
                     break;
                 }
 
                 case Constants.PE_PUMP1: {//receiving error
-                    processError(getResources().getText(R.string.error_eds).toString() + "1");
-                    errorCount++;
+                   /* processError(getResources().getText(R.string.error_eds).toString() + "1");
+                    errorCount++;*/
                     break;
                 }
 
                 case Constants.PE_PUMP2: {//receiving error
-                    processError(getResources().getText(R.string.error_eds).toString() + "2");
-                    errorCount++;
+                  /*  processError(getResources().getText(R.string.error_eds).toString() + "2");
+                    errorCount++;*/
                     break;
                 }
 
                 case Constants.PE_PUMP3: {//receiving error
-                    processError(getResources().getText(R.string.error_eds).toString() + "3");
-                    errorCount++;
+                  /*  processError(getResources().getText(R.string.error_eds).toString() + "3");
+                    errorCount++;*/
                     break;
                 }
 
                 case Constants.PE_ERROR: {//receiving error
-                    processError(getResources().getText(R.string.error_unknown).toString());
-                    errorCount++;
+                    /*processError(getResources().getText(R.string.error_unknown).toString());
+                    errorCount++;*/
                     break;
                 }
 
@@ -710,12 +710,12 @@ public class ConnectionService extends Service {
                     break;
             }
 
-            if(errorCount != 0){
+          /*  if(errorCount != 0){
                 ProcedureSettings.getInstance().setStatus(Constants.STATUS_ERROR);
             }
             else{
                 ProcedureSettings.getInstance().setStatus(Constants.STATUS_NORMAL);
-            }
+            }*/
 
         }
     }

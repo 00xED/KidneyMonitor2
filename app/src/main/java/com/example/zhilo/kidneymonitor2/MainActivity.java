@@ -574,9 +574,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            //sorbtime
+            //TODO: sorbtime
             {
-                if (currentSorbTime == -1) {
+            /*    if (currentSorbTime == -1) {
                     tvSorbtime.setText(getResources().getText(R.string.unknown).toString());
                     ivSorbtime.setImageResource(R.drawable.ic_question_mark);
                 } else {
@@ -592,7 +592,7 @@ public class MainActivity extends AppCompatActivity {
                             getResources().getText(R.string.sorbtime_mins).toString() + sec);
 
                     ivSorbtime.setImageResource(R.drawable.ic_clock_green);
-                }
+                }*/
             }
 
             //Battery value
