@@ -234,6 +234,15 @@ public class ConnectionService extends Service {
                 ConnectTryCount = 0;
                 lw.appendLog(TAG, "BLE connected");
                 ProcedureSettings.getInstance().setStatus(Constants.STATUS_ON);
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        sendMessageBytes(Constants.bTIME, Constants.bTIME_GET);//current time request
+                    }
+                }, 2000);
+
             } else if (Constants.ACTION_GATT_DISCONNECTED.equals(action)) {
                 BLEConnected = false;
                 Intent intentValues = new Intent(Constants.CONNECTIONSERVICE_ACTION);
@@ -269,9 +278,23 @@ public class ConnectionService extends Service {
             switch (com1) {//executing first command
 
                 case Constants.bBATT: {//setting battery percentage
-                    lw.appendLog(TAG, getResources().getText(R.string.batt_set).toString() + data_int + "%", true);
-                    lw.appendLog(TAG, "setting battery to " + data_int + "%");
-                    ProcedureSettings.getInstance().setBattery(data_int);
+                    switch (com2) { //battery type
+                        case Constants.bBATT_ACC: {
+                            lw.appendLog(TAG, getResources().getText(R.string.batt_set).toString() + data_int + "%", true);
+                            lw.appendLog(TAG, "setting battery to " + data_int + "%");
+                            ProcedureSettings.getInstance().setBattery(data_int);
+                            break;
+                        }
+
+                        case Constants.bBATT_COIN: {
+                            lw.appendLog(TAG, "coin battery is " + data_int + "%");
+                            break;
+                        }
+
+                        default:
+                            break;
+                    }
+
                     break;
                 }
 
@@ -414,9 +437,11 @@ public class ConnectionService extends Service {
                 }
 
                 case Constants.bDCOND1: {////getting conductivity value
-                    tempiValue = data_int;
-                    ProcedureSettings.getInstance().setDialCond1(tempiValue);
-                    lw.appendLog(TAG, "setting DCOND1 to " + tempiValue);
+                    if(com2 == (byte)0x00){
+                        tempiValue = data_int;
+                        ProcedureSettings.getInstance().setDialCond1(tempiValue);
+                        lw.appendLog(TAG, "setting DCOND1 to " + tempiValue);
+                    }
                    /* if(tempiValue > ProcedureSettings.getInstance().getDialCond1Max() ||
                             tempiValue < ProcedureSettings.getInstance().getDialCond1Min()){
                         errorCount++;
@@ -450,6 +475,14 @@ public class ConnectionService extends Service {
                     tempfValue = data_float * Constants.CUR_COEF;
                     ProcedureSettings.getInstance().setDialCurrent4(tempfValue);
                     lw.appendLog(TAG, "setting DCUR4 to " + tempfValue);
+                    break;
+                }
+
+                case Constants.bDATETIME: {//getting fourth electric current value
+                    long unixTime = System.currentTimeMillis() / 1000L;
+                    lw.appendLog(TAG, "TIME is " + data_int, true);
+                    if (Math.abs(data_int - unixTime) < 20 * 60) //if difference is more than 20 minutes
+                            lw.appendLog(TAG, "TIME setting is not correct", true);
                     break;
                 }
 

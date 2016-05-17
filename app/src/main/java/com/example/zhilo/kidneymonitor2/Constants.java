@@ -102,8 +102,6 @@ public interface Constants {
     byte bDISINFECTION = (byte) 0x5E;//Send to set procedure to DISINFECTION
     byte bSHUTDOWN = (byte) 0x5F;//Send to set procedure to SHUTDOWN
 
-    byte bBATT = (byte) 0xE9;//Receiving battery stats
-
     byte bSTATUS = (byte) 0xEF;//Receiving current procedure
     byte bPROCEDURE_FILLING = (byte) 0x5B;
     byte bPROCEDURE_DIALYSIS = (byte) 0x5C;
@@ -112,19 +110,16 @@ public interface Constants {
     byte bPROCEDURE_READY = (byte) 0x5A;
     byte bPROCEDURE_FLUSH = (byte) 0x5D;
 
-    byte bPARAMS = (byte) 0x84;//Receiving procedure params
-    byte bPARAMS_NORM = (byte) 0x10;
-    byte bPARAMS_DANGER = (byte) 0x11;
-
-    byte bSORBTIME = (byte) 0x85;//Receiving sorbtime
-
-    byte bFUNCT = (byte) 0x86;//Receiving device functioning
-    byte bFUNCT_CORRECT = (byte) 0x10;
-    byte bFUNCT_FAULT = (byte) 0x11;
+    byte bDATETIME = (byte) 0xED;    // Current date/time
+    byte bTIME = (byte) 0x65;    // Time get/set
+            // Second byte
+            byte bTIME_GET = (byte) 0x00;    // Request time
+            byte bTIME_SET = (byte) 0xFF;    // Set time
 
     float PRESS_COEF = 51.715f;//1 psi = 51.715 mm. hg.
     float TEMP_COEF = 10.0f;//0.1 Celsius
     int CUR_COEF = 1000;//1 Ampere
+
     byte bDPRESS1 = (byte) 0xE0;//Receiving dialysis pressure1
     byte bDPRESS2 = (byte) 0xE1;//Receiving dialysis pressure2
     byte bDPRESS3 = (byte) 0xE2;//Receiving dialysis pressure3
@@ -136,6 +131,11 @@ public interface Constants {
     byte bDCUR2 = (byte) 0xE6;//Receiving dialysis current2
     byte bDCUR3 = (byte) 0xE7;//Receiving dialysis current3
     byte bDCUR4 = (byte) 0xE8;//Receiving dialysis current4
+
+    byte bBATT  = (byte) 0xE9;//Receiving battery stats
+    // Second byte - receiving type of value
+        byte bBATT_ACC = (byte) 0x00;    // Main battery
+        byte bBATT_COIN = (byte) 0x01;   // Coin battery
 
     /**
      * *ERROR codes
