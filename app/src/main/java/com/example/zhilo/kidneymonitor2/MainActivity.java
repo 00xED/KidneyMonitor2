@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvStatus, tvProcedure, tvDisinfection, tvSorbtime, tvBatt, tvLastConnected;
     private TextView tvCaptionStatus, tvCaptionProcedure, tvCaptionDisinfection, tvCaptionSorbentTime, tvCaptionBattery;
     private ImageView ivStatus, ivProcedure, ivDisinfection, ivBatt, ivSorbtime, ivProcedureDropdown;
-    private Button btPause, btProcedure, btLog, btSettings, btMessage;
+    private Button btPause, btProcedure, btLog, btSettings, btMessage, btTest;
 
     //Handler for automatic refreshing of screen values
     Handler RefreshHandler = new Handler();
@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
         btSettings.setTypeface(tfPlayBold);
         btMessage = (Button) findViewById(R.id.bt_Message);
         btMessage.setTypeface(tfPlayBold);
+
+        btTest = (Button) findViewById(R.id.bt_Test);
 
         tvCaptionStatus = (TextView) findViewById(R.id.tv_Status);
         tvCaptionStatus.setTypeface(tfPlayBold);
@@ -269,6 +271,16 @@ public class MainActivity extends AppCompatActivity {
                     PauseConfirmationTest();
                 else
                     PauseConfirmation();
+
+                break;
+            }
+
+            case R.id.bt_Test: {
+                Intent intent = new Intent("android.intent.action.MAIN");
+                intent.setClass(this, AlertActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("text", "страшная ошибка!!");
+                startActivity(intent);
 
                 break;
             }

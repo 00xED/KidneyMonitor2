@@ -138,6 +138,11 @@ public interface Constants {
         byte bBATT_COIN = (byte) 0x01;   // Coin battery
 
     /**
+     * ALARM CODE
+     */
+
+    byte bAALARM = (byte) 0xEE; //Generic alarm
+    /**
      * *ERROR codes
      */
     byte PE_PRESS1 = (byte) 0xF0;    // Error on pressure sensor 1

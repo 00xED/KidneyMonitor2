@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.zhilo.kidneymonitor2" >
+    package="com.example.zhilo.kidneymonitor2">
 
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -15,8 +15,8 @@
         android:label="@string/app_name"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
-        <activity android:name=".MainActivity" >
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,7 +27,7 @@
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.zhilo.kidneymonitor2.MainActivity" />
@@ -42,20 +42,16 @@
         <service
             android:name=".ConnectionService"
             android:enabled="true"
-            android:exported="true" >
-        </service>
+            android:exported="true"></service>
         <service
             android:name=".BluetoothLeService"
             android:enabled="true" />
 
-        <activity android:name=".ParamActivity" >
-        </activity>
-        <activity android:name=".LogActivity" >
-        </activity>
-        <activity android:name=".ProceduresActivity" >
-        </activity>
-        <activity android:name=".InstructionActivity" >
-        </activity>
+        <activity android:name=".ParamActivity"></activity>
+        <activity android:name=".LogActivity"></activity>
+        <activity android:name=".ProceduresActivity"></activity>
+        <activity android:name=".InstructionActivity"></activity>
+        <activity android:name=".AlertActivity" android:label="" android:theme="@style/Theme.AppCompat"></activity>
     </application>
 
 </manifest>
