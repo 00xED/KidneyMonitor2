@@ -14,9 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,7 +22,6 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
          * Initialising TextViews for main screen
          */
         Typeface tfPlayBold = Typeface.createFromAsset(getAssets(), "fonts/Play-Bold.ttf");
-        tvStatus = (TextView) findViewById(R.id.tv_StatusValue);
+        tvStatus = (TextView) findViewById(R.id.tv_AccumValue);
         tvStatus.setTypeface(tfPlayBold);
         tvProcedure = (TextView) findViewById(R.id.tv_ProcedureValue);
         tvProcedure.setTypeface(tfPlayBold);
@@ -69,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         tvLastConnected.setTypeface(tfPlayBold);
 
         ivBatt = (ImageView) findViewById(R.id.iv_Battery);
-        ivStatus = (ImageView) findViewById(R.id.iv_Status);
+        ivStatus = (ImageView) findViewById(R.id.iv_Accum);
         ivProcedure = (ImageView) findViewById(R.id.iv_Procedure);
         ivProcedureDropdown = (ImageView) findViewById(R.id.iv_ProcedureDropdown);
         ivDisinfection = (ImageView) findViewById(R.id.iv_Disinfection);
@@ -87,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         btTest = (Button) findViewById(R.id.bt_Test);
 
-        tvCaptionStatus = (TextView) findViewById(R.id.tv_Status);
+        tvCaptionStatus = (TextView) findViewById(R.id.tv_Accum);
         tvCaptionStatus.setTypeface(tfPlayBold);
         tvCaptionProcedure = (TextView) findViewById(R.id.tv_Procedure);
         tvCaptionProcedure.setTypeface(tfPlayBold);
@@ -190,19 +187,19 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
 
-            case R.id.iv_Status: {
+            case R.id.iv_Accum: {
                 Intent intent = new Intent(this, ParamActivity.class);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.tv_Status: {
+            case R.id.tv_Accum: {
                 Intent intent = new Intent(this, ParamActivity.class);
                 startActivity(intent);
                 break;
             }
 
-            case R.id.tv_StatusValue: {
+            case R.id.tv_AccumValue: {
                 Intent intent = new Intent(this, ParamActivity.class);
                 startActivity(intent);
                 break;
@@ -276,10 +273,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             case R.id.bt_Test: {
-                Intent intent = new Intent("android.intent.action.MAIN");
-                intent.setClass(this, AlertActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("text", "страшная ошибка!!");
+                Intent intent = new Intent(this, ProceduresActivity.class);
                 startActivity(intent);
 
                 break;

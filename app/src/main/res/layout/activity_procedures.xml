@@ -72,7 +72,7 @@
         android:layout_width="fill_parent"
         android:layout_height="10dp"
         android:id="@+id/space3"
-        android:layout_below="@+id/ib_dialisys"
+        android:layout_below="@+id/tv_change_accum"
         android:layout_centerHorizontal="true" />
 
     <RadioButton
@@ -189,5 +189,57 @@
         android:layout_marginTop="30dp"
         android:clickable="true"
         android:onClick="OnClick" />
+
+    <Space
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:id="@+id/space12"
+        android:layout_below="@+id/rb_dialisys" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Смена магистрали"
+        android:id="@+id/tv_change_mag"
+        android:layout_below="@+id/space12"
+        android:layout_marginLeft="40dp"
+        android:onClick="OnClick" />
+
+    <Space
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:id="@+id/space13"
+        android:layout_below="@+id/tv_change_mag" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Смена аккумулятора"
+        android:id="@+id/tv_change_accum"
+        android:layout_below="@+id/space13"
+        android:layout_marginLeft="40dp"
+        android:onClick="OnClick" />
+
+    <RadioButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/rb_change_mag"
+        android:layout_marginRight="5dp"
+        android:clickable="true"
+        android:onClick="OnClick"
+        android:layout_below="@+id/space12"
+        android:layout_toEndOf="@+id/ib_dialisys" />
+
+    <RadioButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/rb_change_accum"
+        android:layout_marginRight="5dp"
+        android:clickable="true"
+        android:onClick="OnClick"
+        android:layout_below="@+id/space13"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

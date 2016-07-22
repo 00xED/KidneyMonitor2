@@ -42,16 +42,20 @@
         <service
             android:name=".ConnectionService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
         <service
             android:name=".BluetoothLeService"
             android:enabled="true" />
 
-        <activity android:name=".ParamActivity"></activity>
-        <activity android:name=".LogActivity"></activity>
-        <activity android:name=".ProceduresActivity"></activity>
-        <activity android:name=".InstructionActivity"></activity>
-        <activity android:name=".AlertActivity" android:label="" android:theme="@style/Theme.AppCompat"></activity>
+        <activity android:name=".ParamActivity" />
+        <activity android:name=".LogActivity" />
+        <activity android:name=".ProceduresActivity" />
+        <activity android:name=".InstructionActivity" />
+        <activity
+            android:name=".AlertActivity"
+            android:label=""
+            android:theme="@style/Theme.AppCompat" />
+        <activity android:name=".Selftest"></activity>
     </application>
 
 </manifest>

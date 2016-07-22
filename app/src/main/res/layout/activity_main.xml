@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:focusableInTouchMode="true"
+    android:padding="5dp">
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="70dp"
@@ -32,9 +34,9 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Статус устройства"
-        android:id="@+id/tv_Status"
+        android:id="@+id/tv_Accum"
         android:layout_below="@+id/iv_Header"
-        android:layout_toLeftOf="@+id/iv_Status"
+        android:layout_toLeftOf="@+id/iv_Accum"
         android:textAlignment="textEnd"
         android:layout_marginRight="2dp"
         android:onClick="OnClick" />
@@ -42,7 +44,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/iv_Status"
+        android:id="@+id/iv_Accum"
         android:layout_below="@+id/iv_Header"
         android:src="@drawable/ic_question_mark"
         android:layout_centerHorizontal="true"
@@ -57,17 +59,17 @@
         android:onClick="OnClick"
         android:clickable="true"
         android:layout_below="@+id/iv_Header"
-        android:layout_toEndOf="@+id/iv_Status"
-        android:layout_toRightOf="@+id/iv_Status" />
+        android:layout_toEndOf="@+id/iv_Accum"
+        android:layout_toRightOf="@+id/iv_Accum" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Неизвестно"
-        android:id="@+id/tv_StatusValue"
+        android:id="@+id/tv_AccumValue"
         android:layout_below="@+id/iv_Header"
-        android:layout_alignBottom="@+id/space4"
+        android:layout_alignBottom="@+id/space"
         android:gravity="center_vertical"
         android:layout_toRightOf="@+id/iv_StatusDropdown"
         android:onClick="OnClick" />
@@ -75,9 +77,9 @@
     <Space
         android:layout_width="fill_parent"
         android:layout_height="10dp"
-        android:layout_below="@+id/iv_Status"
+        android:layout_below="@+id/iv_Accum"
         android:layout_alignParentStart="true"
-        android:id="@+id/space4" />
+        android:id="@+id/space" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -85,7 +87,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Текущая процедура"
         android:id="@+id/tv_Procedure"
-        android:layout_below="@+id/space4"
+        android:layout_below="@+id/space"
         android:layout_toLeftOf="@+id/iv_Procedure"
         android:textAlignment="textEnd"
         android:layout_marginRight="2dp"
@@ -97,7 +99,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/iv_Procedure"
         android:src="@drawable/ic_question_mark"
-        android:layout_below="@+id/space4"
+        android:layout_below="@+id/space"
         android:layout_centerHorizontal="true"
         android:onClick="OnClick"
         android:clickable="true" />
@@ -108,7 +110,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Неизвестно"
         android:id="@+id/tv_ProcedureValue"
-        android:layout_below="@+id/space4"
+        android:layout_below="@+id/space"
         android:layout_toRightOf="@+id/iv_ProcedureDropdown"
         android:layout_marginLeft="2dp"
         android:layout_alignBottom="@+id/space5"
@@ -157,7 +159,7 @@
         android:gravity="center_vertical"
         android:onClick="OnClick"
         android:clickable="true"
-        android:layout_alignLeft="@+id/tv_StatusValue" />
+        android:layout_alignLeft="@+id/tv_AccumValue" />
 
     <Space
         android:layout_width="fill_parent"
@@ -249,7 +251,7 @@
         android:id="@+id/tv_BatteryValue"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_below="@+id/space7"
-        android:layout_alignLeft="@+id/tv_StatusValue"
+        android:layout_alignLeft="@+id/tv_AccumValue"
         android:layout_alignBottom="@+id/space8"
         android:gravity="center_vertical" />
 
@@ -336,10 +338,19 @@
         android:id="@+id/iv_ProcedureDropdown"
         android:src="@drawable/ic_shevron"
         android:layout_marginLeft="2dp"
-        android:layout_alignTop="@+id/space4"
+        android:layout_alignTop="@+id/space"
         android:layout_above="@+id/space5"
         android:layout_toRightOf="@+id/iv_Procedure"
         android:onClick="OnClick"
         android:clickable="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/bt_Test"
+        android:layout_below="@+id/iv_Footer"
+        android:layout_centerHorizontal="true"
+        android:onClick="OnClick" />
 
 </RelativeLayout>

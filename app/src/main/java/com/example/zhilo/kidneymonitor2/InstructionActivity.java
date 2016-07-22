@@ -65,6 +65,14 @@ public class InstructionActivity extends AppCompatActivity {
             R.drawable.instruct_disinfection_done_4
     };
 
+    private static final int[] instruct_change_accum = {
+            R.drawable.empty,
+    };
+
+    private static final int[] instruct_change_mag = {
+            R.drawable.empty,
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,6 +132,18 @@ public class InstructionActivity extends AppCompatActivity {
             case(Constants.PROCEDURE_DISINFECTION_DONE):{
                 ivBackground.setImageResource(R.drawable.bg_header_disinfection);
                 instructionsStrings = getResources().getStringArray(R.array.instruction_disinfection_done);
+                break;
+            }
+
+            case(Constants.PROCEDURE_CHANGE_ACCUM):{
+                ivBackground.setImageResource(R.drawable.bg_header_disinfection);
+                instructionsStrings = getResources().getStringArray(R.array.instruction_change_accum);
+                break;
+            }
+
+            case(Constants.PROCEDURE_CHANGE_MAG):{
+                ivBackground.setImageResource(R.drawable.bg_header_disinfection);
+                instructionsStrings = getResources().getStringArray(R.array.instruction_change_mag);
                 break;
             }
 
@@ -291,6 +311,28 @@ public class InstructionActivity extends AppCompatActivity {
                 else{
                     tvInstructionText.setText(instructionsStrings[stage]);
                     ivInstructionImage.setImageResource(instruct_disinfection_done[stage]);
+                }
+                break;
+            }
+
+            case(Constants.PROCEDURE_CHANGE_ACCUM):{
+                if(stage == instructionsStrings.length){
+                    InstructionActivity.this.finish();
+                }
+                else{
+                    tvInstructionText.setText(instructionsStrings[stage]);
+                    ivInstructionImage.setImageResource(instruct_change_accum[stage]);
+                }
+                break;
+            }
+
+            case(Constants.PROCEDURE_CHANGE_MAG):{
+                if(stage == instructionsStrings.length){
+                    InstructionActivity.this.finish();
+                }
+                else{
+                    tvInstructionText.setText(instructionsStrings[stage]);
+                    ivInstructionImage.setImageResource(instruct_change_mag[stage]);
                 }
                 break;
             }

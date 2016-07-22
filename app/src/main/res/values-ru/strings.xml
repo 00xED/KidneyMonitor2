@@ -195,6 +195,16 @@
             Подробнее см. пункт n Руководства по эксплуатации.</item>
     </string-array>
 
+    <string-array name="instruction_change_accum">
+        <item>Тут инструкция по смене аккумулятора.
+            Подробнее см. пункт n Руководства по эксплуатации.</item>
+    </string-array>
+
+    <string-array name="instruction_change_mag">
+        <item>Тут инструкция по смене магистрали.
+            Подробнее см. пункт n Руководства по эксплуатации.</item>
+    </string-array>
+
     <string-array name="instruction_shutdown">
         <item>Нажмите ОК для выключения прибора</item>
     </string-array>
