@@ -196,16 +196,24 @@
     </string-array>
 
     <string-array name="instruction_change_accum">
-        <item>Тут инструкция по смене аккумулятора.
+        <item>Замените аккумуляторную батарею.\n
+            Уставновите разряженную батарею в зарядное устройство.
             Подробнее см. пункт n Руководства по эксплуатации.</item>
     </string-array>
 
-    <string-array name="instruction_change_mag">
-        <item>Тут инструкция по смене магистрали.
+    <string-array name="instruction_change_sorb">
+        <item>Отсоедините сорбционные ёмкости и утилизируйте.\n
+            Подсоедините новые сорбционные ёмкости.\n
             Подробнее см. пункт n Руководства по эксплуатации.</item>
     </string-array>
 
     <string-array name="instruction_shutdown">
         <item>Нажмите ОК для выключения прибора</item>
+    </string-array>
+
+    <string-array name="pause_dialog_items">
+        <item>Пауза</item>
+        <item>Замена аккумулятора</item>
+        <item>Замена магистрали</item>
     </string-array>
 </resources>

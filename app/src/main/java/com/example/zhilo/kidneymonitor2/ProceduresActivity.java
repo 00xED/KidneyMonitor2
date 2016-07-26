@@ -11,10 +11,8 @@ import android.widget.TextView;
 
 public class ProceduresActivity extends AppCompatActivity {
 
-    private RadioButton rbFill, rbDialisys, rbFlush, rbShutdown, rbDisinfection, rbChangeMag,
-            rbChangeAccum;
+    private RadioButton rbFill, rbDialisys, rbFlush, rbShutdown, rbDisinfection;
     private ImageView ivFill, ivDialisys, ivFlush, ivShutdown, ivDisinfection;
-    private TextView tvChangeMag, tvChangeAccum;
 
     int selectedProcedure = -1;
     
@@ -29,17 +27,12 @@ public class ProceduresActivity extends AppCompatActivity {
         rbFlush = (RadioButton) findViewById(R.id.rb_flush);
         rbShutdown = (RadioButton) findViewById(R.id.rb_shutdown);
         rbDisinfection = (RadioButton) findViewById(R.id.rb_disinfection);
-        rbChangeMag = (RadioButton) findViewById(R.id.rb_change_mag);
-        rbChangeAccum = (RadioButton) findViewById(R.id.rb_change_accum);
 
         ivFill = (ImageView) findViewById(R.id.ib_fill);
         ivDialisys = (ImageView) findViewById(R.id.ib_dialisys);
         ivFlush = (ImageView) findViewById(R.id.ib_flush);
         ivShutdown = (ImageView) findViewById(R.id.ib_shutdown);
         ivDisinfection = (ImageView) findViewById(R.id.ib_disinfection);
-
-        tvChangeMag = (TextView) findViewById(R.id.tv_change_mag);
-        tvChangeAccum = (TextView) findViewById(R.id.tv_change_accum);
 
         int currentProcedure = ProcedureSettings.getInstance().getProcedure();
         int previousProcedure = ProcedureSettings.getInstance().getProcedure_previous();
@@ -48,12 +41,6 @@ public class ProceduresActivity extends AppCompatActivity {
                 disableAllRows();
                 rbFlush.setEnabled(true);
                 ivFlush.setImageResource(R.drawable.ib_flush);
-
-                rbChangeAccum.setEnabled(true);
-                tvChangeAccum.setEnabled(true);
-                rbChangeMag.setEnabled(true);
-                tvChangeMag.setEnabled(true);
-
                 break;
             }
 
@@ -75,11 +62,6 @@ public class ProceduresActivity extends AppCompatActivity {
                 disableAllRows();
                 rbShutdown.setEnabled(true);
                 ivShutdown.setImageResource(R.drawable.ib_shutdown);
-
-                rbChangeAccum.setEnabled(true);
-                tvChangeAccum.setEnabled(true);
-                rbChangeMag.setEnabled(true);
-                tvChangeMag.setEnabled(true);
                 break;
             }
 
@@ -109,11 +91,6 @@ public class ProceduresActivity extends AppCompatActivity {
                         ivFlush.setImageResource(R.drawable.ib_flush);
                         rbDialisys.setEnabled(true);
                         ivDialisys.setImageResource(R.drawable.ib_dialisys);
-
-                        rbChangeAccum.setEnabled(true);
-                        tvChangeAccum.setEnabled(true);
-                        rbChangeMag.setEnabled(true);
-                        tvChangeMag.setEnabled(true);
                         break;
                     }
 
@@ -139,11 +116,6 @@ public class ProceduresActivity extends AppCompatActivity {
                         ivShutdown.setImageResource(R.drawable.ib_shutdown);
                         rbDisinfection.setEnabled(true);
                         ivDisinfection.setImageResource(R.drawable.ib_disinfection);
-
-                        rbChangeAccum.setEnabled(true);
-                        tvChangeAccum.setEnabled(true);
-                        rbChangeMag.setEnabled(true);
-                        tvChangeMag.setEnabled(true);
                         break;
                     }
 
@@ -257,20 +229,6 @@ public class ProceduresActivity extends AppCompatActivity {
                 break;
             }
 
-            case R.id.rb_change_accum:{
-                resetRadioButtons();
-                rbChangeAccum.setChecked(true);
-                selectedProcedure = Constants.PROCEDURE_CHANGE_ACCUM;
-                break;
-            }
-
-            case R.id.rb_change_mag:{
-                resetRadioButtons();
-                rbChangeMag.setChecked(true);
-                selectedProcedure = Constants.PROCEDURE_CHANGE_MAG;
-                break;
-            }
-
             case R.id.ib_ok:{
                 if(selectedProcedure != -1){
                     Intent intent = new Intent(this, InstructionActivity.class);
@@ -295,8 +253,6 @@ public class ProceduresActivity extends AppCompatActivity {
         rbFlush.setChecked(false);
         rbShutdown.setChecked(false);
         rbDisinfection.setChecked(false);
-        rbChangeAccum.setChecked(false);
-        rbChangeMag.setChecked(false);
     }
 
     public void disableAllRows(){
@@ -310,11 +266,6 @@ public class ProceduresActivity extends AppCompatActivity {
         ivShutdown.setImageResource(R.drawable.ib_shutdown_disabled);
         rbDisinfection.setEnabled(false);
         ivDisinfection.setImageResource(R.drawable.ib_disinfection_disabled);
-
-        rbChangeAccum.setEnabled(false);
-        tvChangeAccum.setEnabled(false);
-        rbChangeMag.setEnabled(false);
-        tvChangeMag.setEnabled(false);
     }
 
     public void enableAllRows(){
@@ -328,10 +279,5 @@ public class ProceduresActivity extends AppCompatActivity {
         ivShutdown.setImageResource(R.drawable.ib_shutdown);
         rbDisinfection.setEnabled(true);
         ivDisinfection.setImageResource(R.drawable.ib_disinfection);
-
-        rbChangeAccum.setEnabled(true);
-        tvChangeAccum.setEnabled(true);
-        rbChangeMag.setEnabled(true);
-        tvChangeMag.setEnabled(true);
     }
 }

@@ -30,7 +30,7 @@ public interface Constants {
     int PROCEDURE_DIALYSIS_DONE = 7;
     int PROCEDURE_DISINFECTION_DONE = 8;
     int PROCEDURE_CHANGE_ACCUM = 9;
-    int PROCEDURE_CHANGE_MAG = 10;
+    int PROCEDURE_CHANGE_SORB = 10;
 
 
     int STATUS_ON = 0;

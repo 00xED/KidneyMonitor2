@@ -261,20 +261,102 @@ public class MainActivity extends AppCompatActivity {
             }
 
             case R.id.bt_Pause: {
-                SharedPreferences sPref = getSharedPreferences(Constants.APP_PREFERENCES, MODE_PRIVATE); //Loading preferences
+                /*SharedPreferences sPref = getSharedPreferences(Constants.APP_PREFERENCES, MODE_PRIVATE); //Loading preferences
                 if (ProcedureSettings.getInstance().getProcedure() == Constants.PARAMETER_UNKNOWN)
                     break;
                 else if (sPref.getBoolean(Constants.SETTINGS_TESTMODE, false))
                     PauseConfirmationTest();
                 else
+                    PauseConfirmation();*/
+                ProcedureSettings.getInstance().setProcedure(Constants.PROCEDURE_READY);
+                if (ProcedureSettings.getInstance().getProcedure() == Constants.PARAMETER_UNKNOWN)
+                    break;
+                else if (ProcedureSettings.getInstance().getProcedure() == Constants.PROCEDURE_READY)
                     PauseConfirmation();
+                else if (ProcedureSettings.getInstance().getProcedure() != Constants.PROCEDURE_DIALYSIS)
+                    PauseConfirmation();
+                else
+                {
 
-                break;
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle(R.string.pause_procedure)
+                            .setItems(R.array.pause_dialog_items, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    int selectedProcedure = -1;
+                                    switch (which) {
+                                        case 0: {//pause
+                                            PauseConfirmationTest();
+                                            break;
+                                        }
+                                        case 1: {//accum change
+                                            selectedProcedure = Constants.PROCEDURE_CHANGE_ACCUM;
+                                            break;
+                                        }
+                                        case 2: {//magistral' change
+                                            selectedProcedure = Constants.PROCEDURE_CHANGE_SORB;
+                                            break;
+                                        }
+                                        default:
+                                            break;
+                                    }
+                                    if(selectedProcedure != -1){
+                                        Intent intent = new Intent(MainActivity.this, InstructionActivity.class);
+                                        Bundle parameters = new Bundle();
+                                        parameters.putInt("procedure", selectedProcedure); //Your id
+                                        intent.putExtras(parameters); //Put your id to your next Intent
+                                        startActivity(intent);
+                                    }
+                                }
+                            });
+                    builder.create();
+                    break;
+                }
             }
 
             case R.id.bt_Test: {
-                Intent intent = new Intent(this, ProceduresActivity.class);
-                startActivity(intent);
+                ProcedureSettings.getInstance().setProcedure(Constants.PROCEDURE_DIALYSIS);
+                if (ProcedureSettings.getInstance().getProcedure() == Constants.PARAMETER_UNKNOWN)
+                    break;
+                else if (ProcedureSettings.getInstance().getProcedure() == Constants.PROCEDURE_READY)
+                    PauseConfirmation();
+                else if (ProcedureSettings.getInstance().getProcedure() != Constants.PROCEDURE_DIALYSIS)
+                    PauseConfirmation();
+                else
+                {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle(R.string.pause_procedure)
+                            .setItems(R.array.pause_dialog_items, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    int selectedProcedure = -1;
+                                    switch (which) {
+                                        case 0: {//pause
+                                            PauseConfirmationTest();
+                                            break;
+                                        }
+                                        case 1: {//accum change
+                                            selectedProcedure = Constants.PROCEDURE_CHANGE_ACCUM;
+                                            break;
+                                        }
+                                        case 2: {//magistral' change
+                                            selectedProcedure = Constants.PROCEDURE_CHANGE_SORB;
+                                            break;
+                                        }
+                                        default:
+                                            break;
+                                    }
+                                    if(selectedProcedure != -1){
+                                        Intent intent = new Intent(MainActivity.this, InstructionActivity.class);
+                                        Bundle parameters = new Bundle();
+                                        parameters.putInt("procedure", selectedProcedure); //Your id
+                                        intent.putExtras(parameters); //Put your id to your next Intent
+                                        startActivity(intent);
+                                    }
+                                }
+                            });
+                    builder.show();
+                    break;
+                }
 
                 break;
             }

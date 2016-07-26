@@ -141,9 +141,9 @@ public class InstructionActivity extends AppCompatActivity {
                 break;
             }
 
-            case(Constants.PROCEDURE_CHANGE_MAG):{
+            case(Constants.PROCEDURE_CHANGE_SORB):{
                 ivBackground.setImageResource(R.drawable.bg_header_disinfection);
-                instructionsStrings = getResources().getStringArray(R.array.instruction_change_mag);
+                instructionsStrings = getResources().getStringArray(R.array.instruction_change_sorb);
                 break;
             }
 
@@ -326,7 +326,7 @@ public class InstructionActivity extends AppCompatActivity {
                 break;
             }
 
-            case(Constants.PROCEDURE_CHANGE_MAG):{
+            case(Constants.PROCEDURE_CHANGE_SORB):{
                 if(stage == instructionsStrings.length){
                     InstructionActivity.this.finish();
                 }
